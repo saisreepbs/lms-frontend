@@ -1,5 +1,1 @@
 @import "tailwindcss";
-
-body {
-  @apply font-sans bg-[#FCF6D9];
-}

@@ -1,6 +1,8 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-export default function CreateStructure({ setPage, setStructure }) {
+export default function CreateStructure() {
+  const navigate = useNavigate();
   const [name, setName] = useState("");
   const [levelInput, setLevelInput] = useState("");
   const [levels, setLevels] = useState([]);
@@ -23,15 +25,17 @@ export default function CreateStructure({ setPage, setStructure }) {
       return;
     }
 
-    setStructure({
+    // TODO: Save to API/global state
+    const newStructure = {
       name,
       levels
-    });
+    };
+    console.log("Created structure:", newStructure);
 
     setMessage("Structure created");
 
     setTimeout(() => {
-      setPage("org");
+      navigate("/admin/organization");
     }, 800);
   };
 
@@ -88,7 +92,7 @@ export default function CreateStructure({ setPage, setStructure }) {
 
         <div className="flex justify-between">
           <button
-            onClick={() => setPage("org")}
+            onClick={() => navigate("/admin/organization")}
             className="border px-4 py-2 rounded"
           >
             Cancel

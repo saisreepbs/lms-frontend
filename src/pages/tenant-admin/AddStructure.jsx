@@ -1,6 +1,12 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-export default function AddStructure({ structure, setStructure, setPage }) {
+export default function AddStructure() {
+  const navigate = useNavigate();
+  
+  // TODO: Replace with global state or API
+  const [structure, setStructure] = useState({});
+  
   // Inputs
   const [branchInput, setBranchInput] = useState("");
   const [semesterInput, setSemesterInput] = useState("");
@@ -171,7 +177,7 @@ export default function AddStructure({ structure, setStructure, setPage }) {
       {/* ================= SAVE ================= */}
       <div className="flex justify-end mt-6 gap-3">
         <button
-            onClick={() => setPage("org")}
+            onClick={() => navigate("/admin/organization")}
             className="border px-4 py-2 rounded"
           >
             Cancel
@@ -187,7 +193,7 @@ export default function AddStructure({ structure, setStructure, setPage }) {
       {/* ================= REVIEW MODAL ================= */}
       {showReview && (
         <div className="fixed inset-0 bg-black/30 flex items-center justify-center">
-          <div className="bg-white p-6 w-[400px] border">
+          <div className="bg-white p-6 w-100 border">
             <h2 className="font-bold mb-3">Review Structure</h2>
 
             {Object.entries(structure).map(([b, sems]) => (
@@ -216,10 +222,9 @@ export default function AddStructure({ structure, setStructure, setPage }) {
               <button
                 onClick={() => {
                   setShowReview(false);
-                  setStructure(structure);   // already updated in-place
+                  // TODO: Save to API
                   setConfirmed(true);
-                  setPage("org");            // go back to tree
-
+                  navigate("/admin/organization");
                 }}
                 className="border px-3 py-1"
               >

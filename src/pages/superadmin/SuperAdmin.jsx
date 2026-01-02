@@ -1,48 +1,44 @@
 import { useState } from "react";
-import Sidebar from "../../components/superadmin/Sidebar";
+import { useNavigate, useLocation } from "react-router-dom";
 import TenantTable from "../../components/superadmin/TenantTable";
 import CreateTenantForm from "../../components/superadmin/CreateTenantForm";
 
-function SuperAdmin({ onLogout }) {
-    const [view, setView] = useState("default");
+function SuperAdmin() {
+    const navigate = useNavigate();
+    const location = useLocation();
+    
+    // Determine view based on URL
+    const getView = () => {
+        if (location.pathname === "/superadmin/tenants/new") return "create";
+        if (location.pathname === "/superadmin/tenants") return "list";
+        return "default";
+    };
+    
+    const view = getView();
+
     return (
-        <div className="w-screen h-screen flex">
-            {/* Sidebar */}
-            <Sidebar
-                onManageTenants={() =>
-                    setView((prev) => (prev === "list" ? "default" : "list"))
-                }
-                onLogout={onLogout}
-            />
+        <div>
+            {/* DEFAULT VIEW (after login) */}
+            {view === "default" && (
+                <div className="flex justify-end">
+                    <button
+                        onClick={() => navigate("/superadmin/tenants/new")}
+                        className="bg-indigo-600 text-white px-6 py-2 rounded-md font-semibold"
+                    >
+                        + New Tenant
+                    </button>
+                </div>
+            )}
 
+            {/* TENANT LIST */}
+            {view === "list" && (
+                <TenantTable onNewTenant={() => navigate("/superadmin/tenants/new")} />
+            )}
 
-            {/* Right Content */}
-            <div
-                className="flex-1 p-10"
-                style={{ backgroundColor: "#FCF6D9" }}
-            >
-                {/* DEFAULT VIEW (after login) */}
-                {view === "default" && (
-                    <div className="flex justify-end">
-                        <button
-                            onClick={() => setView("create")}
-                            className="bg-indigo-600 text-black px-6 py-2 rounded-md font-semibold"
-                        >
-                            + New Tenant
-                        </button>
-                    </div>
-                )}
-
-                {/* TENANT LIST */}
-                {view === "list" && (
-                    <TenantTable onNewTenant={() => setView("create")} />
-                )}
-
-                {/* CREATE TENANT */}
-                {view === "create" && (
-                    <CreateTenantForm onBack={() => setView("list")} />
-                )}
-            </div>
+            {/* CREATE TENANT */}
+            {view === "create" && (
+                <CreateTenantForm onBack={() => navigate("/superadmin/tenants")} />
+            )}
         </div>
     );
 }

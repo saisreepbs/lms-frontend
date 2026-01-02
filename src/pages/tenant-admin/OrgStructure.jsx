@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 /* ---------- Tree Node Component ---------- */
 function TreeNode({ node, depth = 0 }) {
@@ -40,7 +41,15 @@ function TreeNode({ node, depth = 0 }) {
 }
 
 /* ---------- Org Structure Page ---------- */
-export default function OrgStructure({ setPage, structure }) {
+export default function OrgStructure() {
+  const navigate = useNavigate();
+  
+  // TODO: Replace with global state or API call
+  const [structure] = useState({
+    name: "Academics",
+    branches: {}
+  });
+
   return (
     <div>
       {/* Page Heading */}
@@ -61,14 +70,14 @@ export default function OrgStructure({ setPage, structure }) {
 
         <div className="flex gap-3">
           <button
-            onClick={() => setPage("create")}
+            onClick={() => navigate("/admin/organization/create")}
             className="border px-4 py-2 rounded-md bg-white"
           >
             Create
           </button>
 
           <button
-            onClick={() => setPage("update")}
+            onClick={() => navigate("/admin/organization/update")}
             className="border px-4 py-2 rounded-md bg-white"
           >
             Update

@@ -1,10 +1,33 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import bgImage from "./assets/lms-image.jpeg";
 
-function Login({ onLogin }) {
+function Login() {
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [role, setRole] = useState("learner"); // For demo purposes
+
+  const handleLogin = () => {
+    // TODO: Replace with actual API authentication
+    // For now, navigate based on selected role
+    switch (role) {
+      case "superadmin":
+        navigate("/superadmin");
+        break;
+      case "admin":
+        navigate("/admin");
+        break;
+      case "instructor":
+        navigate("/instructor");
+        break;
+      case "learner":
+      default:
+        navigate("/learner");
+        break;
+    }
+  };
 
   return (
     <div
@@ -51,6 +74,21 @@ function Login({ onLogin }) {
               />
             </div>
 
+            {/* Demo: Role selector - Remove after backend integration */}
+            <label className="block text-sm text-gray-600 mb-1">
+              Login as (Demo)
+            </label>
+            <select
+              value={role}
+              onChange={(e) => setRole(e.target.value)}
+              className="w-full border border-gray-300 rounded-sm px-3 py-2 mb-4 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            >
+              <option value="superadmin">Super Admin</option>
+              <option value="admin">Tenant Admin</option>
+              <option value="instructor">Instructor</option>
+              <option value="learner">Learner</option>
+            </select>
+
             <div className="flex items-center gap-2 mb-6">
               <input type="checkbox" className="w-4 h-4" />
               <span className="text-sm text-gray-600">
@@ -59,8 +97,8 @@ function Login({ onLogin }) {
             </div>
 
             <button
-              onClick={onLogin}
-              className="w-full bg-indigo-600! hover:bg-indigo-700! text-white! py-3 rounded-lg font-semibold transition duration-200"
+              onClick={handleLogin}
+              className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 rounded-lg font-semibold transition duration-200"
             >
               Login
             </button>
