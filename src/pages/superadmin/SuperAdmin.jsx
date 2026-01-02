@@ -1,7 +1,7 @@
 import { useState } from "react";
-import Sidebar from "../components/Sidebar";
-import TenantTable from "../components/TenantTable";
-import CreateTenantForm from "../components/CreateTenantForm";
+import Sidebar from "../../components/superadmin/Sidebar";
+import TenantTable from "../../components/superadmin/TenantTable";
+import CreateTenantForm from "../../components/superadmin/CreateTenantForm";
 
 function SuperAdmin({ onLogout }) {
     const [view, setView] = useState("default");

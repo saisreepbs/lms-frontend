@@ -60,7 +60,7 @@ function Login({ onLogin }) {
 
             <button
               onClick={onLogin}
-              className="w-full !bg-indigo-600 hover:!bg-indigo-700 !text-white py-3 rounded-lg font-semibold transition duration-200"
+              className="w-full bg-indigo-600! hover:bg-indigo-700! text-white! py-3 rounded-lg font-semibold transition duration-200"
             >
               Login
             </button>
