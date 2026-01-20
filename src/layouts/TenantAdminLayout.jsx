@@ -1,9 +1,12 @@
 // src/layouts/TenantAdminLayout.jsx
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
+import { useLogout, useAuth } from "../context/AuthContext";
 
 export default function TenantAdminLayout() {
   const navigate = useNavigate();
   const location = useLocation();
+  const logout = useLogout();
+  const { user } = useAuth();
 
   const isActive = (path) => {
     if (path === "/admin" || path === "/admin/dashboard") {
@@ -38,7 +41,12 @@ export default function TenantAdminLayout() {
           <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
             👤
           </div>
-          <h1 className="text-2xl font-semibold text-white">Tenant Name</h1>
+          <div>
+            <h1 className="text-xl font-semibold text-white">Tenant Admin</h1>
+            {user?.username && (
+              <p className="text-sm text-white/70">{user.username}</p>
+            )}
+          </div>
         </div>
 
         <div className="space-y-4">
@@ -49,7 +57,7 @@ export default function TenantAdminLayout() {
 
         <div className="mt-auto pt-6">
           <button
-            onClick={() => navigate("/login")}
+            onClick={logout}
             className="w-full py-3 rounded-md text-sm font-medium bg-red-600/80 text-white hover:bg-red-700"
           >
             Logout

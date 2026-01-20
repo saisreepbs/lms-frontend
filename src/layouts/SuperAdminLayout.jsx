@@ -1,9 +1,12 @@
 // src/layouts/SuperAdminLayout.jsx
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
+import { useLogout, useAuth } from "../context/AuthContext";
 
 export default function SuperAdminLayout() {
   const navigate = useNavigate();
   const location = useLocation();
+  const logout = useLogout();
+  const { user } = useAuth();
 
   const isActive = (path) => location.pathname.startsWith(path);
 
@@ -19,7 +22,12 @@ export default function SuperAdminLayout() {
             <div className="w-[35px] h-[35px] rounded-full bg-[#f7f8f9] text-[rgb(12,12,12)] flex items-center justify-center mr-3">
               👤
             </div>
-            <span>Super Admin</span>
+            <div>
+              <span>Super Admin</span>
+              {user?.username && (
+                <p className="text-sm font-normal text-white/70">{user.username}</p>
+              )}
+            </div>
           </div>
 
           <nav className="space-y-3">
@@ -38,7 +46,7 @@ export default function SuperAdminLayout() {
 
         <div className="p-6">
           <button
-            onClick={() => navigate("/login")}
+            onClick={logout}
             className="w-full bg-red-500 text-white py-2 rounded-md font-semibold hover:bg-red-600"
           >
             Logout

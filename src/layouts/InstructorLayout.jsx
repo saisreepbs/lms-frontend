@@ -1,9 +1,12 @@
 // src/layouts/InstructorLayout.jsx
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
+import { useLogout, useAuth } from "../context/AuthContext";
 
 export default function InstructorLayout() {
   const navigate = useNavigate();
   const location = useLocation();
+  const logout = useLogout();
+  const { user } = useAuth();
 
   const isActive = (path) => {
     if (path === "/instructor" || path === "/instructor/courses") {
@@ -19,10 +22,12 @@ export default function InstructorLayout() {
   return (
     <div className="min-h-screen flex">
       {/* Sidebar */}
-      <aside className="w-64 bg-[#434E78] text-white min-h-screen">
+      <aside className="w-64 bg-[#434E78] text-white min-h-screen relative">
         <div className="p-4 border-b border-white/20">
-          <div className="font-semibold">Tenant Name</div>
-          <div className="text-sm text-gray-200">Instructor</div>
+          <div className="font-semibold">Instructor</div>
+          {user?.username && (
+            <div className="text-sm text-gray-200">{user.username}</div>
+          )}
         </div>
 
         <nav className="p-2 space-y-1">
@@ -50,7 +55,7 @@ export default function InstructorLayout() {
 
         <div className="absolute bottom-0 w-64 p-4">
           <button
-            onClick={() => navigate("/login")}
+            onClick={logout}
             className="w-full py-2 rounded-md bg-red-500 text-white font-semibold hover:bg-red-600"
           >
             Logout
