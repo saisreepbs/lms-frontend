@@ -88,7 +88,7 @@ export default function OrgStructure() {
       {/* Panels */}
       <div className="grid grid-cols-2 gap-6">
         {/* Tree Panel */}
-        <div className="border bg-white p-4 h-[420px] overflow-auto">
+        <div className="border bg-white p-4 h-105 overflow-auto">
           <p className="text-xl font-semibold mb-4">
             Tree Panel
           </p>

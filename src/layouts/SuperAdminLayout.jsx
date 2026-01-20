@@ -19,7 +19,7 @@ export default function SuperAdminLayout() {
       >
         <div className="p-6">
           <div className="flex items-center text-lg font-semibold mb-8">
-            <div className="w-[35px] h-[35px] rounded-full bg-[#f7f8f9] text-[rgb(12,12,12)] flex items-center justify-center mr-3">
+            <div className="w-9 h-9 rounded-full bg-[#f7f8f9] text-[rgb(12,12,12)] flex items-center justify-center mr-3">
               👤
             </div>
             <div>

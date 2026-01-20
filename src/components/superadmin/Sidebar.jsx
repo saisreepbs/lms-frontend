@@ -6,7 +6,7 @@ function Sidebar({ onManageTenants, onLogout }) {
         >
             <div>
                 <div className="flex items-center px-6 py-6 text-lg font-semibold">
-                    <div className="w-[35px] h-[35px] rounded-full bg-[#f7f8f9] text-[rgb(12,12,12)] flex items-center justify-center mr-3">
+                    <div className="w-9 h-9 rounded-full bg-[#f7f8f9] text-[rgb(12,12,12)] flex items-center justify-center mr-3">
                         👤
                     </div>
                     <span>Super Admin</span>

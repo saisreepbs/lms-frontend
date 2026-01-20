@@ -112,7 +112,7 @@ export default function UserManagement() {
       {/* ADD USER MODAL */}
       {showModal && (
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center">
-          <div className="bg-white w-[400px] p-6 border">
+          <div className="bg-white w-100 p-6 border">
             <h2 className="text-xl font-bold mb-4">Add User</h2>
 
             <label className="text-sm font-semibold">Name</label>
