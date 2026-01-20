@@ -1,11 +1,77 @@
 // src/components/instructor/CourseCard.jsx
+import { useMemo, useEffect, useState } from "react";
+import api from "../../api/axios";
+
 export default function CourseCard({ course, onEdit, onRemove }) {
+    const [thumbnailSrc, setThumbnailSrc] = useState(null);
+
+    // Build preview URL for local files or absolute URLs already available on the course
+    const localCoverSrc = useMemo(() => {
+        if (course.cover instanceof File) {
+            return URL.createObjectURL(course.cover);
+        }
+        if (typeof course.cover === "string") {
+            return course.cover;
+        }
+        return null;
+    }, [course.cover]);
+
+    // Fetch secure thumbnails via the resource controller so the auth header is included
+    useEffect(() => {
+        let isMounted = true;
+        let objectUrl;
+
+        const shouldFetchRemoteThumbnail =
+            !!course.thumbnailId && !localCoverSrc;
+
+        if (!shouldFetchRemoteThumbnail) {
+            setThumbnailSrc(null);
+            return undefined;
+        }
+
+        const fetchThumbnail = async () => {
+            try {
+                const response = await api.get(
+                    `/api/resources/${course.thumbnailId}`,
+                    { responseType: "blob" }
+                );
+                objectUrl = URL.createObjectURL(response.data);
+                if (isMounted) {
+                    setThumbnailSrc(objectUrl);
+                }
+            } catch (err) {
+                console.error("Failed to load course thumbnail", err);
+                if (isMounted) {
+                    setThumbnailSrc(null);
+                }
+            }
+        };
+
+        fetchThumbnail();
+
+        return () => {
+            isMounted = false;
+            if (objectUrl) {
+                URL.revokeObjectURL(objectUrl);
+            }
+        };
+    }, [course.thumbnailId, localCoverSrc]);
+
+    useEffect(() => {
+        if (course.cover instanceof File && localCoverSrc) {
+            return () => URL.revokeObjectURL(localCoverSrc);
+        }
+        return undefined;
+    }, [course.cover, localCoverSrc]);
+
+    const coverSrc = localCoverSrc || thumbnailSrc;
+
     return (
         <div className="border rounded-lg bg-white overflow-hidden shadow-sm">
             {/* Thumbnail image */}
-            {course.cover ? (
+            {coverSrc ? (
                 <img
-                    src={URL.createObjectURL(course.cover)}
+                    src={coverSrc}
                     alt={course.title}
                     className="h-28 w-full object-cover"
                 />

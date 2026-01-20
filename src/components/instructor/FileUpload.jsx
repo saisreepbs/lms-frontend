@@ -1,5 +1,15 @@
 // src/components/instructor/FileUpload.jsx
-export default function FileUpload({ label, onFilesSelected }) {
+export default function FileUpload({
+    label,
+    onFilesSelected,
+    accept = "*/*",
+    multiple = false,
+}) {
+    const handleChange = (event) => {
+        const selectedFiles = Array.from(event.target.files || []);
+        onFilesSelected(selectedFiles);
+    };
+
     return (
         <div className="space-y-2">
             <div className="text-sm font-medium">{label}</div>
@@ -10,8 +20,10 @@ export default function FileUpload({ label, onFilesSelected }) {
                         Choose files to Upload
                         <input
                             type="file"
+                            accept={accept}
+                            multiple={multiple}
                             className="hidden"
-                            onChange={(e) => onFilesSelected(Array.from(e.target.files || []))}
+                            onChange={handleChange}
                         />
                     </label>
                 </div>

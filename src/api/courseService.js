@@ -32,7 +32,9 @@ export const getCoursesByTenant = async (tenantId) => {
 export const createCourse = async (tenantId, courseData, thumbnailFile) => {
   const formData = new FormData();
   formData.append("tenantId", tenantId);
-  formData.append("thumbnailFile", thumbnailFile);
+  if (thumbnailFile) {
+    formData.append("thumbnailFile", thumbnailFile);
+  }
   formData.append(
     "data",
     new Blob([JSON.stringify(courseData)], { type: "application/json" })
