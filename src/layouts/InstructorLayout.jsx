@@ -25,8 +25,8 @@ export default function InstructorLayout() {
       <aside className="w-64 bg-[#434E78] text-white min-h-screen relative">
         <div className="p-4 border-b border-white/20">
           <div className="font-semibold">Instructor</div>
-          {user?.username && (
-            <div className="text-sm text-gray-200">{user.username}</div>
+          {user?.fullName && (
+            <div className="text-sm text-gray-200">{user.fullName}</div>
           )}
         </div>
 

@@ -56,7 +56,9 @@ export const storeTokens = (jwtResponse) => {
   localStorage.setItem("accessToken", jwtResponse.accessToken);
   localStorage.setItem("refreshToken", jwtResponse.refreshToken);
   localStorage.setItem("user", JSON.stringify({
-    username: jwtResponse.username,
+    id: jwtResponse.userId,
+    email: jwtResponse.userEmail,
+    fullName: jwtResponse.fullName,
     role: jwtResponse.role,
     tenantId: jwtResponse.tenantId,
   }));

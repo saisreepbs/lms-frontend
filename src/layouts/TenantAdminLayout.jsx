@@ -43,8 +43,8 @@ export default function TenantAdminLayout() {
           </div>
           <div>
             <h1 className="text-xl font-semibold text-white">Tenant Admin</h1>
-            {user?.username && (
-              <p className="text-sm text-white/70">{user.username}</p>
+            {user?.fullName && (
+              <p className="text-sm text-white/70">{user.fullName}</p>
             )}
           </div>
         </div>

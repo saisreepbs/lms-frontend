@@ -34,7 +34,9 @@ export const AuthProvider = ({ children }) => {
       authService.storeTokens(response);
       
       const userData = {
-        username: response.username,
+        id: response.userId,
+        email: response.userEmail,
+        fullName: response.fullName,
         role: response.role,
         tenantId: response.tenantId,
       };

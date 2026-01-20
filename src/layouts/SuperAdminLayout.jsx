@@ -24,8 +24,8 @@ export default function SuperAdminLayout() {
             </div>
             <div>
               <span>Super Admin</span>
-              {user?.username && (
-                <p className="text-sm font-normal text-white/70">{user.username}</p>
+              {user?.fullName && (
+                <p className="text-sm font-normal text-white/70">{user.fullName}</p>
               )}
             </div>
           </div>
