@@ -77,46 +77,47 @@ export default function CourseCard({ course, onEdit, onRemove }) {
     }, [course.cover, localCoverSrc]);
 
     const coverSrc = localCoverSrc || thumbnailSrc;
-    const courseStatus = course.currentStatus || course.status || course.visibility;
-    const statusLabel = STATUS_LABELS[courseStatus] || courseStatus || "--";
-    const statusClass = STATUS_STYLES[courseStatus] || STATUS_STYLES.HIDDEN;
+    const rawStatus = course.currentStatus || course.status || course.visibility;
+    const normalizedStatus = typeof rawStatus === "string" ? rawStatus.toUpperCase() : rawStatus;
+    const statusLabel = STATUS_LABELS[normalizedStatus] || normalizedStatus || "--";
+    const statusClass = STATUS_STYLES[normalizedStatus] || STATUS_STYLES.HIDDEN;
 
     return (
-        <div className="border rounded-lg bg-white overflow-hidden shadow-sm">
+        <div className="group overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
             {/* Thumbnail image */}
             {coverSrc ? (
                 <img
                     src={coverSrc}
                     alt={course.title}
-                    className="h-28 w-full object-cover"
+                    className="h-32 w-full object-cover"
                 />
             ) : (
-                <div className="h-28 bg-gray-200 flex items-center justify-center text-gray-500">
+                <div className="flex h-32 items-center justify-center bg-slate-100 text-slate-400">
                     No Image
                 </div>
             )}
 
             {/* Course info */}
-            <div className="p-4 space-y-2">
+            <div className="space-y-2 p-5">
                 <div className="flex items-start justify-between gap-2">
-                    <div className="font-medium truncate">{course.title}</div>
+                    <div className="font-semibold text-slate-900 line-clamp-1">{course.title}</div>
                     <span className={`text-xs px-2 py-0.5 rounded-full whitespace-nowrap ${statusClass}`}>
                         {statusLabel}
                     </span>
                 </div>
-                <p className="text-sm text-gray-600 line-clamp-2">{course.description}</p>
+                <p className="text-sm text-slate-500 line-clamp-2">{course.description}</p>
 
                 {/* Action buttons */}
                 <div className="flex gap-2 pt-2">
                     <button
                         onClick={() => onEdit(course)}
-                        className="px-3 py-1.5 text-sm border rounded hover:bg-gray-50"
+                        className="inline-flex flex-1 items-center justify-center rounded-full border border-slate-200 px-3 py-1.5 text-sm font-medium text-slate-700 transition hover:bg-slate-50 cursor-pointer"
                     >
                         Edit
                     </button>
                     <button
                         onClick={() => onRemove(course.id)}
-                        className="px-3 py-1.5 text-sm border rounded text-red-600 hover:bg-red-50"
+                        className="inline-flex flex-1 items-center justify-center rounded-full border border-red-200 px-3 py-1.5 text-sm font-medium text-red-600 transition hover:bg-red-50 cursor-pointer"
                     >
                         Remove
                     </button>

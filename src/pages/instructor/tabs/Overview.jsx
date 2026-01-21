@@ -114,18 +114,38 @@ export default function Overview({ course, onSave }) {
     })();
 
     return (
-        <div className="max-w-2xl space-y-4">
-            <FormInput label="Course Title" value={title} onChange={setTitle} />
-            <FormInput label="Description" multiline value={desc} onChange={setDesc} />
-            <RadioGroup label="Visibility" value={status} onChange={setStatus} options={statusOptions} />
+        <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
+            <div className="space-y-4">
+                <FormInput label="Course Title" value={title} onChange={setTitle} />
+                <FormInput label="Description" multiline value={desc} onChange={setDesc} />
+                <RadioGroup label="Visibility" value={status} onChange={setStatus} options={statusOptions} />
 
-            <div className="space-y-2">
-                <div className="text-sm font-medium">Cover Picture</div>
+                {error && (
+                    <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+                        {error}
+                    </div>
+                )}
+                <div className="flex flex-wrap gap-3">
+                    <button
+                        onClick={handleUpdate}
+                        disabled={isSaving}
+                        className="inline-flex items-center rounded-full bg-slate-900 px-5 py-2 text-sm font-semibold text-white shadow-sm hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-70 cursor-pointer"
+                    >
+                        {isSaving ? "Updating..." : "Update course"}
+                    </button>
+                    {selectedFile && (
+                        <span className="text-sm text-slate-500">New image selected</span>
+                    )}
+                </div>
+            </div>
+
+            <div className="space-y-3 rounded-2xl border border-slate-100 bg-slate-50/50 p-4">
+                <div className="text-sm font-medium text-slate-700">Cover picture</div>
                 {previewUrl ? (
-                    <img src={previewUrl} alt={course?.title} className="w-64 h-32 object-cover rounded" />
+                    <img src={previewUrl} alt={course?.title} className="h-40 w-full rounded-xl object-cover" />
                 ) : (
-                    <div className="w-64 h-32 bg-gray-200 flex items-center justify-center text-gray-500">
-                        No Image
+                    <div className="flex h-40 w-full items-center justify-center rounded-xl border border-dashed border-slate-200 text-sm text-slate-400">
+                        No image uploaded
                     </div>
                 )}
                 <FileUpload
@@ -135,17 +155,6 @@ export default function Overview({ course, onSave }) {
                     multiple={false}
                 />
             </div>
-
-            {error && (
-                <div className="bg-red-50 border border-red-200 text-red-700 rounded p-3 text-sm">{error}</div>
-            )}
-            <button
-                onClick={handleUpdate}
-                disabled={isSaving}
-                className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-70 disabled:cursor-not-allowed"
-            >
-                {isSaving ? "Updating..." : "Update Course"}
-            </button>
         </div>
     );
 }

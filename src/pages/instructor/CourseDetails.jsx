@@ -78,30 +78,37 @@ export default function CourseDetails() {
 
     if (loading) {
         return (
-            <div>
+            <div className="space-y-6">
                 <Header
                     title="Course Details"
+                    description="Loading the latest metadata"
                     showBack={true}
                     onBack={() => navigate("/instructor/courses")}
                     actions={null}
                 />
-                <div className="flex items-center justify-center py-12 text-gray-600">Loading course...</div>
+                <section className="rounded-2xl bg-white p-8 shadow-sm ring-1 ring-slate-100">
+                    <div className="flex items-center gap-4 text-slate-600">
+                        <span className="inline-flex h-10 w-10 animate-spin rounded-full border-4 border-slate-200 border-t-slate-900" />
+                        Loading course…
+                    </div>
+                </section>
             </div>
         );
     }
 
     if (error) {
         return (
-            <div>
+            <div className="space-y-6">
                 <Header
                     title="Course Details"
+                    description="Something went wrong"
                     showBack={true}
                     onBack={() => navigate("/instructor/courses")}
                     actions={null}
                 />
-                <div className="max-w-md mx-auto mt-8 bg-red-50 border border-red-200 rounded p-4 text-red-700">
-                    {error}
-                </div>
+                <section className="rounded-2xl bg-white p-8 shadow-sm ring-1 ring-red-100">
+                    <p className="text-red-600">{error}</p>
+                </section>
             </div>
         );
     }
@@ -111,29 +118,37 @@ export default function CourseDetails() {
     }
 
     return (
-        <div>
+        <div className="space-y-6">
             <Header
                 title={course.title || "Course Details"}
+                description="Edit the essentials or dive into content management"
                 showBack={true}
                 onBack={() => navigate("/instructor/courses")}
                 actions={null}
             />
 
             {notification && (
-                <div className="mt-4 max-w-2xl px-4 py-2 bg-green-50 border border-green-200 text-green-700 rounded">
+                <div
+                    role="status"
+                    className="max-w-2xl rounded-full border border-green-200 bg-green-50 px-5 py-2 text-sm text-green-700"
+                >
                     {notification}
                 </div>
             )}
 
-            <Tabs tabs={tabs} active={tab} onChange={setTab} />
-            {tab === "overview" && (
-                <Overview
-                    course={course}
-                    onSave={handleMetadataSave}
-                />
-            )}
-            {tab === "content" && <ContentTab course={course} />}
-            {tab === "learners" && <Learners />}
+            <section className="rounded-2xl bg-white p-0 shadow-sm ring-1 ring-slate-100">
+                <Tabs tabs={tabs} active={tab} onChange={setTab} />
+                <div className="px-6 pb-6 pt-2">
+                    {tab === "overview" && (
+                        <Overview
+                            course={course}
+                            onSave={handleMetadataSave}
+                        />
+                    )}
+                    {tab === "content" && <ContentTab course={course} />}
+                    {tab === "learners" && <Learners />}
+                </div>
+            </section>
         </div>
     );
 }

@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import FormInput from "../../components/instructor/FormInput.jsx";
 import RadioGroup from "../../components/instructor/RadioGroup.jsx";
 import FileUpload from "../../components/instructor/FileUpload.jsx";
+import Header from "../../components/instructor/Header.jsx";
 import { useAuth } from "../../context/AuthContext.jsx";
 import { createCourse } from "../../api/courseService.js";
 
@@ -81,95 +82,83 @@ export default function CreateCourse() {
     };
 
     return (
-        <div>
-            {/* Header with back arrow */}
-            <div className="flex items-center gap-3 mb-6">
-                <button
-                    onClick={() => navigate("/instructor/courses")}
-                    className="text-blue-600 hover:text-blue-800"
-                >
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-6 w-6"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        strokeWidth={2}
-                    >
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-                    </svg>
-                </button>
-                <h1 className="text-2xl font-semibold">Create new course</h1>
-            </div>
+        <div className="space-y-6">
+            <Header
+                title="Create new course"
+                description="Set up the essentials before adding content."
+                showBack
+                onBack={() => navigate("/instructor/courses")}
+            />
 
-            {/* Form */}
-            <div className="max-w-2xl space-y-4">
-                <FormInput
-                    label="Course Title"
-                    placeholder="Programming with Java, etc."
-                    value={title}
-                    onChange={setTitle}
-                />
-                <FormInput
-                    label="Description"
-                    multiline
-                    placeholder="Course description"
-                    value={desc}
-                    onChange={setDesc}
-                />
-                <FileUpload
-                    label="Cover Picture"
-                    onFilesSelected={handleFilesSelected}
-                    accept="image/*"
-                    multiple={false}
-                />
-                {previewUrl ? (
-                    <div className="space-y-2">
-                        <img src={previewUrl} alt="Selected cover" className="w-64 h-32 object-cover rounded" />
-                        {files[0] && (
+            <section className="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-100 sm:p-8">
+                <div className="space-y-5">
+                    <FormInput
+                        label="Course Title"
+                        placeholder="Programming with Java, etc."
+                        value={title}
+                        onChange={setTitle}
+                    />
+                    <FormInput
+                        label="Description"
+                        multiline
+                        placeholder="Course description"
+                        value={desc}
+                        onChange={setDesc}
+                    />
+                    <FileUpload
+                        label="Cover Picture"
+                        onFilesSelected={handleFilesSelected}
+                        accept="image/*"
+                        multiple={false}
+                    />
+                    {previewUrl ? (
+                        <div className="space-y-2">
+                            <img src={previewUrl} alt="Selected cover" className="w-64 h-32 rounded object-cover" />
+                            {files[0] && (
+                                <div className="text-sm text-gray-600">Selected file: {files[0].name}</div>
+                            )}
+                        </div>
+                    ) : (
+                        files[0] && (
                             <div className="text-sm text-gray-600">Selected file: {files[0].name}</div>
-                        )}
+                        )
+                    )}
+                    <RadioGroup
+                        label="Visibility"
+                        value={visibility}
+                        onChange={setVisibility}
+                        options={[
+                            { value: "HIDDEN", label: "Hidden" },
+                            { value: "ACTIVE", label: "Active" },
+                            { value: "INACTIVE", label: "Inactive" },
+                        ]}
+                    />
+                    <div className="rounded-xl border border-dashed border-slate-200 bg-slate-50/70 px-4 py-3 text-sm text-slate-600">
+                        You can add modules and lessons once the course is created.
                     </div>
-                ) : (
-                    files[0] && (
-                        <div className="text-sm text-gray-600">Selected file: {files[0].name}</div>
-                    )
-                )}
-                <RadioGroup
-                    label="Visibility"
-                    value={visibility}
-                    onChange={setVisibility}
-                    options={[
-                        { value: "HIDDEN", label: "Hidden" },
-                        { value: "ACTIVE", label: "Active" },
-                        { value: "INACTIVE", label: "Inactive" },
-                    ]}
-                />
-                <div className="bg-blue-50 border border-blue-200 rounded p-3 text-sm">
-                    Note: You can add modules and lessons to this course after creating it.
-                </div>
-                {submitError && (
-                    <div className="bg-red-50 border border-red-200 text-red-700 rounded p-3 text-sm">
-                        {submitError}
+                    {submitError && (
+                        <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+                            {submitError}
+                        </div>
+                    )}
+                    <div className="flex flex-wrap gap-3 pt-2">
+                        <button
+                            onClick={() => navigate("/instructor/courses")}
+                            className="inline-flex items-center rounded-full border border-slate-200 px-5 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 cursor-pointer"
+                            disabled={isSubmitting}
+                        >
+                            Cancel
+                        </button>
+                        <button
+                            onClick={handleCreate}
+                            className="inline-flex items-center rounded-full bg-slate-900 px-5 py-2 text-sm font-semibold text-white shadow-sm hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-70 cursor-pointer"
+                            disabled={isSubmitting}
+                        >
+                            {isSubmitting ? "Creating..." : "Create course"}
+                        </button>
                     </div>
-                )}
-                <div className="flex gap-3 pt-2">
-                    <button
-                        onClick={() => navigate("/instructor/courses")}
-                        className="px-4 py-2 border rounded hover:bg-gray-50"
-                        disabled={isSubmitting}
-                    >
-                        Cancel
-                    </button>
-                    <button
-                        onClick={handleCreate}
-                        className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-70 disabled:cursor-not-allowed"
-                        disabled={isSubmitting}
-                    >
-                        {isSubmitting ? "Creating..." : "Create"}
-                    </button>
                 </div>
-            </div>
+            </section>
         </div>
     );
 }

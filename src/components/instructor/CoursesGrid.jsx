@@ -1,9 +1,9 @@
 // src/components/instructor/CoursesGrid.jsx
-import CourseCard from './CourseCard.jsx';
+import CourseCard from "./CourseCard.jsx";
 
 export default function CoursesGrid({ courses, onEdit, onRemove }) {
     return (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
             {courses.map((c) => (
                 <CourseCard
                     key={c.id}

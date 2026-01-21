@@ -1,13 +1,17 @@
 // src/components/instructor/Header.jsx
-export default function Header({ title, actions, showBack = false, onBack }) {
+export default function Header({ title, description, actions, showBack = false, onBack }) {
     return (
-        <div className="flex items-center justify-between mb-6">
+        <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
             <div className="flex items-center gap-3">
                 {showBack && (
-                    <button onClick={onBack} className="text-blue-600 hover:text-blue-800">
+                    <button
+                        onClick={onBack}
+                        className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 text-slate-600 transition hover:border-slate-300 hover:bg-white cursor-pointer"
+                        aria-label="Go back"
+                    >
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
-                            className="h-6 w-6"
+                            className="h-5 w-5"
                             fill="none"
                             viewBox="0 0 24 24"
                             stroke="currentColor"
@@ -17,9 +21,12 @@ export default function Header({ title, actions, showBack = false, onBack }) {
                         </svg>
                     </button>
                 )}
-                <h1 className="text-2xl font-semibold">{title}</h1>
+                <div>
+                    <h1 className="text-2xl font-semibold text-slate-900">{title}</h1>
+                    {description && <p className="text-sm text-slate-500">{description}</p>}
+                </div>
             </div>
-            <div className="flex items-center gap-2">{actions}</div>
+            {actions && <div className="flex flex-wrap items-center gap-2">{actions}</div>}
         </div>
     );
 }

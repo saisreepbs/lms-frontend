@@ -1,22 +1,24 @@
 // src/components/instructor/LearnersTable.jsx
 export default function LearnersTable({ learners }) {
     return (
-        <div className="border rounded bg-white overflow-hidden">
-            <div className="px-4 py-3 border-b font-medium">Enrolled Learners</div>
+        <div className="overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-sm">
+            <div className="border-b border-slate-100 px-5 py-4 text-sm font-semibold text-slate-900">
+                Enrolled Learners
+            </div>
             <table className="w-full">
-                <thead className="bg-gray-50 text-sm">
+                <thead className="bg-slate-50 text-xs uppercase tracking-wide text-slate-500">
                     <tr>
-                        <th className="text-left px-4 py-2">Name</th>
-                        <th className="text-left px-4 py-2">Email</th>
-                        <th className="text-left px-4 py-2">Belongs to</th>
+                        <th className="px-5 py-3 text-left font-semibold">Name</th>
+                        <th className="px-5 py-3 text-left font-semibold">Email</th>
+                        <th className="px-5 py-3 text-left font-semibold">Belongs to</th>
                     </tr>
                 </thead>
                 <tbody className="text-sm">
                     {learners.map((l) => (
-                        <tr key={l.email} className="border-t">
-                            <td className="px-4 py-2">{l.name}</td>
-                            <td className="px-4 py-2">{l.email}</td>
-                            <td className="px-4 py-2">{l.belongsTo}</td>
+                        <tr key={l.email} className="border-t border-slate-100">
+                            <td className="px-5 py-3 font-medium text-slate-900">{l.name}</td>
+                            <td className="px-5 py-3 text-slate-600">{l.email}</td>
+                            <td className="px-5 py-3 text-slate-600">{l.belongsTo}</td>
                         </tr>
                     ))}
                 </tbody>
