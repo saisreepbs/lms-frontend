@@ -1,5 +1,5 @@
 // src/pages/instructor/CreateCourse.jsx
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import FormInput from "../../components/instructor/FormInput.jsx";
 import RadioGroup from "../../components/instructor/RadioGroup.jsx";
@@ -14,11 +14,30 @@ export default function CreateCourse() {
     const [desc, setDesc] = useState("");
     const [visibility, setVisibility] = useState("HIDDEN");
     const [files, setFiles] = useState([]);
+    const [previewUrl, setPreviewUrl] = useState(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [submitError, setSubmitError] = useState(null);
 
+    useEffect(() => {
+        return () => {
+            if (previewUrl) {
+                URL.revokeObjectURL(previewUrl);
+            }
+        };
+    }, [previewUrl]);
+
     const handleFilesSelected = (selectedFiles) => {
         setFiles(selectedFiles);
+        if (previewUrl) {
+            URL.revokeObjectURL(previewUrl);
+        }
+        const file = selectedFiles[0];
+        if (file) {
+            const url = URL.createObjectURL(file);
+            setPreviewUrl(url);
+        } else {
+            setPreviewUrl(null);
+        }
     };
 
     const handleCreate = async () => {
@@ -104,8 +123,17 @@ export default function CreateCourse() {
                     accept="image/*"
                     multiple={false}
                 />
-                {files[0] && (
-                    <div className="text-sm text-gray-600">Selected file: {files[0].name}</div>
+                {previewUrl ? (
+                    <div className="space-y-2">
+                        <img src={previewUrl} alt="Selected cover" className="w-64 h-32 object-cover rounded" />
+                        {files[0] && (
+                            <div className="text-sm text-gray-600">Selected file: {files[0].name}</div>
+                        )}
+                    </div>
+                ) : (
+                    files[0] && (
+                        <div className="text-sm text-gray-600">Selected file: {files[0].name}</div>
+                    )
                 )}
                 <RadioGroup
                     label="Visibility"

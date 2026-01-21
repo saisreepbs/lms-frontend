@@ -23,6 +23,16 @@ export const getCoursesByTenant = async (tenantId) => {
 };
 
 /**
+ * Fetch metadata for a single course
+ * @param {string} courseId - Course UUID
+ * @returns {Promise<Object>} Course details
+ */
+export const getCourseById = async (courseId) => {
+  const response = await api.get(`/api/courses/${courseId}`);
+  return response.data;
+};
+
+/**
  * Create a new course
  * @param {string} tenantId - Tenant UUID
  * @param {Object} courseData - Course data (title, description, instructorId, visibility)
@@ -46,6 +56,31 @@ export const createCourse = async (tenantId, courseData, thumbnailFile) => {
     },
   });
   return response.data;
+};
+
+/**
+ * Update course metadata (title, description, status, instructor, thumbnail)
+ * @param {string} courseId - Course UUID
+ * @param {Object} updateData - Partial update data
+ * @param {File|null} thumbnailFile - Optional thumbnail replacement
+ * @returns {Promise<void>}
+ */
+export const updateCourse = async (courseId, updateData, thumbnailFile = null) => {
+  const formData = new FormData();
+  formData.append(
+    "data",
+    new Blob([JSON.stringify(updateData)], { type: "application/json" })
+  );
+
+  if (thumbnailFile) {
+    formData.append("thumbnailFile", thumbnailFile);
+  }
+
+  await api.put(`/api/courses/${courseId}`, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
 };
 
 /**
@@ -104,7 +139,9 @@ export const updateLesson = async (lessonId, lessonData) => {
 
 export default {
   getCoursesByTenant,
+  getCourseById,
   createCourse,
+  updateCourse,
   getCourseModules,
   createModule,
   getModuleLessons,
