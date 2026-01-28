@@ -1,6 +1,5 @@
-// src/components/instructor/CourseCard.jsx
 import { useMemo, useEffect, useState } from "react";
-import api from "../../api/axios";
+import api from "../../api";
 
 const STATUS_STYLES = {
     ACTIVE: "bg-green-50 text-green-700 border border-green-200",

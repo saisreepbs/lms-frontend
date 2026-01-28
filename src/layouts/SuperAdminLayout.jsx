@@ -1,12 +1,10 @@
-// src/layouts/SuperAdminLayout.jsx
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
-import { useLogout, useAuth } from "../context/AuthContext";
+import { useAuth } from "../context/AuthContext";
 
 export default function SuperAdminLayout() {
   const navigate = useNavigate();
   const location = useLocation();
-  const logout = useLogout();
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
 
   const isActive = (path) => location.pathname.startsWith(path);
 
@@ -46,7 +44,7 @@ export default function SuperAdminLayout() {
 
         <div className="p-6">
           <button
-            onClick={logout}
+            onClick={() => { logout(); navigate("/login"); }}
             className="w-full bg-red-500 text-white py-2 rounded-md font-semibold hover:bg-red-600"
           >
             Logout

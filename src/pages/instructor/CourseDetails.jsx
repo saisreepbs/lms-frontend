@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Header from "../../components/instructor/Header.jsx";
 import Tabs from "../../components/instructor/Tabs.jsx";
 import Overview from "./tabs/Overview.jsx";
 import ContentTab from "./tabs/ContentTab.jsx";
 import Learners from "./tabs/Learners.jsx";
-import { getCourseById, updateCourse } from "../../api/courseService.js";
+import { getCourse, updateCourse } from "../../api.js";
 
 export default function CourseDetails() {
     const navigate = useNavigate();
@@ -28,11 +28,10 @@ export default function CourseDetails() {
         setLoading(true);
         setError(null);
         try {
-            const data = await getCourseById(courseId);
+            const data = await getCourse(courseId);
             setCourse(data);
         } catch (err) {
-            const message = err.response?.data?.message || err.response?.data || "Failed to load course.";
-            setError(message);
+            setError(err.response?.data?.message || "Failed to load course");
         } finally {
             setLoading(false);
         }
@@ -59,20 +58,14 @@ export default function CourseDetails() {
     }, []);
 
     const handleMetadataSave = async ({ title, description, status, thumbnailFile }) => {
-        const payload = {
-            title: title?.trim(),
-            description: description?.trim(),
-            status,
-        };
-
+        const payload = { title: title?.trim(), description: description?.trim(), status };
         try {
             await updateCourse(courseId, payload, thumbnailFile || null);
             await fetchCourse();
             showNotification("Course updated successfully.");
             return { success: true };
         } catch (err) {
-            const message = err.response?.data?.message || err.response?.data || "Failed to update course.";
-            return { success: false, error: message };
+            return { success: false, error: err.response?.data?.message || "Failed to update" };
         }
     };
 

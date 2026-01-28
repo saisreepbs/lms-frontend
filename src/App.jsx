@@ -25,6 +25,11 @@ import UserManagement from "./pages/tenant-admin/UserManagement";
 import InstructorDashboard from "./pages/instructor/InstructorDashboard";
 import CreateCourse from "./pages/instructor/CreateCourse";
 import CourseDetails from "./pages/instructor/CourseDetails";
+import Drafts from "./pages/instructor/Drafts";
+import Hidden from "./pages/instructor/Hidden";
+import Enrollments from "./pages/instructor/Enrollments";
+import Stats from "./pages/instructor/Stats";
+import Settings from "./pages/instructor/Settings";
 
 // Learner Pages
 import LearnerCourses from "./pages/learner/Courses";
@@ -96,6 +101,11 @@ export default function App() {
         <Route path="courses" element={<InstructorDashboard />} />
         <Route path="courses/new" element={<CreateCourse />} />
         <Route path="courses/:courseId" element={<CourseDetails />} />
+        <Route path="drafts" element={<Drafts />} />
+        <Route path="hidden" element={<Hidden />} />
+        <Route path="enrollments" element={<Enrollments />} />
+        <Route path="stats" element={<Stats />} />
+        <Route path="settings" element={<Settings />} />
       </Route>
 
       {/* Learner Routes */}

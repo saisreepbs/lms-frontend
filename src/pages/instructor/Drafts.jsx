@@ -5,16 +5,9 @@ import { getCourses } from "../../api";
 import Header from "../../components/instructor/Header.jsx";
 import CoursesGrid from "../../components/instructor/CoursesGrid.jsx";
 
-const SectionShell = ({ children }) => (
-  <section className="rounded-2xl bg-white p-8 shadow-sm ring-1 ring-slate-100">
-    {children}
-  </section>
-);
-
-export default function InstructorDashboard() {
+export default function Drafts() {
   const navigate = useNavigate();
   const { user } = useAuth();
-
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -23,8 +16,8 @@ export default function InstructorDashboard() {
       if (!user?.tenantId) return;
       try {
         const data = await getCourses(user.tenantId);
-        const activeCourses = data.filter(c => c.currentStatus === "ACTIVE" || c.currentStatus === "INACTIVE");
-        setCourses(activeCourses);
+        const drafts = data.filter(c => c.currentStatus === "HIDDEN" || !c.currentStatus);
+        setCourses(drafts);
       } catch (err) {
         console.error("Error:", err);
       } finally {
@@ -34,31 +27,25 @@ export default function InstructorDashboard() {
     fetchCourses();
   }, [user]);
 
-  const handleRemoveCourse = (courseId) => {
-    if (confirm("Delete this course?")) {
-      setCourses((prev) => prev.filter((c) => c.id !== courseId));
-    }
-  };
-
   if (loading) {
     return (
       <div className="space-y-6">
-        <Header title="My Courses" description="Your published courses" />
-        <SectionShell>
+        <Header title="Drafts" description="Courses you're still working on" />
+        <div className="rounded-2xl bg-white p-8">
           <div className="flex items-center gap-4">
             <span className="h-10 w-10 animate-spin rounded-full border-4 border-slate-200 border-t-slate-900" />
-            <p>Loading courses…</p>
+            <p>Loading drafts…</p>
           </div>
-        </SectionShell>
+        </div>
       </div>
     );
   }
 
   return (
     <div className="space-y-6">
-      <Header 
-        title="My Courses" 
-        description="Your published courses"
+      <Header
+        title="Drafts"
+        description="Courses you're still working on"
         actions={
           <button
             onClick={() => navigate("/instructor/courses/new")}
@@ -69,25 +56,18 @@ export default function InstructorDashboard() {
         }
       />
       {courses.length === 0 ? (
-        <SectionShell>
-          <div className="flex flex-col items-center gap-3 py-10 text-center">
-            <h3 className="text-lg font-semibold">No courses yet</h3>
-            <button
-              onClick={() => navigate("/instructor/courses/new")}
-              className="flex items-center gap-2 rounded-full bg-slate-900 px-5 py-2 text-sm font-semibold text-white hover:bg-slate-800"
-            >
-              <span className="text-lg">+</span> Create Course
-            </button>
-          </div>
-        </SectionShell>
+        <div className="rounded-2xl bg-white p-12 text-center">
+          <h3 className="text-lg font-semibold text-slate-900">No drafts</h3>
+          <p className="mt-2 text-sm text-slate-500">Create a new course to get started</p>
+        </div>
       ) : (
-        <SectionShell>
+        <div className="rounded-2xl bg-white p-8">
           <CoursesGrid
             courses={courses}
             onEdit={(course) => navigate(`/instructor/courses/${course.id}`)}
-            onRemove={handleRemoveCourse}
+            onRemove={(id) => setCourses(prev => prev.filter(c => c.id !== id))}
           />
-        </SectionShell>
+        </div>
       )}
     </div>
   );

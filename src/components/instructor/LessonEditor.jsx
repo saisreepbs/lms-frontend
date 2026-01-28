@@ -1,7 +1,6 @@
-// src/components/instructor/LessonEditor.jsx
 import FormInput from "./FormInput.jsx";
 
-export default function LessonEditor({ lesson, onChange, onSave }) {
+export default function LessonEditor({ lesson, onChange }) {
     if (!lesson) {
         return (
             <div className="flex h-full items-center justify-center rounded-2xl border border-dashed border-slate-200 bg-white p-6 text-sm text-slate-500">
@@ -43,14 +42,6 @@ export default function LessonEditor({ lesson, onChange, onSave }) {
                 value={lesson.resource || ""}
                 onChange={(v) => onChange({ ...lesson, resource: v })}
             />
-            <div>
-                <button
-                    onClick={() => onSave(lesson)}
-                    className="inline-flex items-center rounded-full bg-slate-900 px-5 py-2 text-sm font-semibold text-white shadow-sm hover:bg-slate-800 cursor-pointer"
-                >
-                    Save lesson
-                </button>
-            </div>
         </div>
     );
 }

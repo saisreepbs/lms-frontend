@@ -1,12 +1,11 @@
-// src/pages/instructor/CreateCourse.jsx
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import FormInput from "../../components/instructor/FormInput.jsx";
 import RadioGroup from "../../components/instructor/RadioGroup.jsx";
 import FileUpload from "../../components/instructor/FileUpload.jsx";
 import Header from "../../components/instructor/Header.jsx";
 import { useAuth } from "../../context/AuthContext.jsx";
-import { createCourse } from "../../api/courseService.js";
+import { createCourse } from "../../api.js";
 
 export default function CreateCourse() {
     const navigate = useNavigate();
@@ -17,7 +16,7 @@ export default function CreateCourse() {
     const [files, setFiles] = useState([]);
     const [previewUrl, setPreviewUrl] = useState(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [submitError, setSubmitError] = useState(null);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
         return () => {
@@ -29,53 +28,33 @@ export default function CreateCourse() {
 
     const handleFilesSelected = (selectedFiles) => {
         setFiles(selectedFiles);
-        if (previewUrl) {
-            URL.revokeObjectURL(previewUrl);
-        }
-        const file = selectedFiles[0];
-        if (file) {
-            const url = URL.createObjectURL(file);
-            setPreviewUrl(url);
+        if (previewUrl) URL.revokeObjectURL(previewUrl);
+        if (selectedFiles[0]) {
+            setPreviewUrl(URL.createObjectURL(selectedFiles[0]));
         } else {
             setPreviewUrl(null);
         }
     };
 
     const handleCreate = async () => {
-        const trimmedTitle = title.trim();
-        const trimmedDesc = desc.trim();
-
-        if (!trimmedTitle || !trimmedDesc) {
-            setSubmitError("Title and description are required.");
-            return;
-        }
-
-        if (!user?.tenantId || !user?.id) {
-            setSubmitError("Missing instructor context. Please sign in again.");
+        if (!title.trim() || !desc.trim()) {
+            setError("Title and description are required.");
             return;
         }
 
         setIsSubmitting(true);
-        setSubmitError(null);
+        setError(null);
 
         try {
-            await createCourse(
-                user.tenantId,
-                {
-                    title: trimmedTitle,
-                    description: trimmedDesc,
-                    instructorId: user.id,
-                    visibility,
-                },
-                files[0] || null
-            );
+            await createCourse(user.tenantId, {
+                title: title.trim(),
+                description: desc.trim(),
+                instructorId: user.id,
+                visibility,
+            }, files[0] || null);
             navigate("/instructor/courses");
-        } catch (error) {
-            const message =
-                error.response?.data?.message ||
-                error.response?.data ||
-                "Failed to create course. Please try again.";
-            setSubmitError(message);
+        } catch (err) {
+            setError(err.response?.data?.message || "Failed to create course");
         } finally {
             setIsSubmitting(false);
         }
@@ -136,9 +115,9 @@ export default function CreateCourse() {
                     <div className="rounded-xl border border-dashed border-slate-200 bg-slate-50/70 px-4 py-3 text-sm text-slate-600">
                         You can add modules and lessons once the course is created.
                     </div>
-                    {submitError && (
+                    {error && (
                         <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
-                            {submitError}
+                            {error}
                         </div>
                     )}
                     <div className="flex flex-wrap gap-3 pt-2">

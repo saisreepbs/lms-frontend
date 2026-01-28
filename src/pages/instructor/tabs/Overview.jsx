@@ -1,9 +1,7 @@
-// src/pages/instructor/tabs/Overview.jsx
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import FormInput from "../../../components/instructor/FormInput.jsx";
 import RadioGroup from "../../../components/instructor/RadioGroup.jsx";
 import FileUpload from "../../../components/instructor/FileUpload.jsx";
-import api from "../../../api/axios.js";
 
 const STATUS_LABELS = {
     ACTIVE: "Active",
