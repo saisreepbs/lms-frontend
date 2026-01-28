@@ -16,7 +16,7 @@ export default function Drafts() {
       if (!user?.tenantId) return;
       try {
         const data = await getCourses(user.tenantId);
-        const drafts = data.filter(c => c.currentStatus === "HIDDEN" || !c.currentStatus);
+        const drafts = data.filter(c => c.currentStatus === "DRAFT");
         setCourses(drafts);
       } catch (err) {
         console.error("Error:", err);
@@ -29,12 +29,16 @@ export default function Drafts() {
 
   if (loading) {
     return (
-      <div className="space-y-6">
-        <Header title="Drafts" description="Courses you're still working on" />
-        <div className="rounded-2xl bg-white p-8">
-          <div className="flex items-center gap-4">
-            <span className="h-10 w-10 animate-spin rounded-full border-4 border-slate-200 border-t-slate-900" />
-            <p>Loading drafts…</p>
+      <div>
+        <Header title="Drafts" description="Courses that are still in draft" />
+        <div className="card">
+          <div className="card-body">
+            <div className="d-flex align-items-center gap-3">
+              <div className="spinner-border" role="status">
+                <span className="visually-hidden">Loading...</span>
+              </div>
+              <p className="mb-0">Loading draft courses…</p>
+            </div>
           </div>
         </div>
       </div>
@@ -42,32 +46,32 @@ export default function Drafts() {
   }
 
   return (
-    <div className="space-y-6">
+    <div>
       <Header
         title="Drafts"
-        description="Courses you're still working on"
+        description="Courses that are still in draft"
         actions={
           <button
             onClick={() => navigate("/instructor/courses/new")}
-            className="flex items-center gap-2 rounded-full bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800"
+            className="btn btn-dark"
           >
-            <span className="text-lg">+</span> New Course
+            + New Course
           </button>
         }
       />
       {courses.length === 0 ? (
-        <div className="rounded-2xl bg-white p-12 text-center">
-          <h3 className="text-lg font-semibold text-slate-900">No drafts</h3>
-          <p className="mt-2 text-sm text-slate-500">Create a new course to get started</p>
+        <div className="card border-0 shadow-sm">
+          <div className="card-body text-center py-5">
+            <h3 className="h5 mb-2">No draft courses</h3>
+            <p className="text-muted mb-3">All your courses have been published or are in another status</p>
+          </div>
         </div>
       ) : (
-        <div className="rounded-2xl bg-white p-8">
-          <CoursesGrid
-            courses={courses}
-            onEdit={(course) => navigate(`/instructor/courses/${course.id}`)}
-            onRemove={(id) => setCourses(prev => prev.filter(c => c.id !== id))}
-          />
-        </div>
+        <CoursesGrid
+          courses={courses}
+          onEdit={(course) => navigate(`/instructor/courses/${course.id}`)}
+          onRemove={() => {}}
+        />
       )}
     </div>
   );

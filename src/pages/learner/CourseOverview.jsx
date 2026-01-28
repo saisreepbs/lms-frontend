@@ -6,36 +6,46 @@ export default function CourseOverview() {
 
   return (
     <div>
-      <button onClick={() => navigate("/learner/courses")} className="mb-4">
+      <button onClick={() => navigate("/learner/courses")} className="btn btn-link text-decoration-none mb-3 p-0">
         🡸 Back to Courses
       </button>
 
-      <div className="flex border rounded mb-6">
-        <button className="flex-1 py-2 bg-[#9db7e8]">Overview</button>
-        <button
-          onClick={() => navigate(`/learner/courses/${courseId}/content`)}
-          className="flex-1 py-2"
-        >
-          Content
-        </button>
-      </div>
-
-      <div className="border p-6 bg-white flex gap-6">
-        <div className="flex-1">
-          <h2 className="text-xl font-semibold mb-2">Programming with Java</h2>
-          <p className="text-sm mb-2">Author: Dr. Stephen Strange</p>
-          <p className="text-sm mb-4">
-            Programming with Java is a comprehensive course created for beginners and professionals.
-          </p>
+      <ul className="nav nav-tabs mb-4">
+        <li className="nav-item">
+          <button className="nav-link active">Overview</button>
+        </li>
+        <li className="nav-item">
           <button
             onClick={() => navigate(`/learner/courses/${courseId}/content`)}
-            className="px-3 py-1 border rounded"
+            className="nav-link"
           >
-            View Content
+            Content
           </button>
-        </div>
-        <div className="w-64 h-40 border flex items-center justify-center">
-          Cover Image
+        </li>
+      </ul>
+
+      <div className="card">
+        <div className="card-body">
+          <div className="row">
+            <div className="col-md-8">
+              <h2 className="h5 fw-semibold mb-2">Programming with Java</h2>
+              <p className="small mb-2">Author: Dr. Stephen Strange</p>
+              <p className="small mb-3">
+                Programming with Java is a comprehensive course created for beginners and professionals.
+              </p>
+              <button
+                onClick={() => navigate(`/learner/courses/${courseId}/content`)}
+                className="btn btn-outline-secondary btn-sm"
+              >
+                View Content
+              </button>
+            </div>
+            <div className="col-md-4">
+              <div className="bg-light border d-flex align-items-center justify-content-center" style={{ height: "160px" }}>
+                Cover Image
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

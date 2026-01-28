@@ -2,9 +2,9 @@ import { useMemo, useEffect, useState } from "react";
 import api from "../../api";
 
 const STATUS_STYLES = {
-    ACTIVE: "bg-green-50 text-green-700 border border-green-200",
-    INACTIVE: "bg-yellow-50 text-yellow-700 border border-yellow-200",
-    HIDDEN: "bg-gray-100 text-gray-700 border border-gray-200",
+    ACTIVE: "bg-success text-white",
+    INACTIVE: "bg-warning text-dark",
+    HIDDEN: "bg-secondary text-white",
 };
 
 const STATUS_LABELS = {
@@ -82,41 +82,56 @@ export default function CourseCard({ course, onEdit, onRemove }) {
     const statusClass = STATUS_STYLES[normalizedStatus] || STATUS_STYLES.HIDDEN;
 
     return (
-        <div className="group overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
+        <div className="card h-100 border-0 shadow-sm">
             {/* Thumbnail image */}
             {coverSrc ? (
                 <img
                     src={coverSrc}
                     alt={course.title}
-                    className="h-32 w-full object-cover"
+                    className="card-img-top"
+                    style={{ height: "160px", objectFit: "cover" }}
                 />
             ) : (
-                <div className="flex h-32 items-center justify-center bg-slate-100 text-slate-400">
+                <div 
+                    className="d-flex align-items-center justify-content-center bg-secondary bg-opacity-10 text-muted" 
+                    style={{ height: "160px" }}
+                >
                     No Image
                 </div>
             )}
 
             {/* Course info */}
-            <div className="space-y-2 p-5">
-                <div className="flex items-start justify-between gap-2">
-                    <div className="font-semibold text-slate-900 line-clamp-1">{course.title}</div>
-                    <span className={`text-xs px-2 py-0.5 rounded-full whitespace-nowrap ${statusClass}`}>
+            <div className="card-body d-flex flex-column">
+                <div className="d-flex justify-content-between align-items-start gap-2 mb-2">
+                    <h6 className="fw-semibold mb-0 text-truncate flex-grow-1">{course.title}</h6>
+                    <span className={`badge ${statusClass} flex-shrink-0`}>
                         {statusLabel}
                     </span>
                 </div>
-                <p className="text-sm text-slate-500 line-clamp-2">{course.description}</p>
+                <p 
+                    className="text-muted small mb-3 flex-grow-1" 
+                    style={{ 
+                        overflow: "hidden", 
+                        textOverflow: "ellipsis", 
+                        display: "-webkit-box", 
+                        WebkitLineClamp: 2, 
+                        WebkitBoxOrient: "vertical" 
+                    }}
+                >
+                    {course.description || "No description"}
+                </p>
 
                 {/* Action buttons */}
-                <div className="flex gap-2 pt-2">
+                <div className="d-flex gap-2 mt-auto">
                     <button
                         onClick={() => onEdit(course)}
-                        className="inline-flex flex-1 items-center justify-center rounded-full border border-slate-200 px-3 py-1.5 text-sm font-medium text-slate-700 transition hover:bg-slate-50 cursor-pointer"
+                        className="btn btn-outline-dark btn-sm flex-fill"
                     >
                         Edit
                     </button>
                     <button
                         onClick={() => onRemove(course.id)}
-                        className="inline-flex flex-1 items-center justify-center rounded-full border border-red-200 px-3 py-1.5 text-sm font-medium text-red-600 transition hover:bg-red-50 cursor-pointer"
+                        className="btn btn-outline-danger btn-sm flex-fill"
                     >
                         Remove
                     </button>

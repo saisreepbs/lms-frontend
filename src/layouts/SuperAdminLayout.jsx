@@ -9,43 +9,36 @@ export default function SuperAdminLayout() {
   const isActive = (path) => location.pathname.startsWith(path);
 
   return (
-    <div className="w-screen h-screen flex">
+    <div className="d-flex vh-100">
       {/* Sidebar */}
-      <aside
-        className="w-64 h-full flex flex-col justify-between text-white"
-        style={{ backgroundColor: "#434E78" }}
-      >
-        <div className="p-6">
-          <div className="flex items-center text-lg font-semibold mb-8">
-            <div className="w-9 h-9 rounded-full bg-[#f7f8f9] text-[rgb(12,12,12)] flex items-center justify-center mr-3">
+      <aside className="d-flex flex-column justify-content-between bg-dark text-white" style={{ width: "250px" }}>
+        <div className="p-4">
+          <div className="d-flex align-items-center mb-4">
+            <div className="bg-light text-dark rounded-circle d-flex align-items-center justify-content-center me-3" style={{ width: "36px", height: "36px" }}>
               👤
             </div>
             <div>
-              <span>Super Admin</span>
+              <span className="fw-semibold">Super Admin</span>
               {user?.fullName && (
-                <p className="text-sm font-normal text-white/70">{user.fullName}</p>
+                <p className="small text-white-50 mb-0">{user.fullName}</p>
               )}
             </div>
           </div>
 
-          <nav className="space-y-3">
+          <div className="list-group list-group-flush">
             <button
               onClick={() => navigate("/superadmin/tenants")}
-              className={`w-full py-2 rounded-md font-semibold ${
-                isActive("/superadmin/tenants")
-                  ? "bg-white text-[#434E78]"
-                  : "bg-white/20 text-white hover:bg-white/30"
-              }`}
+              className={`list-group-item list-group-item-action ${isActive("/superadmin/tenants") ? "active" : "bg-dark text-white border-0"}`}
             >
               Manage Tenants
             </button>
-          </nav>
+          </div>
         </div>
 
-        <div className="p-6">
+        <div className="p-4">
           <button
             onClick={() => { logout(); navigate("/login"); }}
-            className="w-full bg-red-500 text-white py-2 rounded-md font-semibold hover:bg-red-600"
+            className="btn btn-danger w-100"
           >
             Logout
           </button>
@@ -53,7 +46,7 @@ export default function SuperAdminLayout() {
       </aside>
 
       {/* Main Content */}
-      <div className="flex-1 p-10 overflow-auto" style={{ backgroundColor: "#FCF6D9" }}>
+      <div className="flex-fill p-4 overflow-auto bg-light">
         <Outlet />
       </div>
     </div>

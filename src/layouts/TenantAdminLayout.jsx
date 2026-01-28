@@ -13,58 +13,53 @@ export default function TenantAdminLayout() {
     return location.pathname.startsWith(path);
   };
 
-  const navButton = (path, label) => (
-    <button
-      onClick={() => navigate(path)}
-      className={`w-full py-3 rounded-md text-sm font-medium
-        ${isActive(path) ? "border border-white" : ""}
-      `}
-      style={{
-        backgroundColor: "rgba(0,0,0,0.7)",
-        color: "white",
-      }}
-    >
-      {label}
-    </button>
-  );
-
   return (
-    <div className="flex h-screen">
+    <div className="d-flex vh-100">
       {/* Sidebar */}
-      <div
-        className="w-64 h-screen p-6 space-y-6"
-        style={{ backgroundColor: "#434E78" }}
-      >
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
+      <div className="d-flex flex-column bg-dark text-white p-4" style={{ width: "250px" }}>
+        <div className="d-flex align-items-center gap-3 mb-4">
+          <div className="bg-secondary rounded-circle d-flex align-items-center justify-content-center" style={{ width: "40px", height: "40px" }}>
             👤
           </div>
           <div>
-            <h1 className="text-xl font-semibold text-white">Tenant Admin</h1>
+            <h1 className="h6 mb-0 text-white">Tenant Admin</h1>
             {user?.fullName && (
-              <p className="text-sm text-white/70">{user.fullName}</p>
+              <p className="small text-white-50 mb-0">{user.fullName}</p>
             )}
           </div>
         </div>
 
-        <div className="space-y-4">
-          {navButton("/admin/dashboard", "Dashboard")}
-          {navButton("/admin/organization", "Organization Structure")}
-          {navButton("/admin/users", "User Management")}
-        </div>
-
-        <div className="mt-auto pt-6">
+        <div className="list-group list-group-flush mb-auto">
           <button
-            onClick={() => { logout(); navigate("/login"); }}
-            className="w-full py-3 rounded-md text-sm font-medium bg-red-600/80 text-white hover:bg-red-700"
+            onClick={() => navigate("/admin/dashboard")}
+            className={`list-group-item list-group-item-action ${isActive("/admin/dashboard") ? "active" : "bg-dark text-white border-0"}`}
           >
-            Logout
+            Dashboard
+          </button>
+          <button
+            onClick={() => navigate("/admin/organization")}
+            className={`list-group-item list-group-item-action ${isActive("/admin/organization") ? "active" : "bg-dark text-white border-0"}`}
+          >
+            Organization Structure
+          </button>
+          <button
+            onClick={() => navigate("/admin/users")}
+            className={`list-group-item list-group-item-action ${isActive("/admin/users") ? "active" : "bg-dark text-white border-0"}`}
+          >
+            User Management
           </button>
         </div>
+
+        <button
+          onClick={() => { logout(); navigate("/login"); }}
+          className="btn btn-danger w-100 mt-3"
+        >
+          Logout
+        </button>
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 p-8 overflow-auto bg-[#FCF6D9]">
+      <div className="flex-fill p-4 overflow-auto bg-light">
         <Outlet />
       </div>
     </div>

@@ -71,7 +71,7 @@ export default function CourseDetails() {
 
     if (loading) {
         return (
-            <div className="space-y-6">
+            <div>
                 <Header
                     title="Course Details"
                     description="Loading the latest metadata"
@@ -79,19 +79,21 @@ export default function CourseDetails() {
                     onBack={() => navigate("/instructor/courses")}
                     actions={null}
                 />
-                <section className="rounded-2xl bg-white p-8 shadow-sm ring-1 ring-slate-100">
-                    <div className="flex items-center gap-4 text-slate-600">
-                        <span className="inline-flex h-10 w-10 animate-spin rounded-full border-4 border-slate-200 border-t-slate-900" />
+                <div className="card">
+                    <div className="card-body d-flex align-items-center gap-3">
+                        <div className="spinner-border" role="status">
+                            <span className="visually-hidden">Loading...</span>
+                        </div>
                         Loading course…
                     </div>
-                </section>
+                </div>
             </div>
         );
     }
 
     if (error) {
         return (
-            <div className="space-y-6">
+            <div>
                 <Header
                     title="Course Details"
                     description="Something went wrong"
@@ -99,9 +101,9 @@ export default function CourseDetails() {
                     onBack={() => navigate("/instructor/courses")}
                     actions={null}
                 />
-                <section className="rounded-2xl bg-white p-8 shadow-sm ring-1 ring-red-100">
-                    <p className="text-red-600">{error}</p>
-                </section>
+                <div className="card border-danger">
+                    <div className="card-body text-danger">{error}</div>
+                </div>
             </div>
         );
     }
@@ -111,7 +113,7 @@ export default function CourseDetails() {
     }
 
     return (
-        <div className="space-y-6">
+        <div>
             <Header
                 title={course.title || "Course Details"}
                 description="Edit the essentials or dive into content management"
@@ -121,17 +123,16 @@ export default function CourseDetails() {
             />
 
             {notification && (
-                <div
-                    role="status"
-                    className="max-w-2xl rounded-full border border-green-200 bg-green-50 px-5 py-2 text-sm text-green-700"
-                >
+                <div className="alert alert-success py-2" role="status">
                     {notification}
                 </div>
             )}
 
-            <section className="rounded-2xl bg-white p-0 shadow-sm ring-1 ring-slate-100">
-                <Tabs tabs={tabs} active={tab} onChange={setTab} />
-                <div className="px-6 pb-6 pt-2">
+            <div className="card border-0 shadow-sm">
+                <div className="card-header bg-white border-bottom-0 pt-3 pb-0">
+                    <Tabs tabs={tabs} active={tab} onChange={setTab} />
+                </div>
+                <div className="card-body pt-4">
                     {tab === "overview" && (
                         <Overview
                             course={course}
@@ -141,7 +142,7 @@ export default function CourseDetails() {
                     {tab === "content" && <ContentTab course={course} />}
                     {tab === "learners" && <Learners />}
                 </div>
-            </section>
+            </div>
         </div>
     );
 }

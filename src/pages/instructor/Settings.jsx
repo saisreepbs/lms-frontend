@@ -5,32 +5,32 @@ export default function Settings() {
   const { user } = useAuth();
 
   return (
-    <div className="space-y-6">
+    <div>
       <Header
         title="Settings"
         description="Manage your profile and preferences"
       />
-      <div className="rounded-2xl bg-white p-8">
-        <div className="space-y-6">
-          <div>
-            <h3 className="text-sm font-semibold text-slate-900 mb-3">Profile Information</h3>
-            <div className="space-y-4">
-              <div>
-                <label className="block text-sm text-slate-600 mb-1">Full Name</label>
+      <div className="row">
+        <div className="col-lg-6 col-xl-5">
+          <div className="card">
+            <div className="card-body">
+              <h3 className="h6 mb-3">Profile Information</h3>
+              <div className="mb-3">
+                <label className="form-label">Full Name</label>
                 <input
                   type="text"
                   value={user?.fullName || ""}
                   disabled
-                  className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm bg-slate-50"
+                  className="form-control"
                 />
               </div>
-              <div>
-                <label className="block text-sm text-slate-600 mb-1">Email</label>
+              <div className="mb-3">
+                <label className="form-label">Email</label>
                 <input
                   type="email"
                   value={user?.email || ""}
                   disabled
-                  className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm bg-slate-50"
+                  className="form-control"
                 />
               </div>
             </div>

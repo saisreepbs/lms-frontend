@@ -29,12 +29,16 @@ export default function Hidden() {
 
   if (loading) {
     return (
-      <div className="space-y-6">
+      <div>
         <Header title="Hidden Courses" description="Temporarily unavailable courses" />
-        <div className="rounded-2xl bg-white p-8">
-          <div className="flex items-center gap-4">
-            <span className="h-10 w-10 animate-spin rounded-full border-4 border-slate-200 border-t-slate-900" />
-            <p>Loading hidden courses…</p>
+        <div className="card">
+          <div className="card-body">
+            <div className="d-flex align-items-center gap-3">
+              <div className="spinner-border" role="status">
+                <span className="visually-hidden">Loading...</span>
+              </div>
+              <p className="mb-0">Loading hidden courses…</p>
+            </div>
           </div>
         </div>
       </div>
@@ -42,24 +46,24 @@ export default function Hidden() {
   }
 
   return (
-    <div className="space-y-6">
+    <div>
       <Header
         title="Hidden Courses"
         description="Temporarily unavailable courses"
       />
       {courses.length === 0 ? (
-        <div className="rounded-2xl bg-white p-12 text-center">
-          <h3 className="text-lg font-semibold text-slate-900">No hidden courses</h3>
-          <p className="mt-2 text-sm text-slate-500">All your courses are visible</p>
+        <div className="card border-0 shadow-sm">
+          <div className="card-body text-center py-5">
+            <h3 className="h5 mb-2">No hidden courses</h3>
+            <p className="text-muted mb-0">All your courses are visible</p>
+          </div>
         </div>
       ) : (
-        <div className="rounded-2xl bg-white p-8">
-          <CoursesGrid
-            courses={courses}
-            onEdit={(course) => navigate(`/instructor/courses/${course.id}`)}
-            onRemove={(id) => setCourses(prev => prev.filter(c => c.id !== id))}
-          />
-        </div>
+        <CoursesGrid
+          courses={courses}
+          onEdit={(course) => navigate(`/instructor/courses/${course.id}`)}
+          onRemove={(id) => setCourses(prev => prev.filter(c => c.id !== id))}
+        />
       )}
     </div>
   );

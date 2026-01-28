@@ -34,6 +34,7 @@ export const AuthProvider = ({ children }) => {
         fullName: data.fullName,
         role: data.role,
         tenantId: data.tenantId,
+        tenantName: data.tenantName,
       };
       setUser(userData);
       return { success: true, redirectPath: getDashboardPath(data.role) };

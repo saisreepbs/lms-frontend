@@ -10,64 +10,80 @@ export default function CourseContent() {
     <div>
       <button
         onClick={() => navigate(`/learner/courses/${courseId}`)}
-        className="mb-4"
+        className="btn btn-link text-decoration-none mb-3 p-0"
       >
         🡸 Back to Overview
       </button>
 
-      <div className="flex border rounded mb-6">
-        <button
-          onClick={() => navigate(`/learner/courses/${courseId}`)}
-          className="flex-1 py-2"
-        >
-          Overview
-        </button>
-        <button className="flex-1 py-2 bg-[#9db7e8]">Content</button>
-      </div>
+      <ul className="nav nav-tabs mb-4">
+        <li className="nav-item">
+          <button
+            onClick={() => navigate(`/learner/courses/${courseId}`)}
+            className="nav-link"
+          >
+            Overview
+          </button>
+        </li>
+        <li className="nav-item">
+          <button className="nav-link active">Content</button>
+        </li>
+      </ul>
 
-      <div className="flex gap-6">
+      <div className="row">
         {/* Left modules */}
-        <div className="w-64 border bg-white p-3 h-80 overflow-y-auto">
-          <p className="font-semibold mb-2">Course Content</p>
-          <div className="text-sm">
-            <p className="font-semibold">Module 1</p>
-            <p
-              className="ml-4 cursor-pointer hover:text-blue-600"
-              onClick={() => setActiveLesson("JDK & JVM")}
-            >
-              Lesson 1: JDK and JVM
-            </p>
-            <p
-              className="ml-4 cursor-pointer hover:text-blue-600"
-              onClick={() => setActiveLesson("Variables")}
-            >
-              Lesson 2: Variables
-            </p>
-            <p className="font-semibold mt-2">Module 2</p>
-            <p
-              className="ml-4 cursor-pointer hover:text-blue-600"
-              onClick={() => setActiveLesson("Conditionals")}
-            >
-              Lesson 1: Conditionals
-            </p>
-            <p
-              className="ml-4 cursor-pointer hover:text-blue-600"
-              onClick={() => setActiveLesson("Loops")}
-            >
-              Lesson 2: Loops
-            </p>
+        <div className="col-md-4 col-lg-3">
+          <div className="card" style={{ maxHeight: "320px", overflowY: "auto" }}>
+            <div className="card-body">
+              <p className="fw-semibold mb-2">Course Content</p>
+              <div className="small">
+                <p className="fw-semibold">Module 1</p>
+                <p
+                  className="ms-3 text-decoration-none"
+                  style={{ cursor: "pointer" }}
+                  onClick={() => setActiveLesson("JDK & JVM")}
+                >
+                  Lesson 1: JDK and JVM
+                </p>
+                <p
+                  className="ms-3"
+                  style={{ cursor: "pointer" }}
+                  onClick={() => setActiveLesson("Variables")}
+                >
+                  Lesson 2: Variables
+                </p>
+                <p className="fw-semibold mt-2">Module 2</p>
+                <p
+                  className="ms-3"
+                  style={{ cursor: "pointer" }}
+                  onClick={() => setActiveLesson("Conditionals")}
+                >
+                  Lesson 1: Conditionals
+                </p>
+                <p
+                  className="ms-3"
+                  style={{ cursor: "pointer" }}
+                  onClick={() => setActiveLesson("Loops")}
+                >
+                  Lesson 2: Loops
+                </p>
+              </div>
+            </div>
           </div>
         </div>
 
         {/* Right video */}
-        <div className="flex-1 border bg-white p-4">
-          <h3 className="font-semibold mb-3">Lesson: {activeLesson}</h3>
-          <div className="w-full h-64 bg-gray-200 mb-3 flex items-center justify-center">
-            Video Player Placeholder
+        <div className="col-md-8 col-lg-9">
+          <div className="card">
+            <div className="card-body">
+              <h3 className="h6 fw-semibold mb-3">Lesson: {activeLesson}</h3>
+              <div className="bg-secondary d-flex align-items-center justify-content-center text-white mb-3" style={{ height: "256px" }}>
+                Video Player Placeholder
+              </div>
+              <p className="small">
+                {activeLesson} are fundamental concepts used in programming.
+              </p>
+            </div>
           </div>
-          <p className="text-sm">
-            {activeLesson} are fundamental concepts used in programming.
-          </p>
         </div>
       </div>
     </div>

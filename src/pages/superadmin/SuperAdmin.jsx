@@ -20,10 +20,10 @@ function SuperAdmin() {
         <div>
             {/* DEFAULT VIEW (after login) */}
             {view === "default" && (
-                <div className="flex justify-end">
+                <div className="d-flex justify-content-end">
                     <button
                         onClick={() => navigate("/superadmin/tenants/new")}
-                        className="bg-indigo-600 text-white px-6 py-2 rounded-md font-semibold"
+                        className="btn btn-primary"
                     >
                         + New Tenant
                     </button>

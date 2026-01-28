@@ -64,127 +64,139 @@ export default function AddStructure() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-6">
+      <h1 className="h4 fw-bold mb-4">
         Add Organization Structure
       </h1>
 
       {/* ================= LEVEL BOXES ================= */}
-      <div className="grid grid-cols-3 gap-6">
+      <div className="row g-4">
         {/* ---------- LEVEL 1 : BRANCH ---------- */}
-        <div className="border bg-white p-4">
-          <p className="font-semibold mb-2">Level: Branch</p>
+        <div className="col-md-4">
+          <div className="card">
+            <div className="card-body">
+              <p className="fw-semibold mb-2">Level: Branch</p>
 
-          <input
-            value={branchInput}
-            onChange={(e) => setBranchInput(e.target.value)}
-            placeholder="Branch name"
-            className="border px-2 py-1 w-full mb-2"
-          />
+              <input
+                value={branchInput}
+                onChange={(e) => setBranchInput(e.target.value)}
+                placeholder="Branch name"
+                className="form-control mb-2"
+              />
 
-          <button onClick={addBranch} className="border px-3 py-1 mb-3">
-            + Add Branch
-          </button>
+              <button onClick={addBranch} className="btn btn-outline-secondary btn-sm mb-3">
+                + Add Branch
+              </button>
 
-          <ul className="text-sm space-y-1">
-            {Object.keys(structure).map((b) => (
-              <li key={b}>{b}</li>
-            ))}
-          </ul>
+              <ul className="small list-unstyled">
+                {Object.keys(structure).map((b) => (
+                  <li key={b}>{b}</li>
+                ))}
+              </ul>
+            </div>
+          </div>
         </div>
 
         {/* ---------- LEVEL 2 : SEMESTER ---------- */}
-        <div className="border bg-white p-4">
-          <p className="font-semibold mb-2">Level: Semester</p>
+        <div className="col-md-4">
+          <div className="card">
+            <div className="card-body">
+              <p className="fw-semibold mb-2">Level: Semester</p>
 
-          <select
-            value={selectedBranch}
-            onChange={(e) => setSelectedBranch(e.target.value)}
-            className="border px-2 py-1 w-full mb-2"
-          >
-            <option value="">Select Branch</option>
-            {Object.keys(structure).map((b) => (
-              <option key={b}>{b}</option>
-            ))}
-          </select>
+              <select
+                value={selectedBranch}
+                onChange={(e) => setSelectedBranch(e.target.value)}
+                className="form-select mb-2"
+              >
+                <option value="">Select Branch</option>
+                {Object.keys(structure).map((b) => (
+                  <option key={b}>{b}</option>
+                ))}
+              </select>
 
-          <input
-            value={semesterInput}
-            onChange={(e) => setSemesterInput(e.target.value)}
-            placeholder="Semester name"
-            className="border px-2 py-1 w-full mb-2"
-          />
+              <input
+                value={semesterInput}
+                onChange={(e) => setSemesterInput(e.target.value)}
+                placeholder="Semester name"
+                className="form-control mb-2"
+              />
 
-          <button onClick={addSemester} className="border px-3 py-1 mb-3">
-            + Add Semester
-          </button>
+              <button onClick={addSemester} className="btn btn-outline-secondary btn-sm mb-3">
+                + Add Semester
+              </button>
 
-          <ul className="text-sm space-y-1">
-            {selectedBranch &&
-              Object.keys(structure[selectedBranch] || {}).map((s) => (
-                <li key={s}>{s}</li>
-              ))}
-          </ul>
+              <ul className="small list-unstyled">
+                {selectedBranch &&
+                  Object.keys(structure[selectedBranch] || {}).map((s) => (
+                    <li key={s}>{s}</li>
+                  ))}
+              </ul>
+            </div>
+          </div>
         </div>
 
         {/* ---------- LEVEL 3 : SECTION ---------- */}
-        <div className="border bg-white p-4">
-          <p className="font-semibold mb-2">Level: Section</p>
+        <div className="col-md-4">
+          <div className="card">
+            <div className="card-body">
+              <p className="fw-semibold mb-2">Level: Section</p>
 
-          <select
-            value={selectedBranch}
-            onChange={(e) => setSelectedBranch(e.target.value)}
-            className="border px-2 py-1 w-full mb-2"
-          >
-            <option value="">Select Branch</option>
-            {Object.keys(structure).map((b) => (
-              <option key={b}>{b}</option>
-            ))}
-          </select>
+              <select
+                value={selectedBranch}
+                onChange={(e) => setSelectedBranch(e.target.value)}
+                className="form-select mb-2"
+              >
+                <option value="">Select Branch</option>
+                {Object.keys(structure).map((b) => (
+                  <option key={b}>{b}</option>
+                ))}
+              </select>
 
-          <select
-            value={selectedSemester}
-            onChange={(e) => setSelectedSemester(e.target.value)}
-            className="border px-2 py-1 w-full mb-2"
-          >
-            <option value="">Select Semester</option>
-            {selectedBranch &&
-              Object.keys(structure[selectedBranch] || {}).map((s) => (
-                <option key={s}>{s}</option>
-              ))}
-          </select>
+              <select
+                value={selectedSemester}
+                onChange={(e) => setSelectedSemester(e.target.value)}
+                className="form-select mb-2"
+              >
+                <option value="">Select Semester</option>
+                {selectedBranch &&
+                  Object.keys(structure[selectedBranch] || {}).map((s) => (
+                    <option key={s}>{s}</option>
+                  ))}
+              </select>
 
-          <input
-            value={sectionInput}
-            onChange={(e) => setSectionInput(e.target.value)}
-            placeholder="Section name"
-            className="border px-2 py-1 w-full mb-2"
-          />
+              <input
+                value={sectionInput}
+                onChange={(e) => setSectionInput(e.target.value)}
+                placeholder="Section name"
+                className="form-control mb-2"
+              />
 
-          <button onClick={addSection} className="border px-3 py-1 mb-3">
-            + Add Section
-          </button>
+              <button onClick={addSection} className="btn btn-outline-secondary btn-sm mb-3">
+                + Add Section
+              </button>
 
-          <ul className="text-sm space-y-1">
-            {selectedBranch &&
-              selectedSemester &&
-              (structure[selectedBranch][selectedSemester] || []).map(
-                (sec, i) => <li key={i}>{sec}</li>
-              )}
-          </ul>
+              <ul className="small list-unstyled">
+                {selectedBranch &&
+                  selectedSemester &&
+                  (structure[selectedBranch][selectedSemester] || []).map(
+                    (sec, i) => <li key={i}>{sec}</li>
+                  )}
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
 
       {/* ================= SAVE ================= */}
-      <div className="flex justify-end mt-6 gap-3">
+      <div className="d-flex justify-content-end mt-4 gap-2">
         <button
             onClick={() => navigate("/admin/organization")}
-            className="border px-4 py-2 rounded"
+            className="btn btn-outline-secondary"
           >
             Cancel
           </button>
         <button
           onClick={() => setShowReview(true)}
-          className="border px-4 py-2 rounded"
+          className="btn btn-dark"
         >
           Save Structure
         </button>
@@ -192,44 +204,49 @@ export default function AddStructure() {
 
       {/* ================= REVIEW MODAL ================= */}
       {showReview && (
-        <div className="fixed inset-0 bg-black/30 flex items-center justify-center">
-          <div className="bg-white p-6 w-100 border">
-            <h2 className="font-bold mb-3">Review Structure</h2>
-
-            {Object.entries(structure).map(([b, sems]) => (
-              <div key={b}>
-                <p className="font-semibold">➤ {b}</p>
-                {Object.entries(sems).map(([s, secs]) => (
-                  <div className="ml-4" key={s}>
-                    <p>➤ {s}</p>
-                    {secs.map((sec, i) => (
-                      <p className="ml-4 text-sm" key={i}>
-                        {sec}
-                      </p>
+        <div className="modal d-block" style={{ backgroundColor: "rgba(0,0,0,0.3)" }}>
+          <div className="modal-dialog modal-dialog-centered">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title">Review Structure</h5>
+                <button type="button" className="btn-close" onClick={() => setShowReview(false)}></button>
+              </div>
+              <div className="modal-body">
+                {Object.entries(structure).map(([b, sems]) => (
+                  <div key={b}>
+                    <p className="fw-semibold">➤ {b}</p>
+                    {Object.entries(sems).map(([s, secs]) => (
+                      <div className="ms-3" key={s}>
+                        <p>➤ {s}</p>
+                        {secs.map((sec, i) => (
+                          <p className="ms-3 small" key={i}>
+                            {sec}
+                          </p>
+                        ))}
+                      </div>
                     ))}
                   </div>
                 ))}
               </div>
-            ))}
-
-            <div className="flex justify-end gap-2 mt-4">
-              <button
-                onClick={() => setShowReview(false)}
-                className="border px-3 py-1"
-              >
-                Back
-              </button>
-              <button
-                onClick={() => {
-                  setShowReview(false);
-                  // TODO: Save to API
-                  setConfirmed(true);
-                  navigate("/admin/organization");
-                }}
-                className="border px-3 py-1"
-              >
-                Confirm & Save
-              </button>
+              <div className="modal-footer">
+                <button
+                  onClick={() => setShowReview(false)}
+                  className="btn btn-outline-secondary"
+                >
+                  Back
+                </button>
+                <button
+                  onClick={() => {
+                    setShowReview(false);
+                    // TODO: Save to API
+                    setConfirmed(true);
+                    navigate("/admin/organization");
+                  }}
+                  className="btn btn-dark"
+                >
+                  Confirm & Save
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -237,7 +254,7 @@ export default function AddStructure() {
 
       {/* ================= SUCCESS MESSAGE ================= */}
       {confirmed && (
-        <p className="text-green-600 mt-4 font-semibold">
+        <p className="text-success mt-4 fw-semibold">
           ✅ Organization structure updated successfully
         </p>
       )}

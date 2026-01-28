@@ -4,71 +4,71 @@ function TenantTable({ onNewTenant }) {
     const [openMenu, setOpenMenu] = useState(null);
 
     return (
-        <div className="bg-white p-6 rounded-xl shadow">
-            <div className="flex justify-between items-center mb-6">
-                <h2 className="text-lg font-semibold">Tenants</h2>
+        <div className="card">
+            <div className="card-header d-flex justify-content-between align-items-center">
+                <h2 className="h5 mb-0">Tenants</h2>
 
                 <button
                     onClick={onNewTenant}
-                    className="bg-blue-600 text-black px-4 py-2 rounded-md text-sm font-semibold"
+                    className="btn btn-primary btn-sm"
                 >
                     + New Tenant
                 </button>
             </div>
 
-            <table className="w-full border-collapse text-sm">
-                <thead>
-                    <tr className="bg-gray-100">
-                        <th className="border px-3 py-2 w-12 text-left">id</th>
-                        <th className="border px-3 py-2 w-40 text-left">Name</th>
-                        <th className="border px-3 py-2 w-40 text-left">Admin</th>
-                        <th className="border px-3 py-2 w-32 text-left">Category</th>
-                        <th className="border px-3 py-2 w-36 text-left">Created At</th>
-                        <th className="border px-3 py-2 w-24 text-left">Status</th>
-                        <th className="border px-3 py-2 w-24 text-center">Actions</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    {[1, 2, 3].map((i) => (
-                        <tr key={i} className="hover:bg-gray-50 relative">
-                            <td className="border px-3 py-2">{i}</td>
-                            <td className="border px-3 py-2">Tenant {i}</td>
-                            <td className="border px-3 py-2">Admin {i}</td>
-                            <td className="border px-3 py-2">Corporate</td>
-                            <td className="border px-3 py-2">12 Sep 2025</td>
-                            <td className="border px-3 py-2">Active</td>
-
-                            {/* Actions column */}
-                            <td className="border px-3 py-2 text-center relative">
-                                <button
-                                    onClick={() =>
-                                        setOpenMenu(openMenu === i ? null : i)
-                                    }
-                                    className="text-xl font-bold"
-                                >
-                                    ⋮
-                                </button>
-
-                                {openMenu === i && (
-                                    <div className="absolute right-6 top-10 bg-white border rounded-md shadow-md w-32 z-10">
-                                        <button
-                                            className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100"
-                                        >
-                                            Active
-                                        </button>
-                                        <button
-                                            className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100"
-                                        >
-                                            Inactive
-                                        </button>
-                                    </div>
-                                )}
-                            </td>
+            <div className="table-responsive">
+                <table className="table table-hover mb-0">
+                    <thead className="table-light">
+                        <tr>
+                            <th>id</th>
+                            <th>Name</th>
+                            <th>Admin</th>
+                            <th>Category</th>
+                            <th>Created At</th>
+                            <th>Status</th>
+                            <th className="text-center">Actions</th>
                         </tr>
-                    ))}
-                </tbody>
-            </table>
+                    </thead>
+
+                    <tbody>
+                        {[1, 2, 3].map((i) => (
+                            <tr key={i} className="position-relative">
+                                <td>{i}</td>
+                                <td>Tenant {i}</td>
+                                <td>Admin {i}</td>
+                                <td>Corporate</td>
+                                <td>12 Sep 2025</td>
+                                <td><span className="badge bg-success">Active</span></td>
+
+                                {/* Actions column */}
+                                <td className="text-center position-relative">
+                                    <div className="dropdown">
+                                        <button
+                                            onClick={() =>
+                                                setOpenMenu(openMenu === i ? null : i)
+                                            }
+                                            className="btn btn-link text-dark"
+                                        >
+                                            ⋮
+                                        </button>
+
+                                        {openMenu === i && (
+                                            <div className="dropdown-menu show position-absolute end-0">
+                                                <button className="dropdown-item">
+                                                    Active
+                                                </button>
+                                                <button className="dropdown-item">
+                                                    Inactive
+                                                </button>
+                                            </div>
+                                        )}
+                                    </div>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
         </div>
     );
 }

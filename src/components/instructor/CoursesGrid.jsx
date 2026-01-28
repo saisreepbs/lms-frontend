@@ -3,14 +3,15 @@ import CourseCard from "./CourseCard.jsx";
 
 export default function CoursesGrid({ courses, onEdit, onRemove }) {
     return (
-        <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+        <div className="row g-4">
             {courses.map((c) => (
-                <CourseCard
-                    key={c.id}
-                    course={c}
-                    onEdit={onEdit}
-                    onRemove={onRemove}
-                />
+                <div key={c.id} className="col-sm-6 col-lg-4 col-xl-3">
+                    <CourseCard
+                        course={c}
+                        onEdit={onEdit}
+                        onRemove={onRemove}
+                    />
+                </div>
             ))}
         </div>
     );

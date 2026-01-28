@@ -1,19 +1,22 @@
 // src/components/instructor/RadioGroup.jsx
 export default function RadioGroup({ label, options, value, onChange }) {
     return (
-        <div className="space-y-2">
-            <div className="text-sm font-medium text-slate-700">{label}</div>
-            <div className="flex items-center gap-6">
+        <div className="mb-3">
+            <label className="form-label">{label}</label>
+            <div className="d-flex align-items-center gap-4">
                 {options.map((opt) => (
-                    <label key={opt.value} className="flex items-center gap-2 cursor-pointer">
+                    <div key={opt.value} className="form-check">
                         <input
                             type="radio"
-                            className="accent-slate-900"
+                            className="form-check-input"
+                            id={`radio-${opt.value}`}
                             checked={value === opt.value}
                             onChange={() => onChange(opt.value)}
                         />
-                        <span className="text-sm text-slate-600">{opt.label}</span>
-                    </label>
+                        <label className="form-check-label" htmlFor={`radio-${opt.value}`}>
+                            {opt.label}
+                        </label>
+                    </div>
                 ))}
             </div>
         </div>

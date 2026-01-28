@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "./context/AuthContext";
-import bgImage from "./assets/lms-image.jpeg";
 
 function Login() {
   const navigate = useNavigate();
@@ -30,74 +29,57 @@ function Login() {
   };
 
   return (
-    <div
-      className="w-screen h-screen bg-cover bg-center"
-      style={{ backgroundImage: `url(${bgImage})` }}
-    >
-      <div className="w-full h-full bg-black/40 flex flex-col">
-        <header className="flex justify-end px-12 py-6">
-          <div className="text-right">
-            <h1 className="text-white text-lg font-semibold tracking-wide">
-              LMS
-            </h1>
-            <p className="text-white/80 text-sm">
-              For Corporates, Educators and Training Institutes
-            </p>
-          </div>
-        </header>
+    <div className="vh-100 d-flex align-items-center justify-content-center bg-light">
+      <div className="card shadow" style={{ width: "400px" }}>
+        <div className="card-body p-4">
+          <h2 className="h5 fw-semibold mb-1">Login</h2>
+          <p className="text-muted small mb-4">LMS Platform</p>
 
-        <div className="flex flex-1 items-center justify-end px-16">
-          <form onSubmit={handleLogin} className="bg-white w-96 p-8 rounded-md shadow-lg">
-            <h2 className="text-xl font-semibold text-gray-800 mb-6">
-              Login
-            </h2>
+          {error && (
+            <div className="alert alert-danger py-2 small">{error}</div>
+          )}
 
-            {/* Error Message */}
-            {error && (
-              <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-md">
-                <p className="text-sm text-red-600">{error}</p>
-              </div>
-            )}
-
-            <label className="block text-sm text-gray-600 mb-1">
-              Email
-            </label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full border border-gray-300 rounded-sm px-3 py-2 mb-4 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              placeholder="Enter your email"
-              disabled={loading}
-              required
-            />
-
-            <label className="block text-sm text-gray-600 mb-1">
-              Password
-            </label>
-            <div className="relative mb-4">
+          <form onSubmit={handleLogin}>
+            <div className="mb-3">
+              <label className="form-label small">Email</label>
               <input
-                type={showPassword ? "text" : "password"}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full border border-gray-300 rounded-sm px-3 py-2 pr-10 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                placeholder="Enter your password"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="form-control"
+                placeholder="Enter your email"
                 disabled={loading}
                 required
               />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
-              >
-                {showPassword ? "👁️" : "👁️‍🗨️"}
-              </button>
+            </div>
+
+            <div className="mb-3">
+              <label className="form-label small">Password</label>
+              <div className="position-relative">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="form-control"
+                  placeholder="Enter your password"
+                  disabled={loading}
+                  required
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="btn btn-link position-absolute end-0 top-50 translate-middle-y text-muted"
+                  style={{ textDecoration: "none" }}
+                >
+                  {showPassword ? "👁️" : "👁️‍🗨️"}
+                </button>
+              </div>
             </div>
 
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-indigo-600 hover:bg-indigo-700 disabled:bg-indigo-400 text-white py-3 rounded-lg font-semibold"
+              className="btn btn-dark w-100"
             >
               {loading ? "Logging in..." : "Login"}
             </button>

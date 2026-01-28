@@ -51,151 +51,171 @@ export default function UserManagement() {
   return (
     <div>
       {/* Page Heading */}
-      <h1 className="text-3xl font-bold mb-6">User Management</h1>
+      <h1 className="h3 fw-bold mb-4">User Management</h1>
 
       {/* Actions */}
-      <div className="flex justify-between items-center mb-4">
+      <div className="d-flex justify-content-between align-items-center mb-4">
         <input
           placeholder="Search users"
-          className="border px-3 py-2 w-64"
+          className="form-control"
+          style={{ width: "250px" }}
         />
 
         <button
           onClick={() => setShowModal(true)}
-          className="border px-4 py-2 bg-black text-white rounded"
+          className="btn btn-dark"
         >
           + Add User
         </button>
       </div>
 
       {/* Table */}
-      <div className="bg-white border overflow-x-auto">
-        <table className="w-full border-collapse">
-          <thead>
-            <tr className="bg-gray-100 text-left">
-              <th className="border p-2">Name</th>
-              <th className="border p-2">Email</th>
-              <th className="border p-2">Role</th>
-              <th className="border p-2">Belongs To</th>
-              <th className="border p-2">Status</th>
-              <th className="border p-2">Actions</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {users.length === 0 ? (
+      <div className="card">
+        <div className="table-responsive">
+          <table className="table table-hover mb-0">
+            <thead className="table-light">
               <tr>
-                <td colSpan="6" className="text-center p-4">
-                  No users added
-                </td>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Belongs To</th>
+                <th>Status</th>
+                <th>Actions</th>
               </tr>
-            ) : (
-              users.map((u, i) => (
-                <tr key={i}>
-                  <td className="border p-2">{u.name}</td>
-                  <td className="border p-2">{u.email}</td>
-                  <td className="border p-2">{u.role}</td>
-                  <td className="border p-2">{u.belongsTo}</td>
-                  <td className="border p-2">
-                    <span className="text-green-600 font-semibold">
-                      {u.status}
-                    </span>
+            </thead>
+
+            <tbody>
+              {users.length === 0 ? (
+                <tr>
+                  <td colSpan="6" className="text-center p-4">
+                    No users added
                   </td>
-                  <td className="border p-2 text-center">⋮</td>
                 </tr>
-              ))
-            )}
-          </tbody>
-        </table>
+              ) : (
+                users.map((u, i) => (
+                  <tr key={i}>
+                    <td>{u.name}</td>
+                    <td>{u.email}</td>
+                    <td>{u.role}</td>
+                    <td>{u.belongsTo}</td>
+                    <td>
+                      <span className="badge bg-success">
+                        {u.status}
+                      </span>
+                    </td>
+                    <td className="text-center">⋮</td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
 
       {/* ADD USER MODAL */}
       {showModal && (
-        <div className="fixed inset-0 bg-black/40 flex items-center justify-center">
-          <div className="bg-white w-100 p-6 border">
-            <h2 className="text-xl font-bold mb-4">Add User</h2>
+        <div className="modal d-block" style={{ backgroundColor: "rgba(0,0,0,0.4)" }}>
+          <div className="modal-dialog">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title">Add User</h5>
+                <button type="button" className="btn-close" onClick={() => setShowModal(false)}></button>
+              </div>
+              <div className="modal-body">
+                <div className="mb-3">
+                  <label className="form-label">Name</label>
+                  <input
+                    className="form-control"
+                    value={newUser.name}
+                    onChange={(e) =>
+                      setNewUser({ ...newUser, name: e.target.value })
+                    }
+                  />
+                </div>
 
-            <label className="text-sm font-semibold">Name</label>
-            <input
-              className="border w-full p-2 mb-2"
-              value={newUser.name}
-              onChange={(e) =>
-                setNewUser({ ...newUser, name: e.target.value })
-              }
-            />
+                <div className="mb-3">
+                  <label className="form-label">Email</label>
+                  <input
+                    className="form-control"
+                    value={newUser.email}
+                    onChange={(e) =>
+                      setNewUser({ ...newUser, email: e.target.value })
+                    }
+                  />
+                </div>
 
-            <label className="text-sm font-semibold">Email</label>
-            <input
-              className="border w-full p-2 mb-2"
-              value={newUser.email}
-              onChange={(e) =>
-                setNewUser({ ...newUser, email: e.target.value })
-              }
-            />
+                <div className="mb-3">
+                  <label className="form-label">Role</label>
+                  <select
+                    className="form-select"
+                    value={newUser.role}
+                    onChange={(e) =>
+                      setNewUser({ ...newUser, role: e.target.value })
+                    }
+                  >
+                    <option value="">Select role</option>
+                    <option>Instructor</option>
+                    <option>Learner</option>
+                  </select>
+                </div>
 
-            <label className="text-sm font-semibold">Role</label>
-            <select
-              className="border w-full p-2 mb-2"
-              value={newUser.role}
-              onChange={(e) =>
-                setNewUser({ ...newUser, role: e.target.value })
-              }
-            >
-              <option value="">Select role</option>
-              <option>Instructor</option>
-              <option>Learner</option>
-            </select>
+                <div className="mb-3">
+                  <label className="form-label">Branch</label>
+                  <select
+                    className="form-select"
+                    onChange={(e) =>
+                      setNewUser({ ...newUser, branch: e.target.value })
+                    }
+                  >
+                    <option value="">Select branch</option>
+                    <option>CSE</option>
+                    <option>ECE</option>
+                    <option>MECH</option>
+                  </select>
+                </div>
 
-            <label className="text-sm font-semibold">Branch</label>
-            <select
-              className="border w-full p-2 mb-2"
-              onChange={(e) =>
-                setNewUser({ ...newUser, branch: e.target.value })
-              }
-            >
-              <option value="">Select branch</option>
-              <option>CSE</option>
-              <option>ECE</option>
-              <option>MECH</option>
-            </select>
+                <div className="mb-3">
+                  <label className="form-label">Semester</label>
+                  <select
+                    className="form-select"
+                    onChange={(e) =>
+                      setNewUser({ ...newUser, semester: e.target.value })
+                    }
+                  >
+                    <option value="">Select semester</option>
+                    <option>Semester 1</option>
+                    <option>Semester 2</option>
+                  </select>
+                </div>
 
-            <label className="text-sm font-semibold">Semester</label>
-            <select
-              className="border w-full p-2 mb-2"
-              onChange={(e) =>
-                setNewUser({ ...newUser, semester: e.target.value })
-              }
-            >
-              <option value="">Select semester</option>
-              <option>Semester 1</option>
-              <option>Semester 2</option>
-            </select>
-
-            <label className="text-sm font-semibold">Section</label>
-            <select
-              className="border w-full p-2 mb-4"
-              onChange={(e) =>
-                setNewUser({ ...newUser, section: e.target.value })
-              }
-            >
-              <option value="">Select section</option>
-              <option>A</option>
-              <option>B</option>
-            </select>
-
-            <div className="flex justify-between">
-              <button
-                onClick={() => setShowModal(false)}
-                className="border px-4 py-2"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={addUser}
-                className="border px-4 py-2 bg-black text-white"
-              >
-                Add
-              </button>
+                <div className="mb-3">
+                  <label className="form-label">Section</label>
+                  <select
+                    className="form-select"
+                    onChange={(e) =>
+                      setNewUser({ ...newUser, section: e.target.value })
+                    }
+                  >
+                    <option value="">Select section</option>
+                    <option>A</option>
+                    <option>B</option>
+                  </select>
+                </div>
+              </div>
+              <div className="modal-footer">
+                <button
+                  onClick={() => setShowModal(false)}
+                  className="btn btn-secondary"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={addUser}
+                  className="btn btn-dark"
+                >
+                  Add
+                </button>
+              </div>
             </div>
           </div>
         </div>

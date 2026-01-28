@@ -61,8 +61,8 @@ export default function ContentTab() {
     };
 
     return (
-        <div className="grid gap-6 lg:grid-cols-3">
-            <div className="lg:col-span-1">
+        <div className="row g-4">
+            <div className="col-lg-4 mb-3 mb-lg-0">
                 <LessonsTree
                     modules={modules}
                     activeLessonId={activeLessonId}
@@ -71,8 +71,8 @@ export default function ContentTab() {
                     onAddLesson={addLesson}
                 />
             </div>
-            <div className="lg:col-span-2">
-                <LessonEditor lesson={activeLesson} onChange={updateLesson} onSave={saveLesson} />
+            <div className="col-lg-8">
+                <LessonEditor lesson={activeLesson} onChange={updateLesson} />
             </div>
         </div>
     );

@@ -1,43 +1,46 @@
 function CreateTenantForm({ onBack }) {
   return (
-    <div className="bg-white p-8 rounded-xl shadow max-w-4xl">
-      <p
-        onClick={onBack}
-        className="text-sm mb-6 cursor-pointer text-blue-600 font-medium"
-      >
-        ← Create a new Tenant
-      </p>
-      {/* Tenant Details */}
-      <div className="border p-6 mb-6 rounded-lg">
-        <h3 className="font-semibold mb-4">Tenant Details</h3>
+    <div className="card" style={{ maxWidth: "800px" }}>
+      <div className="card-body">
+        <p
+          onClick={onBack}
+          className="small mb-4 text-primary fw-medium"
+          style={{ cursor: "pointer" }}
+        >
+          ← Create a new Tenant
+        </p>
+        {/* Tenant Details */}
+        <div className="border rounded p-4 mb-4">
+          <h3 className="h6 fw-semibold mb-3">Tenant Details</h3>
 
-        <div className="max-w-xl">
-          <input
-            placeholder="Name"
-            className="w-full border px-4 py-3 mb-4 rounded-md text-sm"
-          />
-          <select className="w-full border px-4 py-3 rounded-md text-sm">
-            <option>Select Category</option>
-            <option>Educators</option>
-            <option>Corporate</option>
-            <option>Training Institutes</option>
-          </select>
+          <div style={{ maxWidth: "500px" }}>
+            <input
+              placeholder="Name"
+              className="form-control mb-3"
+            />
+            <select className="form-select">
+              <option>Select Category</option>
+              <option>Educators</option>
+              <option>Corporate</option>
+              <option>Training Institutes</option>
+            </select>
+          </div>
         </div>
-      </div>
-      {/* Admin Details */}
-      <div className="border p-6 mb-6 rounded-lg">
-        <h3 className="font-semibold mb-4">Admin Details</h3>
+        {/* Admin Details */}
+        <div className="border rounded p-4 mb-4">
+          <h3 className="h6 fw-semibold mb-3">Admin Details</h3>
 
-        <div className="max-w-xl">
-          <input
-            placeholder="Full Name"
-            className="w-full border px-4 py-3 mb-4 rounded-md text-sm"
-          />
+          <div style={{ maxWidth: "500px" }}>
+            <input
+              placeholder="Full Name"
+              className="form-control mb-3"
+            />
 
-          <input
-            placeholder="Email"
-            className="w-full border px-4 py-3 rounded-md text-sm"
-          />
+            <input
+              placeholder="Email"
+              className="form-control"
+            />
+          </div>
         </div>
       </div>
     </div>

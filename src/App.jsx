@@ -25,6 +25,7 @@ import UserManagement from "./pages/tenant-admin/UserManagement";
 import InstructorDashboard from "./pages/instructor/InstructorDashboard";
 import CreateCourse from "./pages/instructor/CreateCourse";
 import CourseDetails from "./pages/instructor/CourseDetails";
+import Inactive from "./pages/instructor/Inactive";
 import Drafts from "./pages/instructor/Drafts";
 import Hidden from "./pages/instructor/Hidden";
 import Enrollments from "./pages/instructor/Enrollments";
@@ -102,6 +103,7 @@ export default function App() {
         <Route path="courses/new" element={<CreateCourse />} />
         <Route path="courses/:courseId" element={<CourseDetails />} />
         <Route path="drafts" element={<Drafts />} />
+        <Route path="inactive" element={<Inactive />} />
         <Route path="hidden" element={<Hidden />} />
         <Route path="enrollments" element={<Enrollments />} />
         <Route path="stats" element={<Stats />} />

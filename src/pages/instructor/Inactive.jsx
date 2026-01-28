@@ -5,18 +5,9 @@ import { getCourses } from "../../api";
 import Header from "../../components/instructor/Header.jsx";
 import CoursesGrid from "../../components/instructor/CoursesGrid.jsx";
 
-const SectionShell = ({ children }) => (
-  <section className="card border-0 shadow-sm mb-4">
-    <div className="card-body">
-      {children}
-    </div>
-  </section>
-);
-
-export default function InstructorDashboard() {
+export default function Inactive() {
   const navigate = useNavigate();
   const { user } = useAuth();
-
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -25,7 +16,8 @@ export default function InstructorDashboard() {
       if (!user?.tenantId) return;
       try {
         const data = await getCourses(user.tenantId);
-        setCourses(data);
+        const inactive = data.filter(c => c.currentStatus === "INACTIVE" || !c.currentStatus);
+        setCourses(inactive);
       } catch (err) {
         console.error("Error:", err);
       } finally {
@@ -35,33 +27,29 @@ export default function InstructorDashboard() {
     fetchCourses();
   }, [user]);
 
-  const handleRemoveCourse = (courseId) => {
-    if (confirm("Delete this course?")) {
-      setCourses((prev) => prev.filter((c) => c.id !== courseId));
-    }
-  };
-
   if (loading) {
     return (
       <div>
-        <Header title="My Courses" description="All your courses" />
-        <SectionShell>
-          <div className="d-flex align-items-center gap-3">
-            <div className="spinner-border" role="status">
-              <span className="visually-hidden">Loading...</span>
+        <Header title="Inactive" description="Courses that are currently inactive" />
+        <div className="card">
+          <div className="card-body">
+            <div className="d-flex align-items-center gap-3">
+              <div className="spinner-border" role="status">
+                <span className="visually-hidden">Loading...</span>
+              </div>
+              <p className="mb-0">Loading inactive courses…</p>
             </div>
-            <p className="mb-0">Loading courses…</p>
           </div>
-        </SectionShell>
+        </div>
       </div>
     );
   }
 
   return (
     <div>
-      <Header 
-        title="My Courses" 
-        description="All your courses"
+      <Header
+        title="Inactive"
+        description="Courses that are currently inactive"
         actions={
           <button
             onClick={() => navigate("/instructor/courses/new")}
@@ -74,21 +62,15 @@ export default function InstructorDashboard() {
       {courses.length === 0 ? (
         <div className="card border-0 shadow-sm">
           <div className="card-body text-center py-5">
-            <h3 className="h5 mb-2">No courses yet</h3>
-            <p className="text-muted mb-3">Create your first course to get started</p>
-            <button
-              onClick={() => navigate("/instructor/courses/new")}
-              className="btn btn-dark"
-            >
-              + Create Course
-            </button>
+            <h3 className="h5 mb-2">No inactive courses</h3>
+            <p className="text-muted mb-0">All your courses are active</p>
           </div>
         </div>
       ) : (
         <CoursesGrid
           courses={courses}
           onEdit={(course) => navigate(`/instructor/courses/${course.id}`)}
-          onRemove={handleRemoveCourse}
+          onRemove={(id) => setCourses(prev => prev.filter(c => c.id !== id))}
         />
       )}
     </div>

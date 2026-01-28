@@ -41,69 +41,73 @@ export default function CreateStructure() {
 
   return (
     <div>
-      {/* ✅ PAGE HEADING (OUTSIDE CONTAINER) */}
-      <h1 className="text-2xl font-bold mb-6">
+      {/* Page Heading */}
+      <h1 className="h4 fw-bold mb-4">
         Create Organization Structure
       </h1>
 
       {/* White Container */}
-      <div className="max-w-md bg-white p-6 rounded-md border">
-        <label className="text-sm font-semibold">Structure Name</label>
-        <input
-          className="border w-full p-2 mb-4"
-          placeholder="Academics"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
-
-        <p className="font-semibold mb-2">Hierarchy Levels</p>
-
-        {levels.map((lvl, i) => (
-          <div key={i} className="border p-2 mb-2">
-            {i + 1}. {lvl}
+      <div className="card" style={{ maxWidth: "450px" }}>
+        <div className="card-body">
+          <div className="mb-3">
+            <label className="form-label">Structure Name</label>
+            <input
+              className="form-control"
+              placeholder="Academics"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
           </div>
-        ))}
 
-        <div className="flex gap-2 mb-4">
-          <input
-            className="border p-2 flex-1"
-            placeholder="Add level"
-            value={levelInput}
-            onChange={(e) => setLevelInput(e.target.value)}
-          />
-          <button
-            type="button"
-            onClick={addLevel}
-            className="border px-3 rounded"
-          >
-            Add
-          </button>
-        </div>
+          <p className="fw-semibold mb-2">Hierarchy Levels</p>
 
-        <p className="text-xs bg-yellow-200 p-2 my-4 rounded">
-          Note: Hierarchy levels cannot be changed after creation.
-        </p>
+          {levels.map((lvl, i) => (
+            <div key={i} className="border rounded p-2 mb-2">
+              {i + 1}. {lvl}
+            </div>
+          ))}
 
-        {message && (
-          <p className="bg-green-100 text-green-700 p-2 mb-3 rounded text-sm">
-            {message}
-          </p>
-        )}
+          <div className="d-flex gap-2 mb-3">
+            <input
+              className="form-control"
+              placeholder="Add level"
+              value={levelInput}
+              onChange={(e) => setLevelInput(e.target.value)}
+            />
+            <button
+              type="button"
+              onClick={addLevel}
+              className="btn btn-outline-secondary"
+            >
+              Add
+            </button>
+          </div>
 
-        <div className="flex justify-between">
-          <button
-            onClick={() => navigate("/admin/organization")}
-            className="border px-4 py-2 rounded"
-          >
-            Cancel
-          </button>
+          <div className="alert alert-warning small mb-3">
+            Note: Hierarchy levels cannot be changed after creation.
+          </div>
 
-          <button
-            onClick={handleCreate}
-            className="border px-4 py-2 rounded bg-black text-white"
-          >
-            Create
-          </button>
+          {message && (
+            <div className="alert alert-success small mb-3">
+              {message}
+            </div>
+          )}
+
+          <div className="d-flex justify-content-between">
+            <button
+              onClick={() => navigate("/admin/organization")}
+              className="btn btn-outline-secondary"
+            >
+              Cancel
+            </button>
+
+            <button
+              onClick={handleCreate}
+              className="btn btn-dark"
+            >
+              Create
+            </button>
+          </div>
         </div>
       </div>
     </div>

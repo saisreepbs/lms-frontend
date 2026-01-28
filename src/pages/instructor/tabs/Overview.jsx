@@ -2,14 +2,14 @@ import { useState, useEffect } from "react";
 import FormInput from "../../../components/instructor/FormInput.jsx";
 import RadioGroup from "../../../components/instructor/RadioGroup.jsx";
 import FileUpload from "../../../components/instructor/FileUpload.jsx";
+import api from "../../../api";
 
 const STATUS_LABELS = {
+    DRAFT: "Draft",
     ACTIVE: "Active",
     INACTIVE: "Inactive",
     HIDDEN: "Hidden",
 };
-
-const STATUS_ORDER = ["ACTIVE", "INACTIVE", "HIDDEN"];
 
 export default function Overview({ course, onSave }) {
     const [title, setTitle] = useState(course?.title || "");
@@ -102,56 +102,58 @@ export default function Overview({ course, onSave }) {
     };
 
     const statusOptions = (() => {
-        if (course?.statusOptions) {
-            const available = STATUS_ORDER.filter((key) => key in course.statusOptions);
-            if (available.length) {
-                return available.map((key) => ({ value: key, label: STATUS_LABELS[key] || key }));
-            }
+        if (course?.statusOptions && Object.keys(course.statusOptions).length > 0) {
+            return Object.keys(course.statusOptions)
+                .map(key => ({ value: key, label: STATUS_LABELS[key] || key }));
         }
-        return STATUS_ORDER.map((key) => ({ value: key, label: STATUS_LABELS[key] }));
+        return [];
     })();
 
     return (
-        <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
-            <div className="space-y-4">
+        <div className="row g-4">
+            <div className="col-lg-7">
                 <FormInput label="Course Title" value={title} onChange={setTitle} />
                 <FormInput label="Description" multiline value={desc} onChange={setDesc} />
                 <RadioGroup label="Visibility" value={status} onChange={setStatus} options={statusOptions} />
 
                 {error && (
-                    <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+                    <div className="alert alert-danger py-2">
                         {error}
                     </div>
                 )}
-                <div className="flex flex-wrap gap-3">
+                <div className="d-flex flex-wrap gap-2 align-items-center">
                     <button
                         onClick={handleUpdate}
                         disabled={isSaving}
-                        className="inline-flex items-center rounded-full bg-slate-900 px-5 py-2 text-sm font-semibold text-white shadow-sm hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-70 cursor-pointer"
+                        className="btn btn-dark"
                     >
                         {isSaving ? "Updating..." : "Update course"}
                     </button>
                     {selectedFile && (
-                        <span className="text-sm text-slate-500">New image selected</span>
+                        <span className="text-muted small">New image selected</span>
                     )}
                 </div>
             </div>
 
-            <div className="space-y-3 rounded-2xl border border-slate-100 bg-slate-50/50 p-4">
-                <div className="text-sm font-medium text-slate-700">Cover picture</div>
-                {previewUrl ? (
-                    <img src={previewUrl} alt={course?.title} className="h-40 w-full rounded-xl object-cover" />
-                ) : (
-                    <div className="flex h-40 w-full items-center justify-center rounded-xl border border-dashed border-slate-200 text-sm text-slate-400">
-                        No image uploaded
+            <div className="col-lg-5">
+                <div className="card border-0 shadow-sm h-100">
+                    <div className="card-body">
+                        <h6 className="fw-semibold mb-3">Cover picture</h6>
+                        {previewUrl ? (
+                            <img src={previewUrl} alt={course?.title} className="img-fluid rounded mb-3" style={{ height: "180px", width: "100%", objectFit: "cover" }} />
+                        ) : (
+                            <div className="d-flex align-items-center justify-content-center border border-2 border-dashed rounded bg-light text-muted mb-3" style={{ height: "180px" }}>
+                                No image uploaded
+                            </div>
+                        )}
+                        <FileUpload
+                            label="Replace Cover"
+                            onFilesSelected={handleFilesSelected}
+                            accept="image/*"
+                            multiple={false}
+                        />
                     </div>
-                )}
-                <FileUpload
-                    label="Replace Cover"
-                    onFilesSelected={handleFilesSelected}
-                    accept="image/*"
-                    multiple={false}
-                />
+                </div>
             </div>
         </div>
     );

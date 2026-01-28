@@ -11,16 +11,17 @@ function TreeNode({ node, depth = 0 }) {
     <div style={{ marginLeft: depth * 16 }}>
       {/* Node Row */}
       <div
-        className="flex items-center gap-2 text-sm cursor-pointer select-none py-1"
+        className="d-flex align-items-center gap-2 small py-1"
+        style={{ cursor: "pointer" }}
         onClick={() => hasChildren && setOpen(!open)}
       >
         {/* Expand / Collapse Arrow */}
         {hasChildren ? (
-          <span className="w-4">
+          <span style={{ width: "16px" }}>
             {open ? "▼" : "▶"}
           </span>
         ) : (
-          <span className="w-4" />
+          <span style={{ width: "16px" }} />
         )}
 
         <span>{node.name}</span>
@@ -53,13 +54,13 @@ export default function OrgStructure() {
   return (
     <div>
       {/* Page Heading */}
-      <h1 className="text-3xl font-bold mb-6">
+      <h1 className="h3 fw-bold mb-4">
         Organization Structure
       </h1>
 
       {/* Top Controls */}
-      <div className="flex justify-between items-center mb-6">
-        <select className="border px-4 py-2 rounded-md bg-white">
+      <div className="d-flex justify-content-between align-items-center mb-4">
+        <select className="form-select" style={{ width: "auto" }}>
           <option>
             {structure?.name || "Select Structure"}
           </option>
@@ -68,17 +69,17 @@ export default function OrgStructure() {
           <option>Clubs</option>
         </select>
 
-        <div className="flex gap-3">
+        <div className="d-flex gap-2">
           <button
             onClick={() => navigate("/admin/organization/create")}
-            className="border px-4 py-2 rounded-md bg-white"
+            className="btn btn-outline-secondary"
           >
             Create
           </button>
 
           <button
             onClick={() => navigate("/admin/organization/update")}
-            className="border px-4 py-2 rounded-md bg-white"
+            className="btn btn-outline-secondary"
           >
             Update
           </button>
@@ -86,30 +87,38 @@ export default function OrgStructure() {
       </div>
 
       {/* Panels */}
-      <div className="grid grid-cols-2 gap-6">
+      <div className="row">
         {/* Tree Panel */}
-        <div className="border bg-white p-4 h-105 overflow-auto">
-          <p className="text-xl font-semibold mb-4">
-            Tree Panel
-          </p>
+        <div className="col-md-6 mb-3">
+          <div className="card" style={{ height: "420px", overflowY: "auto" }}>
+            <div className="card-body">
+              <p className="h5 fw-semibold mb-3">
+                Tree Panel
+              </p>
 
-          {!structure ? (
-            <p className="text-sm text-gray-400">
-              No structure created yet
-            </p>
-          ) : (
-            <TreeNode node={structure} />
-          )}
+              {!structure ? (
+                <p className="small text-muted">
+                  No structure created yet
+                </p>
+              ) : (
+                <TreeNode node={structure} />
+              )}
+            </div>
+          </div>
         </div>
 
         {/* Details Panel */}
-        <div className="border bg-white p-4">
-          <p className="text-xl font-semibold mb-4">
-            Details Panel
-          </p>
-          <p className="text-sm text-gray-400">
-            Select a node to view details
-          </p>
+        <div className="col-md-6">
+          <div className="card">
+            <div className="card-body">
+              <p className="h5 fw-semibold mb-3">
+                Details Panel
+              </p>
+              <p className="small text-muted">
+                Select a node to view details
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
