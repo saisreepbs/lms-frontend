@@ -115,6 +115,10 @@ export const getCourse = async (courseId) => {
   return data;
 };
 
+export const deleteCourse = async (courseId) => {
+  await api.delete(`/api/courses/${courseId}`);
+};
+
 export const createCourse = async (tenantId, courseData, thumbnailFile) => {
   const formData = new FormData();
   formData.append("tenantId", tenantId);

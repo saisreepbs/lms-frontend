@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
-import { getCourses } from "../../api";
+import { getCourses, deleteCourse } from "../../api";
 import Header from "../../components/instructor/Header.jsx";
 import CoursesGrid from "../../components/instructor/CoursesGrid.jsx";
+import ConfirmDialog from "../../components/instructor/ConfirmDialog.jsx";
 
 export default function InstructorDashboard() {
   const navigate = useNavigate();
@@ -11,6 +12,7 @@ export default function InstructorDashboard() {
 
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [deleteTarget, setDeleteTarget] = useState(null);
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -28,8 +30,18 @@ export default function InstructorDashboard() {
   }, [user]);
 
   const handleRemoveCourse = (courseId) => {
-    if (confirm("Delete this course?")) {
-      setCourses((prev) => prev.filter((c) => c.id !== courseId));
+    setDeleteTarget(courseId);
+  };
+
+  const confirmDelete = async () => {
+    if (!deleteTarget) return;
+    try {
+      await deleteCourse(deleteTarget);
+      setCourses((prev) => prev.filter((c) => c.id !== deleteTarget));
+    } catch (err) {
+      console.error("Failed to delete course:", err);
+    } finally {
+      setDeleteTarget(null);
     }
   };
 
@@ -83,6 +95,17 @@ export default function InstructorDashboard() {
           onRemove={handleRemoveCourse}
         />
       )}
+
+      <ConfirmDialog
+        isOpen={!!deleteTarget}
+        title="Delete Course"
+        message="Are you sure you want to delete this course? This action cannot be undone."
+        confirmText="Delete"
+        cancelText="Cancel"
+        onConfirm={confirmDelete}
+        onCancel={() => setDeleteTarget(null)}
+        variant="danger"
+      />
     </div>
   );
 }

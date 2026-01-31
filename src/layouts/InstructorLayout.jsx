@@ -98,6 +98,16 @@ export default function InstructorLayout() {
   const { user, logout } = useAuth();
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
+  // Helper function to convert string to title case
+  const toTitleCase = (str) => {
+    if (!str) return str;
+    return str
+      .toLowerCase()
+      .split(' ')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
+  };
+
   const isActive = (path) => {
     if (path === "/instructor/courses") {
       return location.pathname === "/instructor" || 
@@ -117,7 +127,7 @@ export default function InstructorLayout() {
         <div className="sidebar-header">
           {!sidebarCollapsed && (
             <>
-              <div className="sidebar-header-title">{user?.fullName || "Welcome"}</div>
+              <div className="sidebar-header-title">{toTitleCase(user?.fullName) || "Welcome"}</div>
               <div className="sidebar-header-subtitle">{user?.tenantName || "LMS Platform"}</div>
             </>
           )}
