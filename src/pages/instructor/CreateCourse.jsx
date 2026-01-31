@@ -75,14 +75,14 @@ export default function CreateCourse() {
     return (
         <div>
             <Header
-                title="Create new course"
+                title="Create New Course"
                 description="Set up the essentials before adding content."
                 showBack
                 onBack={() => navigate("/instructor/courses")}
             />
 
-            <div className="card">
-                <div className="card-body">
+            <div className="card-enterprise">
+                <div className="card-enterprise-body">
                     <FormInput
                         label="Course Title"
                         placeholder="Programming with Java, etc."
@@ -120,28 +120,28 @@ export default function CreateCourse() {
                         onChange={setVisibility}
                         options={STATUS_OPTIONS}
                     />
-                    <div className="alert alert-light border-dashed mb-3">
+                    <div className="alert-enterprise alert-enterprise-light">
                         You can add modules and lessons once the course is created.
                     </div>
                     {error && (
-                        <div className="alert alert-danger">
+                        <div className="alert-enterprise alert-enterprise-danger">
                             {error}
                         </div>
                     )}
                     <div className="d-flex flex-wrap gap-2 mt-3">
                         <button
                             onClick={() => navigate("/instructor/courses")}
-                            className="btn btn-outline-secondary"
+                            className="btn-enterprise btn-enterprise-secondary"
                             disabled={isSubmitting}
                         >
                             Cancel
                         </button>
                         <button
                             onClick={handleCreate}
-                            className="btn btn-dark"
+                            className="btn-enterprise btn-enterprise-dark"
                             disabled={isSubmitting}
                         >
-                            {isSubmitting ? "Creating..." : "Create course"}
+                            {isSubmitting ? "Creating..." : "Create Course"}
                         </button>
                     </div>
                 </div>

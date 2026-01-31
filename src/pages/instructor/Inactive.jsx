@@ -31,13 +31,11 @@ export default function Inactive() {
     return (
       <div>
         <Header title="Inactive" description="Courses that are currently inactive" />
-        <div className="card">
-          <div className="card-body">
-            <div className="d-flex align-items-center gap-3">
-              <div className="spinner-border" role="status">
-                <span className="visually-hidden">Loading...</span>
-              </div>
-              <p className="mb-0">Loading inactive courses…</p>
+        <div className="card-enterprise">
+          <div className="card-enterprise-body">
+            <div className="loading-enterprise">
+              <div className="spinner-enterprise"></div>
+              <span>Loading inactive courses…</span>
             </div>
           </div>
         </div>
@@ -53,17 +51,17 @@ export default function Inactive() {
         actions={
           <button
             onClick={() => navigate("/instructor/courses/new")}
-            className="btn btn-dark"
+            className="btn-enterprise btn-enterprise-dark"
           >
             + New Course
           </button>
         }
       />
       {courses.length === 0 ? (
-        <div className="card border-0 shadow-sm">
-          <div className="card-body text-center py-5">
-            <h3 className="h5 mb-2">No inactive courses</h3>
-            <p className="text-muted mb-0">All your courses are active</p>
+        <div className="card-enterprise">
+          <div className="card-enterprise-body empty-state-enterprise">
+            <h3>No inactive courses</h3>
+            <p>All your courses are active</p>
           </div>
         </div>
       ) : (

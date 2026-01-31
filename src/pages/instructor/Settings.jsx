@@ -12,25 +12,27 @@ export default function Settings() {
       />
       <div className="row">
         <div className="col-lg-6 col-xl-5">
-          <div className="card">
-            <div className="card-body">
-              <h3 className="h6 mb-3">Profile Information</h3>
-              <div className="mb-3">
-                <label className="form-label">Full Name</label>
+          <div className="card-enterprise">
+            <div className="card-enterprise-header">
+              <h3>Profile Information</h3>
+            </div>
+            <div className="card-enterprise-body">
+              <div className="form-group-enterprise">
+                <label className="form-label-enterprise">Full Name</label>
                 <input
                   type="text"
                   value={user?.fullName || ""}
                   disabled
-                  className="form-control"
+                  className="form-control-enterprise"
                 />
               </div>
-              <div className="mb-3">
-                <label className="form-label">Email</label>
+              <div className="form-group-enterprise">
+                <label className="form-label-enterprise">Email</label>
                 <input
                   type="email"
                   value={user?.email || ""}
                   disabled
-                  className="form-control"
+                  className="form-control-enterprise"
                 />
               </div>
             </div>

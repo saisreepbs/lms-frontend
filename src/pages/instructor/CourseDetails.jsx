@@ -79,12 +79,12 @@ export default function CourseDetails() {
                     onBack={() => navigate("/instructor/courses")}
                     actions={null}
                 />
-                <div className="card">
-                    <div className="card-body d-flex align-items-center gap-3">
-                        <div className="spinner-border" role="status">
-                            <span className="visually-hidden">Loading...</span>
+                <div className="card-enterprise">
+                    <div className="card-enterprise-body">
+                        <div className="loading-enterprise">
+                            <div className="spinner-enterprise"></div>
+                            <span>Loading course…</span>
                         </div>
-                        Loading course…
                     </div>
                 </div>
             </div>
@@ -101,8 +101,10 @@ export default function CourseDetails() {
                     onBack={() => navigate("/instructor/courses")}
                     actions={null}
                 />
-                <div className="card border-danger">
-                    <div className="card-body text-danger">{error}</div>
+                <div className="card-enterprise">
+                    <div className="card-enterprise-body">
+                        <div className="alert-enterprise alert-enterprise-danger">{error}</div>
+                    </div>
                 </div>
             </div>
         );
@@ -123,16 +125,14 @@ export default function CourseDetails() {
             />
 
             {notification && (
-                <div className="alert alert-success py-2" role="status">
+                <div className="notification-enterprise" role="status">
                     {notification}
                 </div>
             )}
 
-            <div className="card border-0 shadow-sm">
-                <div className="card-header bg-white border-bottom-0 pt-3 pb-0">
-                    <Tabs tabs={tabs} active={tab} onChange={setTab} />
-                </div>
-                <div className="card-body pt-4">
+            <div className="card-enterprise">
+                <Tabs tabs={tabs} active={tab} onChange={setTab} />
+                <div className="card-enterprise-body">
                     {tab === "overview" && (
                         <Overview
                             course={course}

@@ -31,13 +31,11 @@ export default function Hidden() {
     return (
       <div>
         <Header title="Hidden Courses" description="Temporarily unavailable courses" />
-        <div className="card">
-          <div className="card-body">
-            <div className="d-flex align-items-center gap-3">
-              <div className="spinner-border" role="status">
-                <span className="visually-hidden">Loading...</span>
-              </div>
-              <p className="mb-0">Loading hidden courses…</p>
+        <div className="card-enterprise">
+          <div className="card-enterprise-body">
+            <div className="loading-enterprise">
+              <div className="spinner-enterprise"></div>
+              <span>Loading hidden courses…</span>
             </div>
           </div>
         </div>
@@ -52,10 +50,10 @@ export default function Hidden() {
         description="Temporarily unavailable courses"
       />
       {courses.length === 0 ? (
-        <div className="card border-0 shadow-sm">
-          <div className="card-body text-center py-5">
-            <h3 className="h5 mb-2">No hidden courses</h3>
-            <p className="text-muted mb-0">All your courses are visible</p>
+        <div className="card-enterprise">
+          <div className="card-enterprise-body empty-state-enterprise">
+            <h3>No hidden courses</h3>
+            <p>All your courses are visible</p>
           </div>
         </div>
       ) : (

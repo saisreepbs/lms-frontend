@@ -31,13 +31,11 @@ export default function Drafts() {
     return (
       <div>
         <Header title="Drafts" description="Courses that are still in draft" />
-        <div className="card">
-          <div className="card-body">
-            <div className="d-flex align-items-center gap-3">
-              <div className="spinner-border" role="status">
-                <span className="visually-hidden">Loading...</span>
-              </div>
-              <p className="mb-0">Loading draft courses…</p>
+        <div className="card-enterprise">
+          <div className="card-enterprise-body">
+            <div className="loading-enterprise">
+              <div className="spinner-enterprise"></div>
+              <span>Loading draft courses…</span>
             </div>
           </div>
         </div>
@@ -53,17 +51,17 @@ export default function Drafts() {
         actions={
           <button
             onClick={() => navigate("/instructor/courses/new")}
-            className="btn btn-dark"
+            className="btn-enterprise btn-enterprise-dark"
           >
             + New Course
           </button>
         }
       />
       {courses.length === 0 ? (
-        <div className="card border-0 shadow-sm">
-          <div className="card-body text-center py-5">
-            <h3 className="h5 mb-2">No draft courses</h3>
-            <p className="text-muted mb-3">All your courses have been published or are in another status</p>
+        <div className="card-enterprise">
+          <div className="card-enterprise-body empty-state-enterprise">
+            <h3>No draft courses</h3>
+            <p>All your courses have been published or are in another status</p>
           </div>
         </div>
       ) : (

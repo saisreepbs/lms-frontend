@@ -5,14 +5,6 @@ import { getCourses } from "../../api";
 import Header from "../../components/instructor/Header.jsx";
 import CoursesGrid from "../../components/instructor/CoursesGrid.jsx";
 
-const SectionShell = ({ children }) => (
-  <section className="card border-0 shadow-sm mb-4">
-    <div className="card-body">
-      {children}
-    </div>
-  </section>
-);
-
 export default function InstructorDashboard() {
   const navigate = useNavigate();
   const { user } = useAuth();
@@ -45,14 +37,14 @@ export default function InstructorDashboard() {
     return (
       <div>
         <Header title="My Courses" description="All your courses" />
-        <SectionShell>
-          <div className="d-flex align-items-center gap-3">
-            <div className="spinner-border" role="status">
-              <span className="visually-hidden">Loading...</span>
+        <div className="card-enterprise">
+          <div className="card-enterprise-body">
+            <div className="loading-enterprise">
+              <div className="spinner-enterprise"></div>
+              <span>Loading courses…</span>
             </div>
-            <p className="mb-0">Loading courses…</p>
           </div>
-        </SectionShell>
+        </div>
       </div>
     );
   }
@@ -65,20 +57,20 @@ export default function InstructorDashboard() {
         actions={
           <button
             onClick={() => navigate("/instructor/courses/new")}
-            className="btn btn-dark"
+            className="btn-enterprise btn-enterprise-dark"
           >
             + New Course
           </button>
         }
       />
       {courses.length === 0 ? (
-        <div className="card border-0 shadow-sm">
-          <div className="card-body text-center py-5">
-            <h3 className="h5 mb-2">No courses yet</h3>
-            <p className="text-muted mb-3">Create your first course to get started</p>
+        <div className="card-enterprise">
+          <div className="card-enterprise-body empty-state-enterprise">
+            <h3>No courses yet</h3>
+            <p>Create your first course to get started</p>
             <button
               onClick={() => navigate("/instructor/courses/new")}
-              className="btn btn-dark"
+              className="btn-enterprise btn-enterprise-dark"
             >
               + Create Course
             </button>

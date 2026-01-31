@@ -1,25 +1,25 @@
 // src/components/instructor/LearnersTable.jsx
 export default function LearnersTable({ learners }) {
     return (
-        <div className="card border-0 shadow-sm">
-            <div className="card-header bg-white fw-semibold border-bottom">
-                Enrolled Learners
+        <div className="card-enterprise">
+            <div className="card-enterprise-header">
+                <h3>Enrolled Learners</h3>
             </div>
-            <div className="table-responsive">
-                <table className="table table-hover mb-0">
+            <div style={{ overflowX: "auto" }}>
+                <table style={{ width: "100%", borderCollapse: "collapse" }}>
                     <thead>
-                        <tr className="border-bottom">
-                            <th className="py-3">Name</th>
-                            <th className="py-3">Email</th>
-                            <th className="py-3">Belongs to</th>
+                        <tr style={{ borderBottom: "2px solid #eee", background: "#fafafa" }}>
+                            <th style={{ padding: "12px 16px", textAlign: "left", fontSize: "12px", fontWeight: "600", textTransform: "uppercase", letterSpacing: "0.5px", color: "#555" }}>Name</th>
+                            <th style={{ padding: "12px 16px", textAlign: "left", fontSize: "12px", fontWeight: "600", textTransform: "uppercase", letterSpacing: "0.5px", color: "#555" }}>Email</th>
+                            <th style={{ padding: "12px 16px", textAlign: "left", fontSize: "12px", fontWeight: "600", textTransform: "uppercase", letterSpacing: "0.5px", color: "#555" }}>Belongs to</th>
                         </tr>
                     </thead>
                     <tbody>
                         {learners.map((l) => (
-                            <tr key={l.email}>
-                                <td className="py-3">{l.name}</td>
-                                <td className="py-3">{l.email}</td>
-                                <td className="py-3">{l.belongsTo}</td>
+                            <tr key={l.email} style={{ borderBottom: "1px solid #eee" }}>
+                                <td style={{ padding: "12px 16px", fontSize: "14px", color: "#333" }}>{l.name}</td>
+                                <td style={{ padding: "12px 16px", fontSize: "14px", color: "#333" }}>{l.email}</td>
+                                <td style={{ padding: "12px 16px", fontSize: "14px", color: "#7f8c8d" }}>{l.belongsTo}</td>
                             </tr>
                         ))}
                     </tbody>

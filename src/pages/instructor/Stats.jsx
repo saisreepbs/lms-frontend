@@ -7,12 +7,10 @@ export default function Stats() {
         title="Course Stats"
         description="Performance metrics across your courses"
       />
-      <div className="card">
-        <div className="card-body text-center py-5">
-          <h3 className="h5 mb-3">Course Statistics</h3>
-          <p className="text-muted">
-            View enrollment trends, completion rates, and engagement metrics
-          </p>
+      <div className="card-enterprise">
+        <div className="card-enterprise-body empty-state-enterprise">
+          <h3>Course Statistics</h3>
+          <p>View enrollment trends, completion rates, and engagement metrics</p>
         </div>
       </div>
     </div>

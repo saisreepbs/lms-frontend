@@ -2,15 +2,27 @@ import { useMemo, useEffect, useState } from "react";
 import api from "../../api";
 
 const STATUS_STYLES = {
-    ACTIVE: "bg-success text-white",
-    INACTIVE: "bg-warning text-dark",
-    HIDDEN: "bg-secondary text-white",
+    ACTIVE: "badge-active",
+    INACTIVE: "badge-inactive",
+    HIDDEN: "badge-hidden",
+    DRAFT: "badge-draft",
 };
 
 const STATUS_LABELS = {
     ACTIVE: "Active",
     INACTIVE: "Inactive",
     HIDDEN: "Hidden",
+    DRAFT: "Draft",
+};
+
+// Helper function to convert string to title case
+const toTitleCase = (str) => {
+    if (!str) return str;
+    return str
+        .toLowerCase()
+        .split(' ')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ');
 };
 
 export default function CourseCard({ course, onEdit, onRemove }) {
@@ -79,63 +91,54 @@ export default function CourseCard({ course, onEdit, onRemove }) {
     const rawStatus = course.currentStatus || course.status || course.visibility;
     const normalizedStatus = typeof rawStatus === "string" ? rawStatus.toUpperCase() : rawStatus;
     const statusLabel = STATUS_LABELS[normalizedStatus] || normalizedStatus || "--";
-    const statusClass = STATUS_STYLES[normalizedStatus] || STATUS_STYLES.HIDDEN;
+    const statusClass = STATUS_STYLES[normalizedStatus] || "badge-hidden";
 
     return (
-        <div className="card h-100 border-0 shadow-sm">
+        <div className="course-card">
             {/* Thumbnail image */}
-            {coverSrc ? (
-                <img
-                    src={coverSrc}
-                    alt={course.title}
-                    className="card-img-top"
-                    style={{ height: "160px", objectFit: "cover" }}
-                />
-            ) : (
-                <div 
-                    className="d-flex align-items-center justify-content-center bg-secondary bg-opacity-10 text-muted" 
-                    style={{ height: "160px" }}
-                >
-                    No Image
-                </div>
-            )}
+            <div className="course-card-thumbnail">
+                {coverSrc ? (
+                    <img src={coverSrc} alt={course.title} />
+                ) : (
+                    <span>No Image</span>
+                )}
+            </div>
 
             {/* Course info */}
-            <div className="card-body d-flex flex-column">
-                <div className="d-flex justify-content-between align-items-start gap-2 mb-2">
-                    <h6 className="fw-semibold mb-0 text-truncate flex-grow-1">{course.title}</h6>
-                    <span className={`badge ${statusClass} flex-shrink-0`}>
-                        {statusLabel}
-                    </span>
+            <div className="course-card-body">
+                <div className="course-card-header">
+                    <h6 className="course-card-title">{toTitleCase(course.title)}</h6>
+                    <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                        <span className={`badge-enterprise ${statusClass}`}>
+                            {statusLabel}
+                        </span>
+                        {/* Action icons */}
+                        <button
+                            onClick={() => onEdit(course)}
+                            className="icon-btn"
+                            title="Edit course"
+                            aria-label="Edit course"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
+                            </svg>
+                        </button>
+                        <button
+                            onClick={() => onRemove(course.id)}
+                            className="icon-btn icon-btn-danger"
+                            title="Remove course"
+                            aria-label="Remove course"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                                <path fillRule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                            </svg>
+                        </button>
+                    </div>
                 </div>
-                <p 
-                    className="text-muted small mb-3 flex-grow-1" 
-                    style={{ 
-                        overflow: "hidden", 
-                        textOverflow: "ellipsis", 
-                        display: "-webkit-box", 
-                        WebkitLineClamp: 2, 
-                        WebkitBoxOrient: "vertical" 
-                    }}
-                >
+                <p className="course-card-desc">
                     {course.description || "No description"}
                 </p>
-
-                {/* Action buttons */}
-                <div className="d-flex gap-2 mt-auto">
-                    <button
-                        onClick={() => onEdit(course)}
-                        className="btn btn-outline-dark btn-sm flex-fill"
-                    >
-                        Edit
-                    </button>
-                    <button
-                        onClick={() => onRemove(course.id)}
-                        className="btn btn-outline-danger btn-sm flex-fill"
-                    >
-                        Remove
-                    </button>
-                </div>
             </div>
         </div>
     );

@@ -117,7 +117,7 @@ export default function Overview({ course, onSave }) {
                 <RadioGroup label="Visibility" value={status} onChange={setStatus} options={statusOptions} />
 
                 {error && (
-                    <div className="alert alert-danger py-2">
+                    <div className="alert-enterprise alert-enterprise-danger">
                         {error}
                     </div>
                 )}
@@ -125,24 +125,26 @@ export default function Overview({ course, onSave }) {
                     <button
                         onClick={handleUpdate}
                         disabled={isSaving}
-                        className="btn btn-dark"
+                        className="btn-enterprise btn-enterprise-dark"
                     >
-                        {isSaving ? "Updating..." : "Update course"}
+                        {isSaving ? "Updating..." : "Update Course"}
                     </button>
                     {selectedFile && (
-                        <span className="text-muted small">New image selected</span>
+                        <span style={{ fontSize: "13px", color: "#7f8c8d" }}>New image selected</span>
                     )}
                 </div>
             </div>
 
             <div className="col-lg-5">
-                <div className="card border-0 shadow-sm h-100">
-                    <div className="card-body">
-                        <h6 className="fw-semibold mb-3">Cover picture</h6>
+                <div className="card-enterprise" style={{ height: "100%" }}>
+                    <div className="card-enterprise-header">
+                        <h3>Cover Picture</h3>
+                    </div>
+                    <div className="card-enterprise-body">
                         {previewUrl ? (
-                            <img src={previewUrl} alt={course?.title} className="img-fluid rounded mb-3" style={{ height: "180px", width: "100%", objectFit: "cover" }} />
+                            <img src={previewUrl} alt={course?.title} style={{ height: "180px", width: "100%", objectFit: "cover", borderRadius: "3px", marginBottom: "16px" }} />
                         ) : (
-                            <div className="d-flex align-items-center justify-content-center border border-2 border-dashed rounded bg-light text-muted mb-3" style={{ height: "180px" }}>
+                            <div style={{ height: "180px", display: "flex", alignItems: "center", justifyContent: "center", border: "2px dashed #ccc", borderRadius: "3px", background: "#fafafa", color: "#95a5a6", marginBottom: "16px" }}>
                                 No image uploaded
                             </div>
                         )}

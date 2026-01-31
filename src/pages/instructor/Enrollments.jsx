@@ -7,12 +7,10 @@ export default function Enrollments() {
         title="Enrollments"
         description="See who has enrolled in your courses"
       />
-      <div className="card">
-        <div className="card-body text-center py-5">
-          <h3 className="h5 mb-3">Enrollments View</h3>
-          <p className="text-muted">
-            This feature will show enrollment data across all your courses
-          </p>
+      <div className="card-enterprise">
+        <div className="card-enterprise-body empty-state-enterprise">
+          <h3>Enrollments View</h3>
+          <p>This feature will show enrollment data across all your courses</p>
         </div>
       </div>
     </div>

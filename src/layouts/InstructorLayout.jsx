@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
@@ -49,6 +50,21 @@ const Icons = {
       <path fillRule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"/>
     </svg>
   ),
+  menu: (
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+      <path fillRule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
+    </svg>
+  ),
+  chevronLeft: (
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+      <path fillRule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+    </svg>
+  ),
+  chevronRight: (
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+      <path fillRule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
+    </svg>
+  ),
 };
 
 const navSections = [
@@ -80,6 +96,7 @@ export default function InstructorLayout() {
   const navigate = useNavigate();
   const location = useLocation();
   const { user, logout } = useAuth();
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   const isActive = (path) => {
     if (path === "/instructor/courses") {
@@ -90,33 +107,46 @@ export default function InstructorLayout() {
     return location.pathname.startsWith(path);
   };
 
+  const toggleSidebar = () => {
+    setSidebarCollapsed(!sidebarCollapsed);
+  };
+
   return (
     <div className="d-flex vh-100">
-      <aside className="bg-dark text-white d-flex flex-column flex-shrink-0" style={{width: '240px'}}>
-        <div className="px-3 py-3 border-bottom border-secondary">
-          <div className="fw-semibold">{user?.fullName || "Welcome"}</div>
-          <div className="text-white-50 small">{user?.tenantName || "LMS Platform"}</div>
+      <aside className={`instructor-sidebar ${sidebarCollapsed ? "collapsed" : ""}`}>
+        <div className="sidebar-header">
+          {!sidebarCollapsed && (
+            <>
+              <div className="sidebar-header-title">{user?.fullName || "Welcome"}</div>
+              <div className="sidebar-header-subtitle">{user?.tenantName || "LMS Platform"}</div>
+            </>
+          )}
+          <button 
+            className="sidebar-toggle-btn"
+            onClick={toggleSidebar}
+            title={sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+          >
+            {sidebarCollapsed ? Icons.chevronRight : Icons.chevronLeft}
+          </button>
         </div>
-        <nav className="flex-grow-1 py-3 overflow-auto">
+        <nav className="sidebar-nav">
           {navSections.map((section) => (
-            <div key={section.title} className="mb-4">
-              <div className="text-secondary small text-uppercase fw-bold px-3 mb-1" style={{ fontSize: '0.7rem', letterSpacing: '0.05em' }}>
-                {section.title}
-              </div>
-              <ul className="nav flex-column">
+            <div key={section.title} className="sidebar-section">
+              {!sidebarCollapsed && (
+                <div className="sidebar-section-title">
+                  {section.title}
+                </div>
+              )}
+              <ul className="sidebar-nav-list">
                 {section.items.map((item) => (
-                  <li key={item.path} className="nav-item">
+                  <li key={item.path} className="sidebar-nav-item">
                     <button
                       onClick={() => navigate(item.path)}
-                      className={`nav-link w-100 text-start px-3 py-2 d-flex align-items-center gap-2 ${
-                        isActive(item.path) 
-                          ? "bg-primary text-white rounded" 
-                          : "text-white"
-                      }`}
-                      style={{ border: 'none', background: isActive(item.path) ? undefined : 'transparent' }}
+                      className={`sidebar-nav-link ${isActive(item.path) ? "active" : ""}`}
+                      title={sidebarCollapsed ? item.label : ""}
                     >
                       {Icons[item.icon]}
-                      {item.label}
+                      {!sidebarCollapsed && <span>{item.label}</span>}
                     </button>
                   </li>
                 ))}
@@ -124,18 +154,19 @@ export default function InstructorLayout() {
             </div>
           ))}
         </nav>
-        <div className="px-3 py-3 border-top border-secondary mt-auto">
+        <div className="sidebar-footer">
           <button
             onClick={() => { logout(); navigate("/login"); }}
-            className="btn btn-outline-secondary w-100 d-flex align-items-center justify-content-center gap-2"
+            className="sidebar-logout-btn"
+            title={sidebarCollapsed ? "Logout" : ""}
           >
             {Icons.logout}
-            Logout
+            {!sidebarCollapsed && <span>Logout</span>}
           </button>
         </div>
       </aside>
-      <main className="flex-grow-1 overflow-auto bg-light">
-        <div className="container-fluid p-4">
+      <main className="instructor-main">
+        <div className="instructor-content">
           <Outlet />
         </div>
       </main>
