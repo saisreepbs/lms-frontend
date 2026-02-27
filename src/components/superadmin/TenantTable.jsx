@@ -1,74 +1,91 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { getTenants } from "../../api";
+
+const CATEGORY_LABELS = {
+    CORPORATE: "Corporate",
+    EDUCATION: "Education",
+    TRAINING: "Training",
+};
 
 function TenantTable({ onNewTenant }) {
-    const [openMenu, setOpenMenu] = useState(null);
+    const [tenants, setTenants] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        const fetchTenants = async () => {
+            try {
+                const data = await getTenants();
+                setTenants(data);
+            } catch (err) {
+                setError(err.response?.data?.message || "Failed to load tenants.");
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchTenants();
+    }, []);
 
     return (
         <div className="card">
             <div className="card-header d-flex justify-content-between align-items-center">
                 <h2 className="h5 mb-0">Tenants</h2>
-
-                <button
-                    onClick={onNewTenant}
-                    className="btn btn-primary btn-sm"
-                >
+                <button onClick={onNewTenant} className="btn btn-primary btn-sm">
                     + New Tenant
                 </button>
             </div>
 
-            <div className="table-responsive">
-                <table className="table table-hover mb-0">
-                    <thead className="table-light">
-                        <tr>
-                            <th>id</th>
-                            <th>Name</th>
-                            <th>Admin</th>
-                            <th>Category</th>
-                            <th>Created At</th>
-                            <th>Status</th>
-                            <th className="text-center">Actions</th>
-                        </tr>
-                    </thead>
+            {loading && (
+                <div className="card-body text-center py-5">
+                    <div className="spinner-border spinner-border-sm text-primary me-2" role="status" />
+                    <span className="text-muted">Loading tenants…</span>
+                </div>
+            )}
 
-                    <tbody>
-                        {[1, 2, 3].map((i) => (
-                            <tr key={i} className="position-relative">
-                                <td>{i}</td>
-                                <td>Tenant {i}</td>
-                                <td>Admin {i}</td>
-                                <td>Corporate</td>
-                                <td>12 Sep 2025</td>
-                                <td><span className="badge bg-success">Active</span></td>
+            {error && (
+                <div className="card-body">
+                    <div className="alert alert-danger mb-0">{error}</div>
+                </div>
+            )}
 
-                                {/* Actions column */}
-                                <td className="text-center position-relative">
-                                    <div className="dropdown">
-                                        <button
-                                            onClick={() =>
-                                                setOpenMenu(openMenu === i ? null : i)
-                                            }
-                                            className="btn btn-link text-dark"
-                                        >
-                                            ⋮
-                                        </button>
+            {!loading && !error && tenants.length === 0 && (
+                <div className="card-body text-center py-5 text-muted">
+                    No tenants yet. Create your first one.
+                </div>
+            )}
 
-                                        {openMenu === i && (
-                                            <div className="dropdown-menu show position-absolute end-0">
-                                                <button className="dropdown-item">
-                                                    Active
-                                                </button>
-                                                <button className="dropdown-item">
-                                                    Inactive
-                                                </button>
-                                            </div>
-                                        )}
-                                    </div>
-                                </td>
+            {!loading && !error && tenants.length > 0 && (
+                <div className="table-responsive">
+                    <table className="table table-hover mb-0">
+                        <thead className="table-light">
+                            <tr>
+                                <th style={{ width: "200px" }}>ID</th>
+                                <th>Name</th>
+                                <th>Admin</th>
+                                <th>Category</th>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
+                        </thead>
+                        <tbody>
+                            {tenants.map((tenant) => (
+                                <tr key={tenant.id}>
+                                    <td>
+                                        <code className="text-muted small">
+                                            {tenant.id.slice(0, 8)}…
+                                        </code>
+                                    </td>
+                                    <td className="fw-medium">{tenant.name}</td>
+                                    <td>{tenant.admin || <span className="text-muted fst-italic">No admin</span>}</td>
+                                    <td>
+                                        <span className="badge bg-secondary">
+                                            {CATEGORY_LABELS[tenant.category] ?? tenant.category}
+                                        </span>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            )}
         </div>
     );
 }

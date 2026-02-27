@@ -13,7 +13,7 @@ export default function LessonEditor({ lesson, onChange }) {
     return (
         <div className="card-enterprise">
             <div className="card-enterprise-header">
-                <h3>Lesson {lesson.order}: {lesson.title}</h3>
+                <h3>Lesson {lesson.sequenceOrder}: {lesson.title}</h3>
             </div>
             <div className="card-enterprise-body">
                 <FormInput
@@ -22,10 +22,10 @@ export default function LessonEditor({ lesson, onChange }) {
                     onChange={(v) => onChange({ ...lesson, title: v })}
                 />
                 <FormInput
-                    label="Description"
+                    label="Content"
                     multiline
-                    value={lesson.description || ""}
-                    onChange={(v) => onChange({ ...lesson, description: v })}
+                    value={lesson.content || ""}
+                    onChange={(v) => onChange({ ...lesson, content: v })}
                 />
                 <div className="form-group-enterprise">
                     <label className="form-label-enterprise">Content Type</label>
@@ -34,16 +34,18 @@ export default function LessonEditor({ lesson, onChange }) {
                         value={lesson.type}
                         onChange={(e) => onChange({ ...lesson, type: e.target.value })}
                     >
-                        <option value="video">Video</option>
-                        <option value="article">Article</option>
-                        <option value="quiz">Quiz</option>
+                        <option value="VIDEO">Video</option>
+                        <option value="TEXT">Text</option>
+                        <option value="DOCUMENT">Document</option>
+                        <option value="QUIZ">Quiz</option>
+                        <option value="ASSIGNMENT">Assignment</option>
                     </select>
                 </div>
                 <FormInput
                     label="Resource Link"
                     placeholder="Paste the resource link here"
-                    value={lesson.resource || ""}
-                    onChange={(v) => onChange({ ...lesson, resource: v })}
+                    value={lesson.resourceUrl || ""}
+                    onChange={(v) => onChange({ ...lesson, resourceUrl: v })}
                 />
             </div>
         </div>

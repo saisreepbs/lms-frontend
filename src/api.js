@@ -119,6 +119,23 @@ export const deleteCourse = async (courseId) => {
   await api.delete(`/api/courses/${courseId}`);
 };
 
+// ─── Super Admin ─────────────────────────────────────────────────────────────
+
+export const getTenants = async () => {
+  const { data } = await api.get("/api/tenants");
+  return data;
+};
+
+export const createTenant = async ({ tenantName, tenantCategory, adminFullName, adminEmail }) => {
+  const { data } = await api.post("/api/tenants", {
+    tenantName,
+    tenantCategory,
+    adminFullName,
+    adminEmail,
+  });
+  return data; // { tenantName, tenantCategory, adminEmail, adminPassword }
+};
+
 export const createCourse = async (tenantId, courseData, thumbnailFile) => {
   const formData = new FormData();
   formData.append("tenantId", tenantId);
@@ -142,28 +159,25 @@ export const updateCourse = async (courseId, updateData, thumbnailFile = null) =
 };
 
 export const getModules = async (courseId) => {
-  const { data } = await api.get(`/api/courses/${courseId}/modules`);
+  const { data } = await api.get(`/api/modules/courses/${courseId}`);
   return data;
 };
 
 export const createModule = async (courseId) => {
-  const { data } = await api.post(`/api/courses/${courseId}/modules`);
-  return data;
+  await api.post(`/api/modules/courses/${courseId}`);
 };
 
 export const getLessons = async (moduleId) => {
-  const { data } = await api.get(`/api/courses/modules/${moduleId}/lessons`);
+  const { data } = await api.get(`/api/lessons/modules/${moduleId}`);
   return data;
 };
 
 export const createLesson = async (moduleId) => {
-  const { data } = await api.post(`/api/courses/modules/${moduleId}/lessons`);
-  return data;
+  await api.post(`/api/lessons/modules/${moduleId}`);
 };
 
 export const updateLesson = async (lessonId, lessonData) => {
-  const { data } = await api.put(`/api/courses/modules/lessons/${lessonId}`, lessonData);
-  return data;
+  await api.put(`/api/lessons/${lessonId}`, lessonData);
 };
 
 export default api;

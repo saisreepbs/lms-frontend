@@ -1057,3 +1057,213 @@ textarea.form-control-enterprise {
   background: #fafafa;
   border-radius: 0 0 8px 8px;
 }
+
+/* Tree Component Styles */
+.tree-container {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  max-height: 70vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.tree-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid #eee;
+  background: #fafafa;
+  border-radius: 8px 8px 0 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.tree-header h3 {
+  font-family: 'Roboto', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: #2c3e50;
+  margin: 0;
+}
+
+.tree-header-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.tree-header-btn {
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: 500;
+  color: #7f8c8d;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.tree-header-btn:hover {
+  background: #f5f5f5;
+  color: #2c3e50;
+  border-color: #999;
+}
+
+.tree-body {
+  padding: 12px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.tree-module {
+  margin-bottom: 4px;
+}
+
+.tree-module-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  background: #f8f9fa;
+  border: 1px solid #eee;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  user-select: none;
+}
+
+.tree-module-header:hover {
+  background: #ecf0f1;
+  border-color: #ddd;
+}
+
+.tree-module-header.expanded {
+  border-radius: 6px 6px 0 0;
+  border-bottom-color: transparent;
+}
+
+.tree-toggle-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #7f8c8d;
+  transition: transform 0.15s ease;
+}
+
+.tree-folder-icon {
+  display: flex;
+  align-items: center;
+  color: #f39c12;
+}
+
+.tree-module-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #2c3e50;
+  flex: 1;
+}
+
+.tree-module-count {
+  font-size: 11px;
+  color: #95a5a6;
+  background: #ecf0f1;
+  padding: 2px 8px;
+  border-radius: 10px;
+}
+
+.tree-module-children {
+  border: 1px solid #eee;
+  border-top: none;
+  border-radius: 0 0 6px 6px;
+  background: #fff;
+  padding: 8px 8px 8px 20px;
+  margin-bottom: 4px;
+}
+
+.tree-lesson {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 8px 12px;
+  margin-bottom: 2px;
+  font-size: 13px;
+  text-align: left;
+  color: #555;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.tree-lesson:hover {
+  background: #f5f5f5;
+  border-color: #eee;
+}
+
+.tree-lesson.active {
+  background: #3498db;
+  color: #fff;
+  border-color: #2980b9;
+}
+
+.tree-lesson-icon {
+  display: flex;
+  align-items: center;
+  color: #95a5a6;
+}
+
+.tree-lesson.active .tree-lesson-icon {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.tree-lesson-title {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tree-add-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 12px;
+  margin-top: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #3498db;
+  background: transparent;
+  border: 1px dashed #3498db;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.tree-add-btn:hover {
+  background: rgba(52, 152, 219, 0.1);
+}
+
+.tree-add-module-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  padding: 12px;
+  margin-top: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #3498db;
+  background: transparent;
+  border: 2px dashed #3498db;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.tree-add-module-btn:hover {
+  background: rgba(52, 152, 219, 0.1);
+}
