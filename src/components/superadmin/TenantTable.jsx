@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import { getTenants } from "../../api";
 
-const CATEGORY_LABELS = {
-    CORPORATE: "Corporate",
-    EDUCATION: "Education",
-    TRAINING: "Training",
+const CATEGORY_BADGE = {
+    CORPORATE: { label: "Corporate", color: "#2980b9" },
+    EDUCATION:  { label: "Education",  color: "#27ae60" },
+    TRAINING:   { label: "Training",   color: "#8e44ad" },
 };
 
 function TenantTable({ onNewTenant }) {
@@ -27,65 +27,88 @@ function TenantTable({ onNewTenant }) {
     }, []);
 
     return (
-        <div className="card">
-            <div className="card-header d-flex justify-content-between align-items-center">
-                <h2 className="h5 mb-0">Tenants</h2>
-                <button onClick={onNewTenant} className="btn btn-primary btn-sm">
-                    + New Tenant
-                </button>
+        <div>
+            <div className="page-header">
+                <div>
+                    <h1 className="page-header-title">Tenants</h1>
+                    <p className="page-header-desc">All organisations registered on the platform</p>
+                </div>
+                <div className="page-header-actions">
+                    <button onClick={onNewTenant} className="btn-enterprise btn-enterprise-primary btn-enterprise-sm">
+                        + New Tenant
+                    </button>
+                </div>
             </div>
 
-            {loading && (
-                <div className="card-body text-center py-5">
-                    <div className="spinner-border spinner-border-sm text-primary me-2" role="status" />
-                    <span className="text-muted">Loading tenants…</span>
-                </div>
-            )}
+            <div className="card-enterprise">
+                {loading && (
+                    <div className="card-enterprise-body">
+                        <div className="loading-enterprise">
+                            <div className="spinner-enterprise" />
+                            <span>Loading tenants…</span>
+                        </div>
+                    </div>
+                )}
 
-            {error && (
-                <div className="card-body">
-                    <div className="alert alert-danger mb-0">{error}</div>
-                </div>
-            )}
+                {error && (
+                    <div className="card-enterprise-body">
+                        <div className="alert-enterprise alert-enterprise-danger">{error}</div>
+                    </div>
+                )}
 
-            {!loading && !error && tenants.length === 0 && (
-                <div className="card-body text-center py-5 text-muted">
-                    No tenants yet. Create your first one.
-                </div>
-            )}
+                {!loading && !error && tenants.length === 0 && (
+                    <div className="card-enterprise-body empty-state-enterprise">
+                        <h3>No tenants yet</h3>
+                        <p>Create your first tenant to get started.</p>
+                        <button onClick={onNewTenant} className="btn-enterprise btn-enterprise-primary">
+                            + New Tenant
+                        </button>
+                    </div>
+                )}
 
-            {!loading && !error && tenants.length > 0 && (
-                <div className="table-responsive">
-                    <table className="table table-hover mb-0">
-                        <thead className="table-light">
-                            <tr>
-                                <th style={{ width: "200px" }}>ID</th>
-                                <th>Name</th>
-                                <th>Admin</th>
-                                <th>Category</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {tenants.map((tenant) => (
-                                <tr key={tenant.id}>
-                                    <td>
-                                        <code className="text-muted small">
-                                            {tenant.id.slice(0, 8)}…
-                                        </code>
-                                    </td>
-                                    <td className="fw-medium">{tenant.name}</td>
-                                    <td>{tenant.admin || <span className="text-muted fst-italic">No admin</span>}</td>
-                                    <td>
-                                        <span className="badge bg-secondary">
-                                            {CATEGORY_LABELS[tenant.category] ?? tenant.category}
-                                        </span>
-                                    </td>
+                {!loading && !error && tenants.length > 0 && (
+                    <div className="table-responsive">
+                        <table className="table-enterprise">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Admin</th>
+                                    <th>Category</th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
-            )}
+                            </thead>
+                            <tbody>
+                                {tenants.map((tenant) => {
+                                    const cat = CATEGORY_BADGE[tenant.category];
+                                    return (
+                                        <tr key={tenant.id}>
+                                            <td>
+                                                <span className="table-enterprise-id">
+                                                    {tenant.id.slice(0, 8)}…
+                                                </span>
+                                            </td>
+                                            <td className="table-enterprise-name">{tenant.name}</td>
+                                            <td>
+                                                {tenant.admin
+                                                    ? tenant.admin
+                                                    : <span className="table-enterprise-empty">No admin</span>}
+                                            </td>
+                                            <td>
+                                                <span
+                                                    className="badge-enterprise"
+                                                    style={{ background: cat?.color ?? "#7f8c8d", color: "#fff" }}
+                                                >
+                                                    {cat?.label ?? tenant.category}
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    );
+                                })}
+                            </tbody>
+                        </table>
+                    </div>
+                )}
+            </div>
         </div>
     );
 }

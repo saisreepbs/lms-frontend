@@ -12,7 +12,7 @@ function CreateTenantForm({ onBack, onCreated }) {
   const [form, setForm] = useState(INITIAL_FORM);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [result, setResult] = useState(null); // holds TenantAndAdminResponse after success
+  const [result, setResult] = useState(null);
 
   const handleChange = (e) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -36,39 +36,53 @@ function CreateTenantForm({ onBack, onCreated }) {
   // ── Success screen ────────────────────────────────────────────────────────
   if (result) {
     return (
-      <div className="card" style={{ maxWidth: "600px" }}>
-        <div className="card-body">
-          <div className="alert alert-success mb-4">
-            <strong>Tenant created successfully!</strong> Share the credentials below
-            with the admin — the password <strong>cannot be retrieved later</strong>.
+      <div>
+        <div className="page-header">
+          <div>
+            <h1 className="page-header-title">Tenant Created</h1>
+            <p className="page-header-desc">New organisation registered on the platform</p>
           </div>
+        </div>
 
-          <table className="table table-bordered mb-4">
-            <tbody>
-              <tr>
-                <th className="table-light" style={{ width: "40%" }}>Tenant Name</th>
-                <td>{result.tenantName}</td>
-              </tr>
-              <tr>
-                <th className="table-light">Category</th>
-                <td>{result.tenantCategory}</td>
-              </tr>
-              <tr>
-                <th className="table-light">Admin Email</th>
-                <td><code>{result.adminEmail}</code></td>
-              </tr>
-              <tr>
-                <th className="table-light">Admin Password</th>
-                <td>
-                  <code className="fw-bold text-danger">{result.adminPassword}</code>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+        <div className="card-enterprise" style={{ maxWidth: "560px" }}>
+          <div className="card-enterprise-header">
+            <h3>Admin Credentials</h3>
+          </div>
+          <div className="card-enterprise-body">
+            <div className="alert-enterprise alert-enterprise-warning" style={{ marginBottom: "20px" }}>
+              Copy the credentials below now. The password <strong>will not be shown again</strong>.
+            </div>
 
-          <button onClick={onBack} className="btn btn-primary">
-            ← Back to Tenant List
-          </button>
+            <table className="table-enterprise table-enterprise-compact">
+              <tbody>
+                <tr>
+                  <td className="table-enterprise-label">Tenant Name</td>
+                  <td className="table-enterprise-name">{result.tenantName}</td>
+                </tr>
+                <tr>
+                  <td className="table-enterprise-label">Category</td>
+                  <td>{result.tenantCategory}</td>
+                </tr>
+                <tr>
+                  <td className="table-enterprise-label">Admin Email</td>
+                  <td><code style={{ fontSize: "13px", color: "#2c3e50" }}>{result.adminEmail}</code></td>
+                </tr>
+                <tr>
+                  <td className="table-enterprise-label">Admin Password</td>
+                  <td>
+                    <code style={{ fontSize: "13px", fontWeight: 700, color: "#c0392b" }}>
+                      {result.adminPassword}
+                    </code>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div className="card-enterprise-footer">
+            <button onClick={onBack} className="btn-enterprise btn-enterprise-primary btn-enterprise-sm">
+              ← Back to Tenant List
+            </button>
+          </div>
         </div>
       </div>
     );
@@ -76,85 +90,103 @@ function CreateTenantForm({ onBack, onCreated }) {
 
   // ── Form ──────────────────────────────────────────────────────────────────
   return (
-    <div className="card" style={{ maxWidth: "800px" }}>
-      <div className="card-body">
-        <p
-          onClick={onBack}
-          className="small mb-4 text-primary fw-medium"
-          style={{ cursor: "pointer" }}
-        >
-          ← Back to Tenant List
-        </p>
+    <div>
+      <div className="page-header">
+        <div className="page-header-left">
+          <button onClick={onBack} className="page-header-back">
+            ← Back
+          </button>
+          <div>
+            <h1 className="page-header-title">New Tenant</h1>
+            <p className="page-header-desc">Register a new organisation and its admin account</p>
+          </div>
+        </div>
+      </div>
 
-        {error && <div className="alert alert-danger">{error}</div>}
+      {error && (
+        <div className="alert-enterprise alert-enterprise-danger" style={{ maxWidth: "600px", marginBottom: "20px" }}>
+          {error}
+        </div>
+      )}
 
-        <form onSubmit={handleSubmit}>
-          {/* Tenant Details */}
-          <div className="border rounded p-4 mb-4">
-            <h3 className="h6 fw-semibold mb-3">Tenant Details</h3>
-            <div style={{ maxWidth: "500px" }}>
+      <form onSubmit={handleSubmit} style={{ maxWidth: "600px" }}>
+        {/* Tenant Details */}
+        <div className="card-enterprise" style={{ marginBottom: "20px" }}>
+          <div className="card-enterprise-header"><h3>Tenant Details</h3></div>
+          <div className="card-enterprise-body">
+            <div className="form-group-enterprise">
+              <label className="form-label-enterprise">Organisation Name</label>
               <input
                 name="tenantName"
                 value={form.tenantName}
                 onChange={handleChange}
-                placeholder="Tenant Name"
-                className="form-control mb-3"
+                placeholder="e.g. Acme Corporation"
+                className="form-control-enterprise"
                 required
               />
+            </div>
+            <div className="form-group-enterprise" style={{ marginBottom: 0 }}>
+              <label className="form-label-enterprise">Category</label>
               <select
                 name="tenantCategory"
                 value={form.tenantCategory}
                 onChange={handleChange}
-                className="form-select"
+                className="form-control-enterprise"
                 required
               >
-                <option value="">Select Category</option>
+                <option value="">Select a category…</option>
                 <option value="CORPORATE">Corporate</option>
                 <option value="EDUCATION">Education</option>
                 <option value="TRAINING">Training</option>
               </select>
             </div>
           </div>
+        </div>
 
-          {/* Admin Details */}
-          <div className="border rounded p-4 mb-4">
-            <h3 className="h6 fw-semibold mb-3">Admin Details</h3>
-            <p className="text-muted small mb-3">
-              A password will be auto-generated and shown once after creation.
-            </p>
-            <div style={{ maxWidth: "500px" }}>
+        {/* Admin Details */}
+        <div className="card-enterprise" style={{ marginBottom: "24px" }}>
+          <div className="card-enterprise-header"><h3>Admin Account</h3></div>
+          <div className="card-enterprise-body">
+            <div
+              className="alert-enterprise alert-enterprise-light"
+              style={{ marginBottom: "20px", fontSize: "12px" }}
+            >
+              A secure password will be auto-generated and displayed once after creation.
+            </div>
+            <div className="form-group-enterprise">
+              <label className="form-label-enterprise">Full Name</label>
               <input
                 name="adminFullName"
                 value={form.adminFullName}
                 onChange={handleChange}
-                placeholder="Full Name"
-                className="form-control mb-3"
+                placeholder="e.g. Jane Smith"
+                className="form-control-enterprise"
                 required
               />
+            </div>
+            <div className="form-group-enterprise" style={{ marginBottom: 0 }}>
+              <label className="form-label-enterprise">Email Address</label>
               <input
                 name="adminEmail"
                 value={form.adminEmail}
                 onChange={handleChange}
-                placeholder="Email"
+                placeholder="e.g. admin@acme.com"
                 type="email"
-                className="form-control"
+                className="form-control-enterprise"
                 required
               />
             </div>
           </div>
-
-          <div className="d-flex gap-2">
-            <button type="submit" className="btn btn-primary" disabled={loading}>
-              {loading ? (
-                <><span className="spinner-border spinner-border-sm me-2" role="status" />Creating…</>
-              ) : "Create Tenant"}
+          <div className="card-enterprise-footer" style={{ display: "flex", gap: "8px" }}>
+            <button type="submit" className="btn-enterprise btn-enterprise-primary btn-enterprise-sm" disabled={loading}>
+              {loading ? "Creating…" : "Create Tenant"}
             </button>
-            <button type="button" className="btn btn-outline-secondary" onClick={onBack}>
+            <button type="button" className="btn-enterprise btn-enterprise-secondary btn-enterprise-sm" onClick={onBack}>
               Cancel
             </button>
           </div>
-        </form>
-      </div>
+        </div>
+      </form>
     </div>
   );
 }

@@ -1,6 +1,19 @@
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
+const LogoutIcon = (
+  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+    <path fillRule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0v2z"/>
+    <path fillRule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"/>
+  </svg>
+);
+
+const TenantsIcon = (
+  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+    <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.707 1.5ZM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5 5 5Z"/>
+  </svg>
+);
+
 export default function SuperAdminLayout() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -10,45 +23,45 @@ export default function SuperAdminLayout() {
 
   return (
     <div className="d-flex vh-100">
-      {/* Sidebar */}
-      <aside className="d-flex flex-column justify-content-between bg-dark text-white" style={{ width: "250px" }}>
-        <div className="p-4">
-          <div className="d-flex align-items-center mb-4">
-            <div className="bg-light text-dark rounded-circle d-flex align-items-center justify-content-center me-3" style={{ width: "36px", height: "36px" }}>
-              👤
-            </div>
-            <div>
-              <span className="fw-semibold">Super Admin</span>
-              {user?.fullName && (
-                <p className="small text-white-50 mb-0">{user.fullName}</p>
-              )}
-            </div>
-          </div>
-
-          <div className="list-group list-group-flush">
-            <button
-              onClick={() => navigate("/superadmin/tenants")}
-              className={`list-group-item list-group-item-action ${isActive("/superadmin/tenants") ? "active" : "bg-dark text-white border-0"}`}
-            >
-              Manage Tenants
-            </button>
-          </div>
+      <aside className="instructor-sidebar">
+        <div className="sidebar-header">
+          <div className="sidebar-header-title">{user?.fullName || "Super Admin"}</div>
+          <div className="sidebar-header-subtitle">Platform Administration</div>
         </div>
 
-        <div className="p-4">
+        <nav className="sidebar-nav">
+          <div className="sidebar-section">
+            <div className="sidebar-section-title">Management</div>
+            <ul className="sidebar-nav-list">
+              <li className="sidebar-nav-item">
+                <button
+                  onClick={() => navigate("/superadmin/tenants")}
+                  className={`sidebar-nav-link ${isActive("/superadmin/tenants") ? "active" : ""}`}
+                >
+                  {TenantsIcon}
+                  <span>Tenants</span>
+                </button>
+              </li>
+            </ul>
+          </div>
+        </nav>
+
+        <div className="sidebar-footer">
           <button
             onClick={() => { logout(); navigate("/login"); }}
-            className="btn btn-danger w-100"
+            className="sidebar-logout-btn"
           >
-            Logout
+            {LogoutIcon}
+            <span>Logout</span>
           </button>
         </div>
       </aside>
 
-      {/* Main Content */}
-      <div className="flex-fill p-4 overflow-auto bg-light">
-        <Outlet />
-      </div>
+      <main className="instructor-main">
+        <div className="instructor-content">
+          <Outlet />
+        </div>
+      </main>
     </div>
   );
 }
