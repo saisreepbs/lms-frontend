@@ -1,3 +1,11 @@
+:root {
+  --enterprise-primary: #3498db;
+  --enterprise-text: #2c3e50;
+  --enterprise-muted: #7f8c8d;
+  --enterprise-bg: #f8f9fa;
+  --enterprise-border: #ddd;
+}
+
 body {
   margin: 0;
   font-family: 'Open Sans', 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI',
@@ -564,6 +572,34 @@ code {
   font-size: 12px;
 }
 
+.btn-enterprise-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 500;
+  font-family: inherit;
+  color: #555;
+  background: transparent;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-decoration: none;
+}
+
+.btn-enterprise-ghost:hover {
+  background: #f5f5f5;
+  border-color: #999;
+  color: #333;
+}
+
+.btn-enterprise-ghost:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 .btn-enterprise:disabled {
   opacity: 0.6;
   cursor: not-allowed;
@@ -907,6 +943,16 @@ textarea.form-control-enterprise {
   background: #f8f9fa;
   border: 1px dashed #dee2e6;
   color: #6c757d;
+}
+
+.alert-enterprise-success {
+  background: #d4edda;
+  border: 1px solid #c3e6cb;
+  color: #155724;
+  padding: 12px 16px;
+  border-radius: 3px;
+  font-size: 13px;
+  margin-bottom: 20px;
 }
 
 /* Empty State */

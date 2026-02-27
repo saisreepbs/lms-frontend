@@ -136,6 +136,51 @@ export const createTenant = async ({ tenantName, tenantCategory, adminFullName, 
   return data; // { tenantName, tenantCategory, adminEmail, adminPassword }
 };
 
+// ─── Tenant Admin ─────────────────────────────────────────────────────────────
+
+export const getDashboard = async (tenantId) => {
+  const { data } = await api.get(`/api/tenants/${tenantId}/admin/dashboard`);
+  return data; // { userCount, instructorCount, learnerCount, courseCount, activeCourseCount, orgUnitsCountMaps }
+};
+
+export const getUsers = async (tenantId) => {
+  const { data } = await api.get(`/api/tenants/${tenantId}/users`);
+  return data; // [{ id, username, fullName, email, role }]
+};
+
+export const createUser = async (tenantId, { fullName, email, password, role }) => {
+  const { data } = await api.post(`/api/tenants/${tenantId}/users`, { fullName, email, password, role });
+  return data;
+};
+
+export const getOrgStructures = async (tenantId) => {
+  const { data } = await api.get(`/api/tenants/${tenantId}/org-structures`);
+  return data; // [{ id, name, structure: string[] }]
+};
+
+export const getOrgStructuresDetailed = async (tenantId) => {
+  const { data } = await api.get(`/api/tenants/${tenantId}/org-structures/detailed`);
+  return data; // [{ id, name, structure: [{ id, name, level, parentName }] }]
+};
+
+export const createOrgStructure = async (tenantId, { name, hierarchyLevels }) => {
+  await api.post(`/api/tenants/${tenantId}/org-structures`, { name, hierarchyLevels });
+};
+
+export const getOrgUnitsTree = async (tenantId, structureId) => {
+  const { data } = await api.get(`/api/tenants/${tenantId}/org-units/structure/${structureId}/tree`);
+  return data; // [{ id, name, level, parentId }]
+};
+
+export const createOrgUnit = async (tenantId, { orgUnitTypeId, name, parentOrgUnitId, attributes }) => {
+  await api.post(`/api/tenants/${tenantId}/org-units`, {
+    orgUnitTypeId,
+    name,
+    parentOrgUnitId: parentOrgUnitId || null,
+    attributes: attributes || {},
+  });
+};
+
 export const createCourse = async (tenantId, courseData, thumbnailFile) => {
   const formData = new FormData();
   formData.append("tenantId", tenantId);

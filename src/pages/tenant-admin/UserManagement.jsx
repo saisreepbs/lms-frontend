@@ -1,219 +1,209 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useAuth } from "../../context/AuthContext";
+import { getUsers, createUser } from "../../api";
+
+const ROLE_LABELS = {
+  INSTRUCTOR: "Instructor",
+  LEARNER: "Learner",
+  ADMIN: "Admin",
+};
+
+const ROLE_BADGE_CLASS = {
+  INSTRUCTOR: "badge-enterprise",
+  LEARNER: "badge-enterprise",
+  ADMIN: "badge-enterprise",
+};
+
+const roleBadgeStyle = (role) => ({
+  INSTRUCTOR: { background: "#e9ecef", color: "#495057" },
+  LEARNER: { background: "#f8f9fa", color: "#6c757d" },
+  ADMIN: { background: "#dee2e6", color: "#343a40" },
+}[role] || { background: "#e9ecef", color: "#495057" });
 
 export default function UserManagement() {
-  const [users, setUsers] = useState([
-    {
-      name: "X",
-      email: "x@tenant.com",
-      role: "Instructor",
-      belongsTo: "CSE / Semester 1 / A",
-      status: "Active",
-    },
-  ]);
+  const { user } = useAuth();
+  const tenantId = user?.tenantId;
+
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [search, setSearch] = useState("");
 
   const [showModal, setShowModal] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [formError, setFormError] = useState("");
+  const [newUser, setNewUser] = useState({ fullName: "", email: "", password: "", role: "LEARNER" });
 
-  const [newUser, setNewUser] = useState({
-    name: "",
-    email: "",
-    role: "",
-    branch: "",
-    semester: "",
-    section: "",
-  });
-
-  const addUser = () => {
-    if (!newUser.name || !newUser.email || !newUser.role) return;
-
-    setUsers([
-      ...users,
-      {
-        name: newUser.name,
-        email: newUser.email,
-        role: newUser.role,
-        belongsTo: `${newUser.branch} / ${newUser.semester} / ${newUser.section}`,
-        status: "Active",
-      },
-    ]);
-
-    setNewUser({
-      name: "",
-      email: "",
-      role: "",
-      branch: "",
-      semester: "",
-      section: "",
-    });
-
-    setShowModal(false);
+  const fetchUsers = () => {
+    if (!tenantId) return;
+    setLoading(true);
+    getUsers(tenantId)
+      .then(setUsers)
+      .catch(() => setError("Failed to load users"))
+      .finally(() => setLoading(false));
   };
+
+  useEffect(() => { fetchUsers(); }, [tenantId]);
+
+  const handleAddUser = async () => {
+    if (!newUser.fullName.trim() || !newUser.email.trim() || !newUser.password.trim()) {
+      setFormError("Full name, email, and password are required.");
+      return;
+    }
+    setSaving(true);
+    setFormError("");
+    try {
+      await createUser(tenantId, newUser);
+      setNewUser({ fullName: "", email: "", password: "", role: "LEARNER" });
+      setShowModal(false);
+      fetchUsers();
+    } catch {
+      setFormError("Failed to create user. Email may already be in use.");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const filtered = users.filter(
+    (u) =>
+      u.fullName?.toLowerCase().includes(search.toLowerCase()) ||
+      u.email?.toLowerCase().includes(search.toLowerCase())
+  );
 
   return (
     <div>
-      {/* Page Heading */}
-      <h1 className="h3 fw-bold mb-4">User Management</h1>
-
-      {/* Actions */}
-      <div className="d-flex justify-content-between align-items-center mb-4">
-        <input
-          placeholder="Search users"
-          className="form-control"
-          style={{ width: "250px" }}
-        />
-
-        <button
-          onClick={() => setShowModal(true)}
-          className="btn btn-dark"
-        >
+      <div className="page-header">
+        <h1 className="page-header-title">User Management</h1>
+        <button onClick={() => { setFormError(""); setShowModal(true); }} className="btn-enterprise-primary">
           + Add User
         </button>
       </div>
 
-      {/* Table */}
-      <div className="card">
-        <div className="table-responsive">
-          <table className="table table-hover mb-0">
-            <thead className="table-light">
-              <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Role</th>
-                <th>Belongs To</th>
-                <th>Status</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
+      {error && <div className="alert-enterprise-danger mb-3">{error}</div>}
 
-            <tbody>
-              {users.length === 0 ? (
-                <tr>
-                  <td colSpan="6" className="text-center p-4">
-                    No users added
-                  </td>
-                </tr>
-              ) : (
-                users.map((u, i) => (
-                  <tr key={i}>
-                    <td>{u.name}</td>
-                    <td>{u.email}</td>
-                    <td>{u.role}</td>
-                    <td>{u.belongsTo}</td>
-                    <td>
-                      <span className="badge bg-success">
-                        {u.status}
-                      </span>
-                    </td>
-                    <td className="text-center">⋮</td>
+      <div className="card-enterprise">
+        <div className="card-enterprise-header d-flex justify-content-between align-items-center">
+          <span style={{ fontWeight: 600 }}>All Users</span>
+          <input
+            className="form-control-enterprise"
+            style={{ width: "220px" }}
+            placeholder="Search by name or email…"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </div>
+        <div className="card-enterprise-body p-0">
+          {loading ? (
+            <div className="d-flex justify-content-center p-4">
+              <div className="loading-enterprise"></div>
+              <span className="ms-2" style={{ color: "var(--enterprise-muted)" }}>Loading…</span>
+            </div>
+          ) : (
+            <div className="table-responsive">
+              <table className="table-enterprise">
+                <thead>
+                  <tr>
+                    <th className="table-enterprise-id">#</th>
+                    <th className="table-enterprise-name">Full Name</th>
+                    <th>Email</th>
+                    <th className="table-enterprise-label">Role</th>
+                    <th className="table-enterprise-label">Username</th>
                   </tr>
-                ))
-              )}
-            </tbody>
-          </table>
+                </thead>
+                <tbody>
+                  {filtered.length === 0 ? (
+                    <tr>
+                      <td colSpan="5" className="table-enterprise-empty">
+                        {search ? "No users match your search." : "No users yet. Add the first one."}
+                      </td>
+                    </tr>
+                  ) : (
+                    filtered.map((u) => (
+                      <tr key={u.id}>
+                        <td className="table-enterprise-id">{u.id}</td>
+                        <td className="table-enterprise-name">{u.fullName}</td>
+                        <td>{u.email}</td>
+                        <td>
+                          <span
+                            className="badge-enterprise"
+                            style={roleBadgeStyle(u.role)}
+                          >
+                            {ROLE_LABELS[u.role] || u.role}
+                          </span>
+                        </td>
+                        <td style={{ color: "var(--enterprise-muted)" }}>{u.username}</td>
+                      </tr>
+                    ))
+                  )}
+                </tbody>
+              </table>
+            </div>
+          )}
         </div>
       </div>
 
-      {/* ADD USER MODAL */}
+      {/* Add User Modal */}
       {showModal && (
-        <div className="modal d-block" style={{ backgroundColor: "rgba(0,0,0,0.4)" }}>
+        <div className="modal d-block" style={{ backgroundColor: "rgba(0,0,0,0.45)" }}>
           <div className="modal-dialog">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h5 className="modal-title">Add User</h5>
+            <div className="modal-content" style={{ border: "1px solid var(--enterprise-border)", borderRadius: "8px", boxShadow: "0 8px 32px rgba(0,0,0,0.15)" }}>
+              <div className="modal-header" style={{ borderBottom: "1px solid var(--enterprise-border)", padding: "1.25rem 1.5rem" }}>
+                <h5 className="modal-title" style={{ fontWeight: 700, fontSize: "1rem", color: "var(--enterprise-text)" }}>Add New User</h5>
                 <button type="button" className="btn-close" onClick={() => setShowModal(false)}></button>
               </div>
-              <div className="modal-body">
-                <div className="mb-3">
-                  <label className="form-label">Name</label>
+              <div className="modal-body" style={{ padding: "1.5rem" }}>
+                {formError && <div className="alert-enterprise-danger mb-3">{formError}</div>}
+
+                <div className="form-group-enterprise">
+                  <label className="form-label-enterprise">Full Name</label>
                   <input
-                    className="form-control"
-                    value={newUser.name}
-                    onChange={(e) =>
-                      setNewUser({ ...newUser, name: e.target.value })
-                    }
+                    className="form-control-enterprise"
+                    placeholder="John Smith"
+                    value={newUser.fullName}
+                    onChange={(e) => setNewUser({ ...newUser, fullName: e.target.value })}
                   />
                 </div>
 
-                <div className="mb-3">
-                  <label className="form-label">Email</label>
+                <div className="form-group-enterprise">
+                  <label className="form-label-enterprise">Email Address</label>
                   <input
-                    className="form-control"
+                    type="email"
+                    className="form-control-enterprise"
+                    placeholder="john@example.com"
                     value={newUser.email}
-                    onChange={(e) =>
-                      setNewUser({ ...newUser, email: e.target.value })
-                    }
+                    onChange={(e) => setNewUser({ ...newUser, email: e.target.value })}
                   />
                 </div>
 
-                <div className="mb-3">
-                  <label className="form-label">Role</label>
+                <div className="form-group-enterprise">
+                  <label className="form-label-enterprise">Password</label>
+                  <input
+                    type="password"
+                    className="form-control-enterprise"
+                    placeholder="Temporary password"
+                    value={newUser.password}
+                    onChange={(e) => setNewUser({ ...newUser, password: e.target.value })}
+                  />
+                </div>
+
+                <div className="form-group-enterprise">
+                  <label className="form-label-enterprise">Role</label>
                   <select
-                    className="form-select"
+                    className="form-control-enterprise"
                     value={newUser.role}
-                    onChange={(e) =>
-                      setNewUser({ ...newUser, role: e.target.value })
-                    }
+                    onChange={(e) => setNewUser({ ...newUser, role: e.target.value })}
                   >
-                    <option value="">Select role</option>
-                    <option>Instructor</option>
-                    <option>Learner</option>
-                  </select>
-                </div>
-
-                <div className="mb-3">
-                  <label className="form-label">Branch</label>
-                  <select
-                    className="form-select"
-                    onChange={(e) =>
-                      setNewUser({ ...newUser, branch: e.target.value })
-                    }
-                  >
-                    <option value="">Select branch</option>
-                    <option>CSE</option>
-                    <option>ECE</option>
-                    <option>MECH</option>
-                  </select>
-                </div>
-
-                <div className="mb-3">
-                  <label className="form-label">Semester</label>
-                  <select
-                    className="form-select"
-                    onChange={(e) =>
-                      setNewUser({ ...newUser, semester: e.target.value })
-                    }
-                  >
-                    <option value="">Select semester</option>
-                    <option>Semester 1</option>
-                    <option>Semester 2</option>
-                  </select>
-                </div>
-
-                <div className="mb-3">
-                  <label className="form-label">Section</label>
-                  <select
-                    className="form-select"
-                    onChange={(e) =>
-                      setNewUser({ ...newUser, section: e.target.value })
-                    }
-                  >
-                    <option value="">Select section</option>
-                    <option>A</option>
-                    <option>B</option>
+                    <option value="LEARNER">Learner</option>
+                    <option value="INSTRUCTOR">Instructor</option>
                   </select>
                 </div>
               </div>
-              <div className="modal-footer">
-                <button
-                  onClick={() => setShowModal(false)}
-                  className="btn btn-secondary"
-                >
+              <div className="modal-footer" style={{ borderTop: "1px solid var(--enterprise-border)", padding: "1rem 1.5rem" }}>
+                <button onClick={() => setShowModal(false)} className="btn-enterprise-ghost" disabled={saving}>
                   Cancel
                 </button>
-                <button
-                  onClick={addUser}
-                  className="btn btn-dark"
-                >
-                  Add
+                <button onClick={handleAddUser} className="btn-enterprise-primary" disabled={saving}>
+                  {saving ? "Creating…" : "Create User"}
                 </button>
               </div>
             </div>
