@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
-import { getCourses, getEnrolledCourses, enrollInCourse } from "../../api";
+import { getAvailableCourses, getEnrolledCourses, enrollInCourse } from "../../api";
 import api from "../../api";
 
 export default function Courses() {
@@ -20,7 +20,7 @@ export default function Courses() {
     setError(null);
     try {
       const [allCourses, enrolled] = await Promise.all([
-        getCourses(user.tenantId),
+        getAvailableCourses(user.id),
         getEnrolledCourses(user.id),
       ]);
       setCourses(allCourses);

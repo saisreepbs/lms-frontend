@@ -5,11 +5,14 @@ import Tabs from "../../components/instructor/Tabs.jsx";
 import Overview from "./tabs/Overview.jsx";
 import ContentTab from "./tabs/ContentTab.jsx";
 import Learners from "./tabs/Learners.jsx";
+import Allocations from "./tabs/Allocations.jsx";
 import { getCourse, updateCourse } from "../../api.js";
+import { useAuth } from "../../context/AuthContext.jsx";
 
 export default function CourseDetails() {
     const navigate = useNavigate();
     const { courseId } = useParams();
+    const { user } = useAuth();
     const [tab, setTab] = useState("overview");
     const [course, setCourse] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -21,6 +24,7 @@ export default function CourseDetails() {
         { value: "overview", label: "Overview" },
         { value: "content", label: "Content" },
         { value: "learners", label: "Learners" },
+        { value: "allocations", label: "Allocations" },
     ];
 
     const fetchCourse = useCallback(async () => {
@@ -140,7 +144,8 @@ export default function CourseDetails() {
                         />
                     )}
                     {tab === "content" && <ContentTab course={course} />}
-                    {tab === "learners" && <Learners />}
+                    {tab === "learners" && <Learners courseId={courseId} />}
+                    {tab === "allocations" && <Allocations courseId={courseId} tenantId={user?.tenantId} />}
                 </div>
             </div>
         </div>

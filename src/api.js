@@ -225,6 +225,11 @@ export const updateLesson = async (lessonId, lessonData) => {
   await api.put(`/api/lessons/${lessonId}`, lessonData);
 };
 
+export const getEnrollmentsByCourse = async (courseId) => {
+  const { data } = await api.get(`/api/enrollments/courses/${courseId}`);
+  return data; // [{ id, learnerId, learnerName, learnerEmail, orgUnitPath, status, enrolledAt }]
+};
+
 // ─── Learner ─────────────────────────────────────────────────────────────────
 
 export const getEnrolledCourses = async (learnerId) => {
@@ -238,6 +243,45 @@ export const getEnrolledCourses = async (learnerId) => {
 
 export const enrollInCourse = async (courseId, learnerId) => {
   await api.post('/api/enrollments', { courseId, learnerId });
+};
+
+// ─── User Org Unit Assignments ───────────────────────────────────────────────
+
+export const getUserOrgUnits = async (tenantId, userId) => {
+  const { data } = await api.get(`/api/tenants/${tenantId}/users/${userId}/org-units`);
+  return data; // [{ id, orgUnitId, orgUnitName, isPrimary }]
+};
+
+export const assignUserOrgUnit = async (tenantId, userId, { orgUnitId, isPrimary }) => {
+  const { data } = await api.post(`/api/tenants/${tenantId}/users/${userId}/org-units`, { orgUnitId, isPrimary });
+  return data;
+};
+
+export const removeUserOrgUnit = async (tenantId, userId, orgUnitId) => {
+  await api.delete(`/api/tenants/${tenantId}/users/${userId}/org-units/${orgUnitId}`);
+};
+
+// ─── Course Allocations ──────────────────────────────────────────────────────
+
+export const getCourseAllocations = async (courseId) => {
+  const { data } = await api.get(`/api/courses/${courseId}/allocations`);
+  return data; // [{ id, orgUnitId, orgUnitName, isMandatory }]
+};
+
+export const allocateCourse = async (courseId, { orgUnitId, isMandatory }) => {
+  const { data } = await api.post(`/api/courses/${courseId}/allocations`, { orgUnitId, isMandatory });
+  return data;
+};
+
+export const removeCourseAllocation = async (courseId, orgUnitId) => {
+  await api.delete(`/api/courses/${courseId}/allocations/${orgUnitId}`);
+};
+
+// ─── Learner Available Courses ───────────────────────────────────────────────
+
+export const getAvailableCourses = async (learnerId) => {
+  const { data } = await api.get(`/api/learners/${learnerId}/available-courses`);
+  return Array.isArray(data) ? data : [];
 };
 
 export default api;
