@@ -284,4 +284,11 @@ export const getAvailableCourses = async (learnerId) => {
   return Array.isArray(data) ? data : [];
 };
 
+// ─── Change Password ─────────────────────────────────────────────────────────
+
+export const changePassword = async (currentPassword, newPassword) => {
+  const { data } = await api.put("/api/auth/change-password", { currentPassword, newPassword });
+  return data;
+};
+
 export default api;

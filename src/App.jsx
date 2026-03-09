@@ -13,6 +13,7 @@ import Login from "./login";
 
 // SuperAdmin Pages
 import SuperAdminDashboard from "./pages/superadmin/SuperAdmin";
+import SuperAdminSettings from "./pages/superadmin/Settings";
 
 // Tenant Admin Pages
 import TenantDashboard from "./pages/tenant-admin/Dashboard";
@@ -20,6 +21,7 @@ import OrgStructure from "./pages/tenant-admin/OrgStructure";
 import CreateStructure from "./pages/tenant-admin/CreateStructure";
 import AddStructure from "./pages/tenant-admin/AddStructure";
 import UserManagement from "./pages/tenant-admin/UserManagement";
+import TenantAdminSettings from "./pages/tenant-admin/Settings";
 
 // Instructor Pages
 import InstructorDashboard from "./pages/instructor/InstructorDashboard";
@@ -36,6 +38,7 @@ import Settings from "./pages/instructor/Settings";
 import LearnerCourses from "./pages/learner/Courses";
 import CourseOverview from "./pages/learner/CourseOverview";
 import CourseContent from "./pages/learner/CourseContent";
+import LearnerSettings from "./pages/learner/Settings";
 
 export default function App() {
   return (
@@ -70,6 +73,7 @@ export default function App() {
         <Route index element={<SuperAdminDashboard />} />
         <Route path="tenants" element={<SuperAdminDashboard />} />
         <Route path="tenants/new" element={<SuperAdminDashboard />} />
+        <Route path="settings" element={<SuperAdminSettings />} />
       </Route>
 
       {/* Tenant Admin Routes */}
@@ -87,6 +91,7 @@ export default function App() {
         <Route path="organization/create" element={<CreateStructure />} />
         <Route path="organization/update" element={<AddStructure />} />
         <Route path="users" element={<UserManagement />} />
+        <Route path="settings" element={<TenantAdminSettings />} />
       </Route>
 
       {/* Instructor Routes */}
@@ -123,6 +128,7 @@ export default function App() {
         <Route path="courses" element={<LearnerCourses />} />
         <Route path="courses/:courseId" element={<CourseOverview />} />
         <Route path="courses/:courseId/content" element={<CourseContent />} />
+        <Route path="settings" element={<LearnerSettings />} />
       </Route>
 
       {/* Catch all - redirect to login */}

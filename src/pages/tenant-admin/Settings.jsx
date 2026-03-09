@@ -1,16 +1,16 @@
 import { useAuth } from "../../context/AuthContext";
-import Header from "../../components/instructor/Header.jsx";
 import ChangePassword from "../../components/ChangePassword";
 
-export default function Settings() {
+export default function TenantAdminSettings() {
   const { user } = useAuth();
 
   return (
     <div>
-      <Header
-        title="Settings"
-        description="Manage your profile and preferences"
-      />
+      <div className="page-header">
+        <div className="page-header-left">
+          <h1 className="page-header-title">Settings</h1>
+        </div>
+      </div>
       <div className="row">
         <div className="col-lg-6 col-xl-5">
           <div className="card-enterprise">

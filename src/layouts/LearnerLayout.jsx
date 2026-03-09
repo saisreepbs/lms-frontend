@@ -33,6 +33,12 @@ export default function LearnerLayout() {
             >
               My Courses
             </button>
+            <button
+              className={`learner-nav-link ${isActive("/learner/settings") ? "active" : ""}`}
+              onClick={() => navigate("/learner/settings")}
+            >
+              Settings
+            </button>
           </nav>
 
           <div className="learner-navbar-right">
