@@ -124,49 +124,48 @@ export default function Courses() {
           </div>
         </div>
       ) : (
-        <div className="row g-4">
+        <div className="learner-course-grid">
           {courses.map((course) => {
             const isEnrolled = enrolledIds.has(course.id);
             return (
-              <div key={course.id} className="col-md-6 col-lg-4">
-                <div className="card-enterprise" style={{ height: "100%", display: "flex", flexDirection: "column" }}>
-                  <div
-                    style={{
-                      height: 140,
-                      background: thumbnails[course.id] ? `url(${thumbnails[course.id]}) center/cover no-repeat` : "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-                      borderRadius: "3px 3px 0 0",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      color: "#fff",
-                      fontSize: 13,
-                    }}
-                  >
-                    {!thumbnails[course.id] && "No Image"}
-                  </div>
-                  <div className="card-enterprise-body" style={{ flex: 1, display: "flex", flexDirection: "column" }}>
-                    <h3 style={{ fontSize: 15, fontWeight: 600, margin: "0 0 6px 0" }}>{course.title}</h3>
-                    <p style={{ fontSize: 13, color: "#7f8c8d", margin: "0 0 12px 0", flex: 1 }}>
-                      {course.description?.length > 100
-                        ? course.description.slice(0, 100) + "…"
-                        : course.description || "No description"}
-                    </p>
+              <div key={course.id} className="learner-course-card">
+                <div
+                  className="learner-course-thumb"
+                  style={
+                    thumbnails[course.id]
+                      ? { backgroundImage: `url(${thumbnails[course.id]})` }
+                      : {}
+                  }
+                >
+                  {!thumbnails[course.id] && "No Image"}
+                </div>
+                <div className="learner-course-body">
+                  <h3 className="learner-course-title">{course.title}</h3>
+                  <p className="learner-course-desc">
+                    {course.description?.length > 120
+                      ? course.description.slice(0, 120) + "…"
+                      : course.description || "No description"}
+                  </p>
+                  <div className="learner-course-footer">
                     {isEnrolled ? (
-                      <button
-                        className="btn-enterprise btn-enterprise-primary"
-                        style={{ width: "100%" }}
-                        onClick={() => navigate(`/learner/courses/${course.id}`)}
-                      >
-                        View Course
-                      </button>
+                      <>
+                        <span className="learner-badge-enrolled">✓ Enrolled</span>
+                        <button
+                          className="btn-enterprise btn-enterprise-primary btn-enterprise-sm"
+                          style={{ marginLeft: "auto" }}
+                          onClick={() => navigate(`/learner/courses/${course.id}`)}
+                        >
+                          View Course
+                        </button>
+                      </>
                     ) : (
                       <button
-                        className="btn-enterprise btn-enterprise-dark"
-                        style={{ width: "100%" }}
+                        className="btn-enterprise btn-enterprise-dark btn-enterprise-sm"
+                        style={{ marginLeft: "auto" }}
                         onClick={() => handleEnroll(course.id)}
                         disabled={enrollingId === course.id}
                       >
-                        {enrollingId === course.id ? "Enrolling…" : "Enroll"}
+                        {enrollingId === course.id ? "Enrolling…" : "Enroll Now"}
                       </button>
                     )}
                   </div>

@@ -128,53 +128,52 @@ export default function CourseOverview() {
         </div>
       )}
 
-      <div className="card-enterprise">
-        <div className="card-enterprise-body" style={{ display: "flex", gap: 24, flexWrap: "wrap" }}>
-          {/* Thumbnail */}
-          <div
-            style={{
-              width: 240,
-              height: 160,
-              borderRadius: 4,
-              flexShrink: 0,
-              background: thumbnail
-                ? `url(${thumbnail}) center/cover no-repeat`
-                : "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              color: "#fff",
-              fontSize: 13,
-            }}
-          >
-            {!thumbnail && "No Image"}
-          </div>
+      <div className="card-enterprise" style={{ overflow: "hidden" }}>
+        {/* Hero thumbnail */}
+        <div
+          style={{
+            height: 220,
+            background: thumbnail
+              ? `url(${thumbnail}) center/cover no-repeat`
+              : "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            color: "#fff",
+            fontSize: 14,
+          }}
+        >
+          {!thumbnail && "No Image"}
+        </div>
 
-          {/* Details */}
-          <div style={{ flex: 1, minWidth: 200 }}>
-            <h2 style={{ fontSize: 18, fontWeight: 600, margin: "0 0 8px 0" }}>{course.title}</h2>
-            <p style={{ fontSize: 13, color: "#7f8c8d", margin: "0 0 16px 0", lineHeight: 1.6 }}>
-              {course.description || "No description available."}
-            </p>
+        <div className="card-enterprise-body" style={{ padding: "24px 28px" }}>
+          <h2 style={{ fontSize: 20, fontWeight: 600, margin: "0 0 8px 0", color: "#2c3e50" }}>{course.title}</h2>
 
-            <div style={{ display: "flex", gap: 10 }}>
-              {enrolled ? (
-                <button
-                  className="btn-enterprise btn-enterprise-primary"
-                  onClick={() => navigate(`/learner/courses/${courseId}/content`)}
-                >
-                  Go to Content
-                </button>
-              ) : (
-                <button
-                  className="btn-enterprise btn-enterprise-dark"
-                  onClick={handleEnroll}
-                  disabled={enrolling}
-                >
-                  {enrolling ? "Enrolling…" : "Enroll in Course"}
-                </button>
-              )}
-            </div>
+          {enrolled && (
+            <span className="learner-badge-enrolled" style={{ marginBottom: 12, display: "inline-flex" }}>✓ Enrolled</span>
+          )}
+
+          <p style={{ fontSize: 14, color: "#555", margin: "12px 0 20px 0", lineHeight: 1.7 }}>
+            {course.description || "No description available."}
+          </p>
+
+          <div style={{ display: "flex", gap: 10 }}>
+            {enrolled ? (
+              <button
+                className="btn-enterprise btn-enterprise-primary"
+                onClick={() => navigate(`/learner/courses/${courseId}/content`)}
+              >
+                Go to Content
+              </button>
+            ) : (
+              <button
+                className="btn-enterprise btn-enterprise-dark"
+                onClick={handleEnroll}
+                disabled={enrolling}
+              >
+                {enrolling ? "Enrolling…" : "Enroll in Course"}
+              </button>
+            )}
           </div>
         </div>
       </div>
