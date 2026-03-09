@@ -225,4 +225,19 @@ export const updateLesson = async (lessonId, lessonData) => {
   await api.put(`/api/lessons/${lessonId}`, lessonData);
 };
 
+// ─── Learner ─────────────────────────────────────────────────────────────────
+
+export const getEnrolledCourses = async (learnerId) => {
+  const { data } = await api.get(`/api/learners/${learnerId}/courses`);
+  if (Array.isArray(data)) return data;
+  if (typeof data === 'object' && data !== null) {
+    return Object.entries(data).map(([id, course]) => ({ ...course, id }));
+  }
+  return [];
+};
+
+export const enrollInCourse = async (courseId, learnerId) => {
+  await api.post('/api/enrollments', { courseId, learnerId });
+};
+
 export default api;

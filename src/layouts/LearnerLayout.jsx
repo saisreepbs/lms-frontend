@@ -1,54 +1,107 @@
+import { useState } from "react";
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+
+const Icons = {
+  courses: (
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+      <path d="M1 2.828c.885-.37 2.154-.769 3.388-.893 1.33-.134 2.458.063 3.112.752v9.746c-.935-.53-2.12-.603-3.213-.493-1.18.12-2.37.461-3.287.811V2.828zm7.5-.141c.654-.689 1.782-.886 3.112-.752 1.234.124 2.503.523 3.388.893v9.923c-.918-.35-2.107-.692-3.287-.81-1.094-.111-2.278-.039-3.213.492V2.687zM8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-.4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.809 8.985.936 8 1.783z"/>
+    </svg>
+  ),
+  logout: (
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+      <path fillRule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0v2z"/>
+      <path fillRule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"/>
+    </svg>
+  ),
+  chevronLeft: (
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+      <path fillRule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+    </svg>
+  ),
+  chevronRight: (
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+      <path fillRule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
+    </svg>
+  ),
+};
+
+const navItems = [
+  { label: "Courses", path: "/learner/courses", icon: "courses" },
+];
 
 export default function LearnerLayout() {
   const navigate = useNavigate();
   const location = useLocation();
   const { user, logout } = useAuth();
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
-  const isActive = (path) => location.pathname.startsWith(path);
+  const toTitleCase = (str) => {
+    if (!str) return str;
+    return str.toLowerCase().split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+  };
+
+  const isActive = (path) => {
+    if (path === "/learner/courses") {
+      return location.pathname === "/learner" ||
+             location.pathname.startsWith("/learner/courses");
+    }
+    return location.pathname.startsWith(path);
+  };
 
   return (
     <div className="d-flex vh-100">
-      {/* Sidebar */}
-      <div className="d-flex flex-column bg-dark text-white p-4 position-relative" style={{ width: "250px" }}>
-        <div className="d-flex align-items-center gap-3 mb-4">
-          <div className="bg-secondary rounded-circle d-flex align-items-center justify-content-center" style={{ width: "40px", height: "40px" }}>
-            👤
-          </div>
-          <div>
-            <h1 className="h6 mb-0 text-white">Learner</h1>
-            {user?.fullName && (
-              <p className="small text-white-50 mb-0">{user.fullName}</p>
-            )}
-          </div>
-        </div>
-
-        <div className="list-group list-group-flush mb-auto">
+      <aside className={`instructor-sidebar ${sidebarCollapsed ? "collapsed" : ""}`}>
+        <div className="sidebar-header">
+          {!sidebarCollapsed && (
+            <>
+              <div className="sidebar-header-title">{toTitleCase(user?.fullName) || "Welcome"}</div>
+              <div className="sidebar-header-subtitle">{user?.tenantName || "LMS Platform"}</div>
+            </>
+          )}
           <button
-            onClick={() => navigate("/learner/courses")}
-            className={`list-group-item list-group-item-action ${
-              isActive("/learner/courses") || location.pathname === "/learner"
-                ? "active"
-                : "bg-dark text-white border-0"
-            }`}
+            className="sidebar-toggle-btn"
+            onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
+            title={sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
           >
-            Courses
+            {sidebarCollapsed ? Icons.chevronRight : Icons.chevronLeft}
           </button>
         </div>
-
-        <button
-          onClick={() => { logout(); navigate("/login"); }}
-          className="btn btn-danger w-100 mt-3"
-        >
-          Logout
-        </button>
-      </div>
-
-      {/* Main Content */}
-      <div className="flex-fill p-4 overflow-auto bg-light">
-        <Outlet />
-      </div>
+        <nav className="sidebar-nav">
+          <div className="sidebar-section">
+            {!sidebarCollapsed && <div className="sidebar-section-title">Learning</div>}
+            <ul className="sidebar-nav-list">
+              {navItems.map((item) => (
+                <li key={item.path} className="sidebar-nav-item">
+                  <button
+                    onClick={() => navigate(item.path)}
+                    className={`sidebar-nav-link ${isActive(item.path) ? "active" : ""}`}
+                    title={sidebarCollapsed ? item.label : ""}
+                  >
+                    {Icons[item.icon]}
+                    {!sidebarCollapsed && <span>{item.label}</span>}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </nav>
+        <div className="sidebar-footer">
+          <button
+            onClick={() => { logout(); navigate("/login"); }}
+            className="sidebar-logout-btn"
+            title={sidebarCollapsed ? "Logout" : ""}
+          >
+            {Icons.logout}
+            {!sidebarCollapsed && <span>Logout</span>}
+          </button>
+        </div>
+      </aside>
+      <main className="instructor-main">
+        <div className="instructor-content">
+          <Outlet />
+        </div>
+      </main>
     </div>
   );
 }
