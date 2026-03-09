@@ -245,18 +245,19 @@ code {
 /* Sidebar Styles */
 .instructor-sidebar {
   width: 240px;
-  background: linear-gradient(180deg, #2c3e50 0%, #1a252f 100%);
-  color: #fff;
+  background: #ffffff;
+  color: #333;
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
   transition: width 0.2s ease;
+  border-right: 1px solid #e0e0e0;
 }
 
 .sidebar-header {
   padding: 20px 16px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  background: rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid #e0e0e0;
+  background: #f8f9fa;
   position: relative;
 }
 
@@ -265,13 +266,13 @@ code {
   font-size: 15px;
   font-weight: 600;
   margin: 0 0 2px 0;
-  color: #fff;
+  color: #1a1a1a;
   padding-right: 30px;
 }
 
 .sidebar-header-subtitle {
   font-size: 12px;
-  color: rgba(255, 255, 255, 0.6);
+  color: #888;
   margin: 0;
 }
 
@@ -285,17 +286,17 @@ code {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(255, 255, 255, 0.1);
+  background: #eee;
   border: none;
   border-radius: 3px;
-  color: rgba(255, 255, 255, 0.7);
+  color: #666;
   cursor: pointer;
   transition: all 0.15s ease;
 }
 
 .sidebar-toggle-btn:hover {
-  background: rgba(255, 255, 255, 0.2);
-  color: #fff;
+  background: #ddd;
+  color: #333;
 }
 
 /* Collapsed sidebar styles */
@@ -325,7 +326,7 @@ code {
 }
 
 .instructor-sidebar.collapsed .sidebar-nav-link.active {
-  background: rgba(52, 152, 219, 0.3);
+  background: rgba(52, 152, 219, 0.1);
   border-radius: 0;
 }
 
@@ -353,7 +354,7 @@ code {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 1px;
-  color: rgba(255, 255, 255, 0.4);
+  color: #999;
   padding: 0 16px;
   margin-bottom: 8px;
 }
@@ -375,7 +376,7 @@ code {
   padding: 10px 16px;
   font-size: 13px;
   font-weight: 500;
-  color: rgba(255, 255, 255, 0.8);
+  color: #555;
   text-decoration: none;
   border: none;
   background: transparent;
@@ -387,13 +388,13 @@ code {
 }
 
 .sidebar-nav-link:hover {
-  background: rgba(255, 255, 255, 0.08);
-  color: #fff;
+  background: #f0f0f0;
+  color: #222;
 }
 
 .sidebar-nav-link.active {
-  background: rgba(52, 152, 219, 0.2);
-  color: #fff;
+  background: rgba(52, 152, 219, 0.08);
+  color: #2980b9;
   border-left-color: #3498db;
 }
 
@@ -408,7 +409,7 @@ code {
 
 .sidebar-footer {
   padding: 16px;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid #e0e0e0;
   margin-top: auto;
 }
 
@@ -421,18 +422,18 @@ code {
   padding: 10px 16px;
   font-size: 13px;
   font-weight: 500;
-  color: rgba(255, 255, 255, 0.8);
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #555;
+  background: #f5f5f5;
+  border: 1px solid #ddd;
   border-radius: 3px;
   cursor: pointer;
   transition: all 0.15s ease;
 }
 
 .sidebar-logout-btn:hover {
-  background: rgba(231, 76, 60, 0.2);
-  border-color: rgba(231, 76, 60, 0.4);
-  color: #fff;
+  background: rgba(231, 76, 60, 0.08);
+  border-color: rgba(231, 76, 60, 0.3);
+  color: #c0392b;
 }
 
 /* Main Content Area */
